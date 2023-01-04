@@ -7,12 +7,12 @@ import { API_URL, USER_KEY } from './constants';
 import { SigninDto, SignupDto } from './interfaces';
 
 export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
-  login: async (params: any) => {
+  login: async (params: SigninDto | { credential: string }) => {
     let url: string;
     let dto: Record<string, any>;
 
     if ('credential' in params) {
-      url = `${API_URL}/auth/login-with-google`;
+      url = `${API_URL}/auth/login/google`;
       dto = {
         token: params.credential,
       };
@@ -61,23 +61,61 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
       axiosInstance.defaults.withCredentials = true;
 
       return Promise.resolve();
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
       return Promise.reject(err);
     }
   },
-  register: async (dto: SignupDto) => {
-    const url = `${API_URL}/auth/signup`;
-    try {
-      const { status, statusText } = await axiosInstance.post(url, dto);
-      if (status !== 200) {
-        throw new Error(`${status}: ${statusText}`);
+
+  register: async (params: SignupDto | { credential: string }) => {
+    let url: string;
+    let dto: Record<string, any>;
+    let local = false;
+
+    if ('credential' in params) {
+      url = `${API_URL}/profile/signup/google`;
+      dto = {
+        token: params.credential,
+      };
+    } else {
+      local = true;
+      url = `${API_URL}/profile/signup`;
+      dto = {
+        email: (params as SignupDto).email,
+        password: (params as SignupDto).password,
+      };
+    }
+
+     try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dto),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          response.status === 0
+            ? 'Server unavailable'
+            : `${response.status}: ${response.statusText}`,
+        );
       }
+
+
+      notification.success({
+        message: 'Sign Up',
+        description: local ? `Verification token sent to "${dto.email}". Check your email to complete registration` : 'Successful registration',
+      });
+
       return Promise.resolve();
-    } catch (error) {
-      return Promise.reject();
+    } catch (err) {
+      return Promise.reject(err);
     }
   },
+
   updatePassword: async () => {
     notification.success({
       message: 'Updated Password',
@@ -85,13 +123,24 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     });
     return Promise.resolve();
   },
+
   forgotPassword: async ({ email }) => {
-    notification.success({
-      message: 'Reset Password',
-      description: `Reset password link sent to "${email}"`,
-    });
-    return Promise.resolve();
+    const url = `${API_URL}/profile/send_password_reset_token`;
+    try {
+      const { status, statusText } = await axiosInstance.post(url, { email });
+      if (status !== 200) {
+        throw new Error(`${status}: ${statusText}`);
+      }
+      notification.success({
+        message: 'Reset Password',
+        description: `Reset password link sent to "${email}"`,
+      });
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(err);
+    }
   },
+
   logout: async () => {
     const url = `${API_URL}/auth/logout`;
     try {
@@ -117,9 +166,13 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
     return Promise.resolve();
   },
+
   checkError: () => Promise.resolve(),
+
   checkAuth: async () => getMe(axiosInstance),
+
   getPermissions: () => Promise.resolve(),
+
   getUserIdentity: async () => getMe(axiosInstance),
 });
 
@@ -130,12 +183,13 @@ async function getMe(axiosInstance: AxiosInstance) {
   }
 
   try {
-    const { data: user, status, statusText } = await axiosInstance.get(
-      `${API_URL}/auth/me`,
-      {
-        withCredentials: true,
-      },
-    );
+    const {
+      data: user,
+      status,
+      statusText,
+    } = await axiosInstance.get(`${API_URL}/auth/me`, {
+      withCredentials: true,
+    });
     if (status !== 200) {
       throw new Error(`${status}: ${statusText}`);
     }

@@ -16,6 +16,7 @@
     "resolveJsonModule": true, // Allow json import
     "forceConsistentCasingInFileNames": true, // Avoid difference in case between file name and import
     "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
 
     /* Linting */
     "strict": true,

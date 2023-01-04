@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { LoginPageProps, LoginFormTypes } from '@pankod/refine-core';
 import {
   Row,
@@ -17,8 +16,8 @@ import {
 } from 'antd';
 import { useLogin, useTranslate, useRouterContext } from '@pankod/refine-core';
 
-import { layoutStyles, containerStyles, titleStyles } from './styles';
-import { clientId } from './clientId';
+import { layoutStyles, containerStyles, titleStyles } from '../styles';
+import { GoogleButton } from '../GoogleButton';
 
 const { Text, Title } = Typography;
 
@@ -44,37 +43,6 @@ export const LoginPage = ({
 
   const { mutate: login, isLoading } = useLogin();
 
-  const GoogleButton = (): JSX.Element => {
-    const divRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if (typeof window === 'undefined' || !window.google || !divRef.current) {
-        return;
-      }
-
-      try {
-        window.google.accounts.id.initialize({
-          ux_mode: 'popup',
-          client_id: clientId,
-          callback: (res) => {
-            if (res.credential) {
-              login(res);
-            }
-          },
-        });
-        window.google.accounts.id.renderButton(divRef.current, {
-          theme: 'filled_blue',
-          size: 'medium',
-          type: 'standard',
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }, []);
-
-    return <div ref={divRef} />;
-  };
-
   const CardTitle = (
     <Title level={3} style={titleStyles}>
       {translate('pages.login.title', 'Sign in to your account')}
@@ -88,7 +56,7 @@ export const LoginPage = ({
       style={containerStyles}
       {...(contentProps ?? {})}
     >
-      <GoogleButton />
+      <GoogleButton onCallback={login}  />
       <Divider>{translate('pages.login.divider', 'or')}</Divider>
       <Form<LoginFormTypes>
         layout="vertical"

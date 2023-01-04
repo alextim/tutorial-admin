@@ -14,17 +14,25 @@ import {
   Avatar,
   Typography,
 } from '@pankod/refine-antd';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { roleOptions } from './roleOptions';
 
 type Props = {
-  formProps: FormProps<{}>;
+  formProps: FormProps<Record<string, any>>;
 };
 
 const { Text } = Typography;
 /*
-images":[{"uid":"rc-upload-51t38jtcqb","name":"random-image.jpg","url":"https://picsum.photos/800","type":"image/jpeg","size":141940}]
+images":[
+  {
+    "uid":"rc-upload-51t38jtcqb",
+    "name":"random-image.jpg",
+    "url":"https://picsum.photos/800",
+    "type":"image/jpeg",
+    "size":141940
+  }
+]
 */
 export const UserForm = ({ formProps }: Props) => {
   const apiUrl = useApiUrl();
@@ -58,25 +66,9 @@ export const UserForm = ({ formProps }: Props) => {
               name="avatar"
               valuePropName="fileList"
               getValueProps={(value: any) => {
-                console.log('1  getValueProps', value);
                 return value;
               }}
-              getValueFromEvent={(event: any) => {
-                /*
-                                export interface UploadChangeParam<T = UploadFile> {
-                                    file: T;
-                                    fileList: T[];
-                                    event?: {
-                                    percent: number;
-                                };
-                                    const { fileList } = event;
-
-                                    return [...fileList];                                
-                                */
-                const data = getValueFromEvent(event);
-                console.log('2 getValueFromEvent', data, event);
-                return data;
-              }}
+              getValueFromEvent={getValueFromEvent}
               noStyle
             >
               <Upload.Dragger
@@ -192,7 +184,9 @@ export const UserForm = ({ formProps }: Props) => {
           <Form.Item
             label="Verification Sent At"
             name="verificationCodeSentAt"
-            getValueProps={(value) => ({
+            getValueProps={(
+              value: string | number | Date | Dayjs | null | undefined,
+            ) => ({
               value: value ? dayjs(value) : '',
             })}
           >
@@ -202,7 +196,9 @@ export const UserForm = ({ formProps }: Props) => {
           <Form.Item
             label="Verified At"
             name="verifiedAt"
-            getValueProps={(value) => ({
+            getValueProps={(
+              value: string | number | Date | Dayjs | null | undefined,
+            ) => ({
               value: value ? dayjs(value) : '',
             })}
           >
