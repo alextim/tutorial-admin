@@ -2,10 +2,10 @@ const MIN_PASSWORD_LENGTH = 8;
 const PASSWORD_PATTERN =
   /^(?=.*\d)(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[()[\]{}<>`~!@#№%$^&*\-_=+:;"'\\|,.?/]).{8,}$/;
 
-export const passwordValidator: (_: any, value: any) => Promise<any> = (
-  _,
-  value,
-) => {
+export const passwordValidator: (
+  _: any,
+  value: any,
+) => Promise<Error | void> = (_, value: string | undefined) => {
   if (value) {
     if (value.length < MIN_PASSWORD_LENGTH) {
       return Promise.reject(

@@ -45,7 +45,7 @@ export interface ChangePasswordDto extends SetPasswordDto {
   currentPassword: string;
 }
 
-export type CredentialsDto = {
+export type SigninDto = {
   email: string;
   password: string;
 };

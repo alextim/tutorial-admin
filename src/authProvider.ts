@@ -4,17 +4,14 @@ import type { AxiosInstance } from 'axios';
 
 import { API_URL, USER_KEY } from './constants';
 
-import { CredentialsDto, SignupDto } from './interfaces';
-import { parseJwt } from './utility/parse-jwt';
+import { SigninDto, SignupDto } from './interfaces';
 
-export const authProvider = (axios: AxiosInstance): AuthProvider => ({
+export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   login: async (params: any) => {
     let url: string;
     let dto: Record<string, any>;
 
-    if (params.credential) {
-      const profile = parseJwt(params.credential);
-      console.log(profile);
+    if ('credential' in params) {
       url = `${API_URL}/auth/login-with-google`;
       dto = {
         token: params.credential,
@@ -22,8 +19,8 @@ export const authProvider = (axios: AxiosInstance): AuthProvider => ({
     } else {
       url = `${API_URL}/auth/login`;
       dto = {
-        email: params.email,
-        password: params.password,
+        email: (params as SigninDto).email,
+        password: (params as SigninDto).password,
       };
     }
 
@@ -38,7 +35,11 @@ export const authProvider = (axios: AxiosInstance): AuthProvider => ({
       });
 
       if (!response.ok) {
-        throw new Error(`${response.status}: ${response.statusText}`);
+        throw new Error(
+          response.status === 0
+            ? 'Server unavailable'
+            : `${response.status}: ${response.statusText}`,
+        );
       }
 
       const user = await response.json();
@@ -57,7 +58,7 @@ export const authProvider = (axios: AxiosInstance): AuthProvider => ({
       */
 
       localStorage.setItem(USER_KEY, JSON.stringify(user));
-      axios.defaults.withCredentials = true;
+      axiosInstance.defaults.withCredentials = true;
 
       return Promise.resolve();
     } catch (err: unknown) {
@@ -68,7 +69,7 @@ export const authProvider = (axios: AxiosInstance): AuthProvider => ({
   register: async (dto: SignupDto) => {
     const url = `${API_URL}/auth/signup`;
     try {
-      const { status, statusText } = await axios.post(url, dto);
+      const { status, statusText } = await axiosInstance.post(url, dto);
       if (status !== 200) {
         throw new Error(`${status}: ${statusText}`);
       }
@@ -94,69 +95,64 @@ export const authProvider = (axios: AxiosInstance): AuthProvider => ({
   logout: async () => {
     const url = `${API_URL}/auth/logout`;
     try {
-      const { status, statusText } = await axios.get(url, {
+      const { status, statusText } = await axiosInstance.get(url, {
         withCredentials: true,
       });
       if (status !== 200) {
-        console.error(`${status}: ${statusText}`);
+        throw new Error(`${status}: ${statusText}`);
       }
-      localStorage.removeItem(USER_KEY);
-      axios.defaults.withCredentials = false;
-      window.google?.accounts.id.revoke('', () => {
-          return Promise.resolve();
-      });
-
-      return Promise.resolve();
     } catch (err: unknown) {
       console.error(err);
-      return Promise.reject(err);
     }
+
+    const user = getUser();
+
+    localStorage.removeItem(USER_KEY);
+    axiosInstance.defaults.withCredentials = false;
+
+    const email = user?.email || '';
+    window.google?.accounts.id.revoke(email, () => {
+      return Promise.resolve();
+    });
+
+    return Promise.resolve();
   },
   checkError: () => Promise.resolve(),
-  checkAuth: async () => {
-    const userData = localStorage.getItem(USER_KEY);
-    if (!userData) {
-      return Promise.reject();
-    }
-    try {
-      const { status, statusText } = await axios.get(`${API_URL}/auth/me`, {
-        withCredentials: true,
-      });
-
-      if (status !== 200) {
-        throw new Error(`${status}: ${statusText}`);
-      }
-
-      axios.defaults.withCredentials = true;
-      return Promise.resolve();
-    } catch (err) {
-      console.error(err);
-      return Promise.reject();
-    }
-  },
+  checkAuth: async () => getMe(axiosInstance),
   getPermissions: () => Promise.resolve(),
-  getUserIdentity: async () => {
-    const userData = localStorage.getItem(USER_KEY);
-    if (!userData) {
-      return Promise.reject();
-    }
-
-    try {
-      const { data, status, statusText } = await axios.get(
-        `${API_URL}/auth/me`,
-        {
-          withCredentials: true,
-        },
-      );
-      if (status !== 200) {
-        throw new Error(`${status}: ${statusText}`);
-      }
-
-      const { user } = data;
-
-      return Promise.resolve({ ...user });
-    } catch (error) {
-      return Promise.reject();
-    }
-  },
+  getUserIdentity: async () => getMe(axiosInstance),
 });
+
+async function getMe(axiosInstance: AxiosInstance) {
+  const userData = localStorage.getItem(USER_KEY);
+  if (!userData) {
+    return Promise.reject();
+  }
+
+  try {
+    const { data: user, status, statusText } = await axiosInstance.get(
+      `${API_URL}/auth/me`,
+      {
+        withCredentials: true,
+      },
+    );
+    if (status !== 200) {
+      throw new Error(`${status}: ${statusText}`);
+    }
+
+    return Promise.resolve({ ...user });
+  } catch (error) {
+    return Promise.reject();
+  }
+}
+
+function getUser() {
+  const userData = localStorage.getItem(USER_KEY);
+  if (!userData) {
+    return undefined;
+  }
+  try {
+    const user = JSON.parse(userData);
+    return user;
+  } catch {}
+}

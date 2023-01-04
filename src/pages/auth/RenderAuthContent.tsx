@@ -1,4 +1,4 @@
-import { useRouterContext } from "@pankod/refine-core";
+import { useRouterContext } from '@pankod/refine-core';
 
 export const RenderAuthContent = (content: React.ReactNode) => {
   const { Link } = useRouterContext();

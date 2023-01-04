@@ -16,9 +16,9 @@ const { Text } = Typography;
 const { useBreakpoint } = Grid;
 
 export const Header = () => {
-  const { data } = useGetIdentity();
-  const { firstName = '', lastName = '', avatar } = (data as IUser) || {};
-  const fullName = `${lastName} ${firstName}`;
+  const { data: user } = useGetIdentity<IUser>() || {};
+  const { email, firstName, lastName, avatar } = user || {};
+  const fullName = lastName || firstName ? `${lastName || ''} ${firstName || ''}` : email;
   const screens = useBreakpoint();
 
   return (
