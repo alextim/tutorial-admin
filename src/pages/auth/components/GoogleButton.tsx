@@ -3,8 +3,6 @@ import { useEffect, useRef } from "react";
 import type { UseMutateFunction } from "@pankod/refine-core";
 import type { TLoginData } from "@pankod/refine-core/dist/interfaces";
 
-import { clientId } from "./clientId";
-
 type Props = {
   onCallback: UseMutateFunction<TLoginData, Error, {}, unknown>;
   text?: 'signin_with' | 'signup_with' | 'continue_with' | 'signin';
@@ -21,7 +19,7 @@ export const GoogleButton = ({ onCallback, text }: Props): JSX.Element => {
     try {
       window.google.accounts.id.initialize({
         ux_mode: 'popup',
-        client_id: clientId,
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: (res) => {
           if (res.credential) {
             onCallback(res);

@@ -38,17 +38,28 @@ export const UserForm = ({ formProps }: Props) => {
   const apiUrl = useApiUrl();
 
   const uploadAvatarApi = `${apiUrl}/local-files/upload-media`;
+/*
+              getValueProps={(value: any) => {
+                return value;
+              }}
+
+*/
+  const avatar = formProps.initialValues?.avatar;
+
+  const initialValues = avatar && !Array.isArray(avatar) ? { ...formProps.initialValues, avatar: [avatar] } : formProps.initialValues;
 
   return (
     <Form
       {...formProps}
+      initialValues={initialValues}
       layout="vertical"
       onFinish={(values) => {
-        let avatarId: number | undefined;
+        let avatarId: number | null;
         const { avatar } = values as any;
-        if (avatar && Array.isArray(avatar)) {
-          const { response } = avatar[0];
-          avatarId = response?.id;
+        if (Array.isArray(avatar) && avatar.length) {
+          avatarId = avatar[0].response?.id || null;
+        } else {
+          avatarId = null;
         }
         return (
           formProps.onFinish &&
@@ -65,9 +76,6 @@ export const UserForm = ({ formProps }: Props) => {
             <Form.Item
               name="avatar"
               valuePropName="fileList"
-              getValueProps={(value: any) => {
-                return value;
-              }}
               getValueFromEvent={getValueFromEvent}
               noStyle
             >

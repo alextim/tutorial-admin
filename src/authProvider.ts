@@ -25,7 +25,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     }
 
     try {
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,15 +34,9 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
         credentials: 'include',
       });
 
-      if (!response.ok) {
-        throw new Error(
-          response.status === 0
-            ? 'Server unavailable'
-            : `${response.status}: ${response.statusText}`,
-        );
-      }
+      await validateResponse(res);
 
-      const user = await response.json();
+      const user = await res.json();
       /*
       const { status, statusText, data } = await axios.post(url, { email, password }, {
         validateStatus: function (status) {
@@ -87,7 +81,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     }
 
      try {
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,14 +90,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
         credentials: 'include',
       });
 
-      if (!response.ok) {
-        throw new Error(
-          response.status === 0
-            ? 'Server unavailable'
-            : `${response.status}: ${response.statusText}`,
-        );
-      }
-
+      await validateResponse(res);
 
       notification.success({
         message: 'Sign Up',
@@ -127,10 +114,17 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   forgotPassword: async ({ email }) => {
     const url = `${API_URL}/profile/send_password_reset_token`;
     try {
-      const { status, statusText } = await axiosInstance.post(url, { email });
-      if (status !== 200) {
-        throw new Error(`${status}: ${statusText}`);
-      }
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+        credentials: 'include',
+      });
+
+      await validateResponse(res);
+
       notification.success({
         message: 'Reset Password',
         description: `Reset password link sent to "${email}"`,
@@ -144,13 +138,11 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   logout: async () => {
     const url = `${API_URL}/auth/logout`;
     try {
-      const { status, statusText } = await axiosInstance.get(url, {
-        withCredentials: true,
+      const res = await fetch(url, {
+        credentials: 'include',
       });
-      if (status !== 200) {
-        throw new Error(`${status}: ${statusText}`);
-      }
-    } catch (err: unknown) {
+      await validateResponse(res);
+    } catch (err) {
       console.error(err);
     }
 
@@ -169,34 +161,32 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
   checkError: () => Promise.resolve(),
 
-  checkAuth: async () => getMe(axiosInstance),
+  checkAuth: getMe,
 
   getPermissions: () => Promise.resolve(),
 
-  getUserIdentity: async () => getMe(axiosInstance),
+  getUserIdentity: getMe,
 });
 
-async function getMe(axiosInstance: AxiosInstance) {
+async function getMe() {
   const userData = localStorage.getItem(USER_KEY);
   if (!userData) {
     return Promise.reject();
   }
+  const url = `${API_URL}/auth/me`;
 
   try {
-    const {
-      data: user,
-      status,
-      statusText,
-    } = await axiosInstance.get(`${API_URL}/auth/me`, {
-      withCredentials: true,
+    const res = await fetch(url, {
+      credentials: 'include',
     });
-    if (status !== 200) {
-      throw new Error(`${status}: ${statusText}`);
-    }
+
+    await validateResponse(res);
+
+    const user = await res.json();
 
     return Promise.resolve({ ...user });
-  } catch (error) {
-    return Promise.reject();
+  } catch (err) {
+    return Promise.reject(err);
   }
 }
 
@@ -209,4 +199,19 @@ function getUser() {
     const user = JSON.parse(userData);
     return user;
   } catch {}
+}
+
+async function validateResponse(res: Response) {
+  if (res.ok) {
+    return;
+  }
+  let message: string;
+  if (res.status === 0) {
+    message = 'Server unavailable';
+  } else {
+    const body = await res.json();
+    message = body?.message || res.statusText;
+  }
+
+  throw new Error(message);
 }
