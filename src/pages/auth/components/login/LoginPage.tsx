@@ -1,4 +1,4 @@
-import { LoginPageProps, LoginFormTypes } from '@pankod/refine-core';
+import { LoginPageProps, LoginFormTypes, useRouterContext } from '@pankod/refine-core';
 import {
   Row,
   Col,
@@ -8,18 +8,17 @@ import {
   Form,
   Input,
   Button,
-  Checkbox,
   CardProps,
   LayoutProps,
   Divider,
   FormProps,
 } from 'antd';
-import { useLogin, useTranslate, useRouterContext } from '@pankod/refine-core';
+import { useLogin, useTranslate } from '@pankod/refine-core';
 
 import { layoutStyles, containerStyles, titleStyles } from '../styles';
 import { GoogleButton } from '../GoogleButton';
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 type LoginProps = LoginPageProps<LayoutProps, CardProps, FormProps>;
 
@@ -31,7 +30,6 @@ type LoginProps = LoginPageProps<LayoutProps, CardProps, FormProps>;
 export const LoginPage = ({
   registerLink,
   forgotPasswordLink,
-  rememberMe,
   contentProps,
   wrapperProps,
   renderContent,
@@ -39,9 +37,8 @@ export const LoginPage = ({
 }: LoginProps) => {
   const [form] = Form.useForm<LoginFormTypes>();
   const translate = useTranslate();
-  const { Link } = useRouterContext();
-
   const { mutate: login, isLoading } = useLogin();
+  const { Link } = useRouterContext();
 
   const CardTitle = (
     <Title level={3} style={titleStyles}>
@@ -95,39 +92,36 @@ export const LoginPage = ({
         >
           <Input type="password" placeholder="●●●●●●●●" size="large" />
         </Form.Item>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '12px',
-          }}
-        >
-          {rememberMe ?? (
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox
-                style={{
-                  fontSize: '12px',
-                }}
-              >
-                {translate('pages.login.buttons.rememberMe', 'Remember me')}
-              </Checkbox>
-            </Form.Item>
-          )}
-          {forgotPasswordLink ?? (
-            <Link
-              style={{
-                fontSize: '12px',
-                marginLeft: 'auto',
-              }}
-              to="/forgot-password"
-            >
-              {translate(
-                'pages.login.buttons.forgotPassword',
-                'Forgot password?',
-              )}
-            </Link>
-          )}
-        </div>
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '12px',
+        }}
+      >
+        {registerLink ?? (
+          <Link to="/register" style={{ fontSize: 12 }}>
+            {translate('pages.login.buttons.noAccount', 'Need an account?')}
+          </Link>
+        )}
+
+        {forgotPasswordLink ?? (
+          <Link
+            style={{
+              fontSize: '12px',
+              marginLeft: 'auto',
+            }}
+            to="/forgot-password"
+          >
+            {translate(
+              'pages.login.buttons.forgotPassword',
+              'Forgot password?',
+            )}
+          </Link>
+        )}
+      </div>
+
         <Form.Item>
           <Button
             type="primary"
@@ -140,19 +134,6 @@ export const LoginPage = ({
           </Button>
         </Form.Item>
       </Form>
-      <div style={{ marginTop: 8 }}>
-        {registerLink ?? (
-          <Text style={{ fontSize: 12 }}>
-            {translate(
-              'pages.login.buttons.noAccount',
-              'Don’t have an account?',
-            )}{' '}
-            <Link to="/register" style={{ fontWeight: 'bold' }}>
-              {translate('pages.login.signup', 'Sign up')}
-            </Link>
-          </Text>
-        )}
-      </div>
     </Card>
   );
 

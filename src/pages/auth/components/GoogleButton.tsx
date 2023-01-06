@@ -31,6 +31,7 @@ export const GoogleButton = ({ onCallback, text }: Props): JSX.Element => {
         size: 'medium',
         type: 'standard',
         text,
+        width: '100%',
       });
     } catch (error) {
       console.log(error);

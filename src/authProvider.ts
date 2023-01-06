@@ -103,12 +103,30 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     }
   },
 
-  updatePassword: async () => {
-    notification.success({
-      message: 'Updated Password',
-      description: 'Password updated successfully',
-    });
-    return Promise.resolve();
+  updatePassword: async (params: any) => {
+    console.log(params);
+    console.log(params.queryStrings);
+    const url = `${API_URL}/profile/reset_password`;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: params.password, token: params.token }),
+        credentials: 'include',
+      });
+
+      await validateResponse(res);
+
+      notification.success({
+        message: 'Reset Password',
+        description: 'New password set successfully',
+      });
+      return Promise.resolve('/login');
+    } catch (err) {
+      return Promise.reject(err);
+    }
   },
 
   forgotPassword: async ({ email }) => {
@@ -129,7 +147,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
         message: 'Reset Password',
         description: `Reset password link sent to "${email}"`,
       });
-      return Promise.resolve();
+      return Promise.resolve('/login');
     } catch (err) {
       return Promise.reject(err);
     }

@@ -5,24 +5,30 @@ import { RegisterPage } from './components/register/RegisterPage';
 
 import { authWrapperProps } from './authWrapperProps';
 import { RenderAuthContent } from './RenderAuthContent';
+import { ForgotPasswordPage } from './components/forgot-password/forgot-password';
 
 export const AuthPage: React.FC<AuthProps> = ({ type, formProps }) => {
-  if (type === 'login') {
-    return (<LoginPage wrapperProps={authWrapperProps}
-      renderContent={RenderAuthContent}
-      formProps={formProps} />)
+  switch (type) {
+    case 'login':
+      return (<LoginPage wrapperProps={authWrapperProps}
+        renderContent={RenderAuthContent}
+        formProps={formProps} />)
+    case 'register':
+      return (<RegisterPage wrapperProps={authWrapperProps}
+        renderContent={RenderAuthContent}
+        formProps={formProps} />)
+    case "forgotPassword":
+      return <ForgotPasswordPage wrapperProps={authWrapperProps}
+        renderContent={RenderAuthContent}
+        formProps={formProps} />;
+    default:
+      return (
+        <AntdAuthPage
+          type={type}
+          wrapperProps={authWrapperProps}
+          renderContent={RenderAuthContent}
+          formProps={formProps}
+        />
+      );
   }
-  if (type === 'register') {
-    return (<RegisterPage wrapperProps={authWrapperProps}
-      renderContent={RenderAuthContent}
-      formProps={formProps} />)
-  }
-  return (
-    <AntdAuthPage
-      type={type}
-      wrapperProps={authWrapperProps}
-      renderContent={RenderAuthContent}
-      formProps={formProps}
-    />
-  );
 };

@@ -23,9 +23,11 @@ import {
 import { layoutStyles, containerStyles, titleStyles } from "../styles";
 import { GoogleButton } from "../GoogleButton";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
-type RegisterProps = RegisterPageProps<LayoutProps, CardProps, FormProps>;
+type RegisterProps = RegisterPageProps<LayoutProps, CardProps, FormProps> & {
+  forgotPasswordLink?: React.ReactNode;
+};
 
 /**
  * **refine** has register page form which is served on `/register` route when the `authProvider` configuration is provided.
@@ -36,7 +38,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
     loginLink,
     wrapperProps,
     contentProps,
-    renderContent,
+  renderContent,
+    forgotPasswordLink,
     formProps,
 }) => {
     const [form] = Form.useForm<RegisterFormTypes>();
@@ -104,34 +107,35 @@ export const RegisterPage: React.FC<RegisterProps> = ({
                         size="large"
                     />
                 </Form.Item>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginBottom: "12px",
-                    }}
+
+          <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '12px',
+                  }}
                 >
-                    {loginLink ?? (
-                        <Text
-                            style={{
-                                fontSize: 12,
-                                marginLeft: "auto",
-                            }}
-                        >
-                            {translate(
-                                "pages.login.buttons.haveAccount",
-                                "Have an account?",
-                            )}{" "}
-                            <Link
-                                style={{
-                                    fontWeight: "bold",
-                                }}
-                                to="/login"
-                            >
-                                {translate("pages.login.signin", "Sign in")}
-                            </Link>
-                        </Text>
-                    )}
+                  {loginLink ?? (
+                    <Link to="/login" style={{ fontSize: 12 }}>
+                      {translate("pages.login.buttons.haveAccount",
+                                "Have an account?",)}
+                    </Link>
+                  )}
+
+                  {forgotPasswordLink ?? (
+                    <Link
+                      style={{
+                        fontSize: '12px',
+                        marginLeft: 'auto',
+                      }}
+                      to="/forgot-password"
+                    >
+                      {translate(
+                        'pages.login.buttons.forgotPassword',
+                        'Forgot password?',
+                      )}
+                    </Link>
+                  )}
                 </div>
 
                 <Form.Item>
