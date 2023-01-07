@@ -22,7 +22,6 @@ import {
 
 import { layoutStyles, containerStyles, titleStyles } from '../styles';
 import { GoogleButton } from '../GoogleButton';
-// import { GoogleButton } from "../GoogleButton";
 
 const { Title } = Typography;
 
