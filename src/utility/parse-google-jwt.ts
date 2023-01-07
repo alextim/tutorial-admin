@@ -11,5 +11,5 @@ export function parseGoogleJwt(token: string): TokenPayload {
       .join(''),
   );
 
-  return JSON.parse(jsonPayload);
+  return JSON.parse(jsonPayload) as TokenPayload;
 }

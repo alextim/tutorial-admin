@@ -16,11 +16,16 @@ const { Text } = Typography;
 const { useBreakpoint } = Grid;
 
 export const Header = () => {
+  const screens = useBreakpoint();
   const { data: user } = useGetIdentity<IUser>() || {};
   const { email, firstName, lastName, avatar } = user || {};
-  const fullName =
-    lastName || firstName ? `${firstName || ''} ${lastName || ''}` : email?.split('@')[0];
-  const screens = useBreakpoint();
+
+  let fullName: string;
+  if (lastName || firstName) {
+    fullName = `${firstName || ''} ${lastName || ''}`;
+  } else {
+    fullName = email?.split('@', 1)[0] || '';
+  }
 
   return (
     <AntdHeader

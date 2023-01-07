@@ -9,18 +9,18 @@ import { SigninDto, SignupDto } from './interfaces';
 export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   login: async (params: SigninDto | { credential: string }) => {
     let url: string;
-    let dto: Record<string, any>;
+    let dto: Record<string, any> | undefined;
 
     if ('credential' in params) {
-      url = `${API_URL}/auth/login/google`;
+      url = `${API_URL}/auth/login/google2`;
       dto = {
         token: params.credential,
       };
     } else {
       url = `${API_URL}/auth/login`;
       dto = {
-        email: (params as SigninDto).email,
-        password: (params as SigninDto).password,
+        email: params.email,
+        password: params.password,
       };
     }
 
@@ -75,12 +75,12 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
       local = true;
       url = `${API_URL}/profile/signup`;
       dto = {
-        email: (params as SignupDto).email,
-        password: (params as SignupDto).password,
+        email: params.email,
+        password: params.password,
       };
     }
 
-     try {
+    try {
       const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -94,7 +94,9 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
       notification.success({
         message: 'Sign Up',
-        description: local ? `Verification token sent to "${dto.email}". Check your email to complete registration` : 'Successful registration',
+        description: local
+          ? `Verification token sent to "${dto.email}". Check your email to complete registration`
+          : 'Successful registration',
       });
 
       return Promise.resolve();
@@ -113,7 +115,10 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password: params.password, token: params.token }),
+        body: JSON.stringify({
+          password: params.password,
+          token: params.token,
+        }),
         credentials: 'include',
       });
 
@@ -179,18 +184,18 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
   checkError: () => Promise.resolve(),
 
-  checkAuth: getMe,
+  checkAuth: () => getMe(axiosInstance),
 
   getPermissions: () => Promise.resolve(),
 
-  getUserIdentity: getMe,
+  getUserIdentity: () => getMe(axiosInstance),
 });
 
-async function getMe() {
-  const userData = localStorage.getItem(USER_KEY);
-  if (!userData) {
-    return Promise.reject();
-  }
+async function getMe(axiosInstance: AxiosInstance) {
+  // const userData = localStorage.getItem(USER_KEY);
+  // if (!userData) {
+  //  return Promise.reject();
+  // }
   const url = `${API_URL}/auth/me`;
 
   try {
@@ -201,6 +206,12 @@ async function getMe() {
     await validateResponse(res);
 
     const user = await res.json();
+
+    const userData = localStorage.getItem(USER_KEY);
+    if (!userData) {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      axiosInstance.defaults.withCredentials = true;
+    }
 
     return Promise.resolve({ ...user });
   } catch (err) {
@@ -216,7 +227,9 @@ function getUser() {
   try {
     const user = JSON.parse(userData);
     return user;
-  } catch {}
+  } catch {
+    //
+  }
 }
 
 async function validateResponse(res: Response) {

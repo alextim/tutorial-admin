@@ -38,7 +38,7 @@ export const UserForm = ({ formProps }: Props) => {
   const apiUrl = useApiUrl();
 
   const uploadAvatarApi = `${apiUrl}/local-files/upload-media`;
-/*
+  /*
               getValueProps={(value: any) => {
                 return value;
               }}
@@ -46,7 +46,10 @@ export const UserForm = ({ formProps }: Props) => {
 */
   const avatar = formProps.initialValues?.avatar;
 
-  const initialValues = avatar && !Array.isArray(avatar) ? { ...formProps.initialValues, avatar: [avatar] } : formProps.initialValues;
+  const initialValues =
+    avatar && !Array.isArray(avatar)
+      ? { ...formProps.initialValues, avatar: [avatar] }
+      : formProps.initialValues;
 
   return (
     <Form

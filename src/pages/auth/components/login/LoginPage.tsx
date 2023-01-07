@@ -1,4 +1,8 @@
-import { LoginPageProps, LoginFormTypes, useRouterContext } from '@pankod/refine-core';
+import {
+  LoginPageProps,
+  LoginFormTypes,
+  useRouterContext,
+} from '@pankod/refine-core';
 import {
   Row,
   Col,
@@ -17,6 +21,7 @@ import { useLogin, useTranslate } from '@pankod/refine-core';
 
 import { layoutStyles, containerStyles, titleStyles } from '../styles';
 import { GoogleButton } from '../GoogleButton';
+// import { GoogleButton } from '../GoogleButton';
 
 const { Title } = Typography;
 
@@ -53,7 +58,8 @@ export const LoginPage = ({
       style={containerStyles}
       {...(contentProps ?? {})}
     >
-      <GoogleButton onCallback={login}  />
+      <GoogleButton />
+      {/*<GoogleButton onCallback={login}  />*/}
       <Divider>{translate('pages.login.divider', 'or')}</Divider>
       <Form<LoginFormTypes>
         layout="vertical"
@@ -93,34 +99,34 @@ export const LoginPage = ({
           <Input type="password" placeholder="●●●●●●●●" size="large" />
         </Form.Item>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '12px',
-        }}
-      >
-        {registerLink ?? (
-          <Link to="/register" style={{ fontSize: 12 }}>
-            {translate('pages.login.buttons.noAccount', 'Need an account?')}
-          </Link>
-        )}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginBottom: '12px',
+          }}
+        >
+          {registerLink ?? (
+            <Link to="/register" style={{ fontSize: 12 }}>
+              {translate('pages.login.buttons.noAccount', 'Need an account?')}
+            </Link>
+          )}
 
-        {forgotPasswordLink ?? (
-          <Link
-            style={{
-              fontSize: '12px',
-              marginLeft: 'auto',
-            }}
-            to="/forgot-password"
-          >
-            {translate(
-              'pages.login.buttons.forgotPassword',
-              'Forgot password?',
-            )}
-          </Link>
-        )}
-      </div>
+          {forgotPasswordLink ?? (
+            <Link
+              style={{
+                fontSize: '12px',
+                marginLeft: 'auto',
+              }}
+              to="/forgot-password"
+            >
+              {translate(
+                'pages.login.buttons.forgotPassword',
+                'Forgot password?',
+              )}
+            </Link>
+          )}
+        </div>
 
         <Form.Item>
           <Button

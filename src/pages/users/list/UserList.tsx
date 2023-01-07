@@ -121,8 +121,8 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
         ),
-        onClick: async (info) => {
-          (async () => {
+        onClick: (info) => {
+          void (async () => {
             setCurrentRecord(record);
             info.domEvent.stopPropagation();
             await sendEmailVerificationLink(record.email, apiUrl);
@@ -140,8 +140,8 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
         ),
-        onClick: async (info) => {
-          (async () => {
+        onClick: (info) => {
+          void (async () => {
             setCurrentRecord(record);
             info.domEvent.stopPropagation();
             await sendPasswordResetToken(record.email, apiUrl);
