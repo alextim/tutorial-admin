@@ -4,7 +4,6 @@ import axios from 'axios';
 import { HttpError, Refine } from '@pankod/refine-core';
 import {
   notificationProvider,
-  Layout,
   ReadyPage,
   ErrorComponent,
 } from '@pankod/refine-antd';
@@ -12,7 +11,6 @@ import nestjsxCrudDataProvider from '@pankod/refine-nestjsx-crud';
 import routerProvider from '@pankod/refine-react-router-v6';
 import '@pankod/refine-antd/dist/reset.css';
 
-import { API_URL, USER_KEY } from './constants';
 import { authProvider } from './authProvider';
 
 import { DashboardPage } from './pages/dashboard';
@@ -20,12 +18,12 @@ import { AuthPage } from './pages/auth';
 import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
 
 import { Title } from './components/title';
-import { Header } from './components/header';
+import { Layout } from './components/layout';
 
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
-  const userData = localStorage.getItem(USER_KEY);
+  const userData = localStorage.getItem(import.meta.env.VITE_USER_KEY);
   if (userData) {
     request.withCredentials = true;
   }
@@ -50,7 +48,7 @@ axiosInstance.interceptors.response.use(
 function App() {
   return (
     <Refine
-      dataProvider={nestjsxCrudDataProvider(API_URL, axiosInstance)}
+      dataProvider={nestjsxCrudDataProvider(import.meta.env.VITE_API_URL, axiosInstance)}
       routerProvider={{
         ...routerProvider,
         routes: [
@@ -92,7 +90,6 @@ function App() {
       ]}
       notificationProvider={notificationProvider}
       Title={Title}
-      Header={Header}
       Layout={Layout}
       ReadyPage={ReadyPage}
       catchAll={<ErrorComponent />}

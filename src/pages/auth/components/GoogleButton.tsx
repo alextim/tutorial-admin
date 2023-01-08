@@ -1,5 +1,4 @@
 import { Button, Icons } from "@pankod/refine-antd";
-import { API_URL } from "../../../constants";
 
 export const GoogleButton = () => (
   <Button
@@ -15,7 +14,7 @@ export const GoogleButton = () => (
     }}
     onClick={(e) => {
       e.preventDefault();
-      window.location.assign(`${API_URL}/auth/login/google`);
+      window.location.assign(`${import.meta.env.VITE_API_URL}/auth/login/google`);
     }}
   >
     Google

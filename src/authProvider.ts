@@ -2,8 +2,6 @@ import { AuthProvider } from '@pankod/refine-core';
 import { notification } from '@pankod/refine-antd';
 import type { AxiosInstance } from 'axios';
 
-import { API_URL, USER_KEY } from './constants';
-
 import { SigninDto, SignupDto } from './interfaces';
 
 export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
@@ -12,12 +10,12 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     let dto: Record<string, any> | undefined;
 
     if ('credential' in params) {
-      url = `${API_URL}/auth/login/google2`;
+      url = `${import.meta.env.VITE_API_URL}/auth/login/google2`;
       dto = {
         token: params.credential,
       };
     } else {
-      url = `${API_URL}/auth/login`;
+      url = `${import.meta.env.VITE_API_URL}/auth/login`;
       dto = {
         email: params.email,
         password: params.password,
@@ -51,7 +49,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
       const { user } = data;
       */
 
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      localStorage.setItem(import.meta.env.VITE_USER_KEY, JSON.stringify(user));
       axiosInstance.defaults.withCredentials = true;
 
       return Promise.resolve();
@@ -67,13 +65,13 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     let local = false;
 
     if ('credential' in params) {
-      url = `${API_URL}/profile/signup/google`;
+      url = `${import.meta.env.VITE_API_URL}/profile/signup/google`;
       dto = {
         token: params.credential,
       };
     } else {
       local = true;
-      url = `${API_URL}/profile/signup`;
+      url = `${import.meta.env.VITE_API_URL}/profile/signup`;
       dto = {
         email: params.email,
         password: params.password,
@@ -108,7 +106,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   updatePassword: async (params: any) => {
     console.log(params);
     console.log(params.queryStrings);
-    const url = `${API_URL}/profile/reset_password`;
+    const url = `${import.meta.env.VITE_API_URL}/profile/reset_password`;
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -135,7 +133,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   },
 
   forgotPassword: async ({ email }) => {
-    const url = `${API_URL}/profile/send_password_reset_token`;
+    const url = `${import.meta.env.VITE_API_URL}/profile/send_password_reset_token`;
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -159,7 +157,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   },
 
   logout: async () => {
-    const url = `${API_URL}/auth/logout`;
+    const url = `${import.meta.env.VITE_API_URL}/auth/logout`;
     try {
       const res = await fetch(url, {
         credentials: 'include',
@@ -171,7 +169,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
     const user = getUser();
 
-    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(import.meta.env.VITE_USER_KEY);
     axiosInstance.defaults.withCredentials = false;
 
     const email = user?.email || '';
@@ -192,11 +190,11 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 });
 
 async function getMe(axiosInstance: AxiosInstance) {
-  // const userData = localStorage.getItem(USER_KEY);
+  // const userData = localStorage.getItem(import.meta.env.VITE_USER_KEY);
   // if (!userData) {
   //  return Promise.reject();
   // }
-  const url = `${API_URL}/auth/me`;
+  const url = `${import.meta.env.VITE_API_URL}/auth/me`;
 
   try {
     const res = await fetch(url, {
@@ -207,9 +205,9 @@ async function getMe(axiosInstance: AxiosInstance) {
 
     const user = await res.json();
 
-    const userData = localStorage.getItem(USER_KEY);
+    const userData = localStorage.getItem(import.meta.env.VITE_USER_KEY);
     if (!userData) {
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      localStorage.setItem(import.meta.env.VITE_USER_KEY, JSON.stringify(user));
       axiosInstance.defaults.withCredentials = true;
     }
 
@@ -220,7 +218,7 @@ async function getMe(axiosInstance: AxiosInstance) {
 }
 
 function getUser() {
-  const userData = localStorage.getItem(USER_KEY);
+  const userData = localStorage.getItem(import.meta.env.VITE_USER_KEY);
   if (!userData) {
     return undefined;
   }
