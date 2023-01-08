@@ -6,6 +6,7 @@ import {
   notificationProvider,
   ReadyPage,
   ErrorComponent,
+  Layout,
 } from '@pankod/refine-antd';
 import nestjsxCrudDataProvider from '@pankod/refine-nestjsx-crud';
 import routerProvider from '@pankod/refine-react-router-v6';
@@ -18,7 +19,8 @@ import { AuthPage } from './pages/auth';
 import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
 
 import { Title } from './components/title';
-import { Layout } from './components/layout';
+import { Header } from './components/header';
+import { Sider } from './components/sider';
 
 const axiosInstance = axios.create();
 
@@ -90,7 +92,9 @@ function App() {
       ]}
       notificationProvider={notificationProvider}
       Title={Title}
+      Header={Header}
       Layout={Layout}
+
       ReadyPage={ReadyPage}
       catchAll={<ErrorComponent />}
       options={{

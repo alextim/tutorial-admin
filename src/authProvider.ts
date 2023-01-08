@@ -5,30 +5,14 @@ import type { AxiosInstance } from 'axios';
 import { SigninDto, SignupDto } from './interfaces';
 
 export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
-  login: async (params: SigninDto | { credential: string }) => {
-    let url: string;
-    let dto: Record<string, any> | undefined;
-
-    if ('credential' in params) {
-      url = `${import.meta.env.VITE_API_URL}/auth/login/google2`;
-      dto = {
-        token: params.credential,
-      };
-    } else {
-      url = `${import.meta.env.VITE_API_URL}/auth/login`;
-      dto = {
-        email: params.email,
-        password: params.password,
-      };
-    }
-
+  login: async (params: SigninDto) => {
     try {
-      const res = await fetch(url, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dto),
+        body: JSON.stringify(params),
         credentials: 'include',
       });
 
@@ -59,32 +43,14 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
     }
   },
 
-  register: async (params: SignupDto | { credential: string }) => {
-    let url: string;
-    let dto: Record<string, any>;
-    let local = false;
-
-    if ('credential' in params) {
-      url = `${import.meta.env.VITE_API_URL}/profile/signup/google`;
-      dto = {
-        token: params.credential,
-      };
-    } else {
-      local = true;
-      url = `${import.meta.env.VITE_API_URL}/profile/signup`;
-      dto = {
-        email: params.email,
-        password: params.password,
-      };
-    }
-
+  register: async (params: SignupDto) => {
     try {
-      const res = await fetch(url, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/profile/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dto),
+        body: JSON.stringify(params),
         credentials: 'include',
       });
 
@@ -92,9 +58,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
       notification.success({
         message: 'Sign Up',
-        description: local
-          ? `Verification token sent to "${dto.email}". Check your email to complete registration`
-          : 'Successful registration',
+        description: `Verification token sent to "${params.email}". Check your email to complete registration`
       });
 
       return Promise.resolve();

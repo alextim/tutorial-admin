@@ -2,32 +2,35 @@ import React, { useState } from "react";
 import { Layout, Menu, Grid, ConfigProvider, Drawer, Button } from "antd";
 import {
     DashboardOutlined,
+    LogoutOutlined,
     UnorderedListOutlined,
     BarsOutlined,
 } from "@ant-design/icons";
 import {
     useTranslate,
+    useLogout,
     useTitle,
     CanAccess,
     ITreeMenu,
+    useIsExistAuthentication,
     useRouterContext,
     useMenu,
     useRefineContext,
 } from "@pankod/refine-core";
 
-import { Title as DefaultTitle } from "../title";
-
-import { drawerButtonStyles } from "./styles";
+import { Title as DefaultTitle } from '@pankod/refine-antd';
 import type { RefineLayoutSiderProps } from "@pankod/refine-antd";
 
+import { drawerButtonStyles } from "./styles";
 
 const { SubMenu } = Menu;
 
 export const Sider: React.FC<RefineLayoutSiderProps> = ({ render }) => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-
+    const isExistAuthentication = useIsExistAuthentication();
     const { Link } = useRouterContext();
+    const { mutate: mutateLogout } = useLogout();
     const Title = useTitle();
     const translate = useTranslate();
     const { menuItems, selectedKey, defaultOpenKeys } = useMenu();
@@ -93,6 +96,16 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({ render }) => {
         });
     };
 
+    const logout = isExistAuthentication && (
+        <Menu.Item
+            key="logout"
+            onClick={() => mutateLogout()}
+            icon={<LogoutOutlined />}
+        >
+            {translate("buttons.logout", "Logout")}
+        </Menu.Item>
+    );
+
     const dashboard = hasDashboard ? (
         <Menu.Item
             key="dashboard"
@@ -115,7 +128,7 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({ render }) => {
             return render({
                 dashboard,
                 items,
-                logout: undefined,
+                logout,
                 collapsed,
             });
         }
@@ -123,6 +136,7 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({ render }) => {
             <>
                 {dashboard}
                 {items}
+                {logout}
             </>
         );
     };
