@@ -1,6 +1,6 @@
-import { IResourceComponentsProps } from '@pankod/refine-core';
+import type { IResourceComponentsProps } from '@pankod/refine-core';
 
-import { Edit, useForm } from '@pankod/refine-antd';
+import { Edit, useForm } from '@pankod/refine-mantine';
 
 import { IUser } from '../../interfaces';
 import { UserForm } from './form';

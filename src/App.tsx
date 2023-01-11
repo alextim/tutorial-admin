@@ -7,7 +7,7 @@ import {
   ReadyPage,
   ErrorComponent,
   Layout,
-} from '@pankod/refine-antd';
+} from '@pankod/refine-mantine';
 import nestjsxCrudDataProvider from '@pankod/refine-nestjsx-crud';
 import routerProvider from '@pankod/refine-react-router-v6';
 import '@pankod/refine-antd/dist/reset.css';
@@ -20,7 +20,7 @@ import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
 
 import { Title } from './components/title';
 import { Header } from './components/header';
-import { Sider } from './components/sider';
+// import { Sider } from './components/sider';
 
 const axiosInstance = axios.create();
 
