@@ -1,0 +1,1 @@
+export { QueryShow } from './show';

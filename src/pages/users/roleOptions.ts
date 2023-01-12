@@ -1,6 +1,6 @@
 import { Role } from '../../interfaces';
 
-export const roleOptions = Object.entries(Role).map(([, value]) => ({
+export const roleOptions = Object.values(Role).map((value) => ({
   label: value,
   value,
 }));

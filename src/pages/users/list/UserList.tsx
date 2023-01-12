@@ -20,9 +20,12 @@ import {
   Typography,
   MenuProps,
   useModalForm,
+  FilterDropdown,
+  Select,
 } from '@pankod/refine-antd';
 
 import { IUser, Role } from '../../../interfaces';
+import { roleOptions } from '../roleOptions';
 
 import { SetPasswordModal } from './set-password';
 import { sendEmailVerificationLink, sendPasswordResetToken } from './send';
@@ -218,6 +221,16 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             render={(roles: Role[]) =>
               roles.map((role) => <TagField key={role} value={role} />)
             }
+            filterDropdown={(props) => (
+              <FilterDropdown {...props}>
+                <Select
+                  style={{ minWidth: 200 }}
+                  mode="multiple"
+                  placeholder="Select Role"
+                  options={roleOptions}
+                />
+              </FilterDropdown>
+            )}
           />
 
           <Table.Column

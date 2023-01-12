@@ -1,4 +1,9 @@
-import { useGetIdentity, useIsExistAuthentication, useLogout, useTranslate } from '@pankod/refine-core';
+import {
+  useGetIdentity,
+  useIsExistAuthentication,
+  useLogout,
+  useTranslate,
+} from '@pankod/refine-core';
 
 import {
   Avatar,
@@ -13,7 +18,7 @@ import {
   MenuProps,
 } from '@pankod/refine-antd';
 import { IUser } from '../../interfaces';
-import { LogoutOutlined } from "@ant-design/icons"
+import { LogoutOutlined } from '@ant-design/icons';
 const { Header: AntdHeader } = AntdLayout;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
@@ -33,27 +38,24 @@ export const Header = () => {
   }
 
   const items: MenuProps['items'] = [
-  {
-    label: <a href="https://www.antgroup.com">1st menu item</a>,
-    key: '0',
-  },
-  {
-    key: '1',
-    label: <a href="https://www.aliyun.com">Change password</a>,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: '3',
-    label: translate("buttons.logout", "Logout"),
-    icon: <LogoutOutlined />,
-    onClick: () => logout(),
-
-  },
+    {
+      label: <a href="https://www.antgroup.com">1st menu item</a>,
+      key: '0',
+    },
+    {
+      key: '1',
+      label: <a href="https://www.aliyun.com">Change password</a>,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '3',
+      label: translate('buttons.logout', 'Logout'),
+      icon: <LogoutOutlined />,
+      onClick: () => logout(),
+    },
   ];
-
-
 
   return (
     <AntdHeader
@@ -68,28 +70,29 @@ export const Header = () => {
           justifyContent: screens.sm ? 'space-between' : 'end',
         }}
       >
-        <Col xs={0} sm={12}>
-
-
-        </Col>
+        <Col xs={0} sm={12}></Col>
         <Col>
-          <Dropdown menu={{ items }} trigger={['click']} align={{ offset: [0, 25] }}>
-              <a onClick={(e) => e.preventDefault()}>
-                <Space size="middle" align="center">
-                  <Text
-                    ellipsis
-                    strong
-                    style={{
-                      display: 'flex',
-                    }}
-                  >
-                    {fullName}
-                  </Text>
-                  <Avatar size="large" src={avatar?.url} alt={fullName} />
-                  <Icons.DownOutlined />
-                </Space>
-              </a>
-            </Dropdown>
+          <Dropdown
+            menu={{ items }}
+            trigger={['click']}
+            align={{ offset: [0, 25] }}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space size="middle" align="center">
+                <Text
+                  ellipsis
+                  strong
+                  style={{
+                    display: 'flex',
+                  }}
+                >
+                  {fullName}
+                </Text>
+                <Avatar size="large" src={avatar?.url} alt={fullName} />
+                <Icons.DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
         </Col>
       </Row>
     </AntdHeader>
