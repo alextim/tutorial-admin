@@ -3,15 +3,17 @@ import {
   Form,
   Input,
   Upload,
+  Select,
   getValueFromEvent,
   FormProps,
   DatePicker,
   Radio,
-  MultiSelect,
+  Row,
+  Col,
+  Space,
   Avatar,
-  SimpleGrid,
-  Text
-} from '@pankod/refine-mantine';
+  Typography,
+} from '@pankod/refine-antd';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { roleOptions } from './roleOptions';
@@ -20,6 +22,7 @@ type Props = {
   formProps: FormProps<Record<string, any>>;
 };
 
+const { Text } = Typography;
 /*
 images":[
   {
@@ -70,7 +73,8 @@ export const UserForm = ({ formProps }: Props) => {
         );
       }}
     >
-       <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+      <Row gutter={20}>
+        <Col xs={24} lg={8}>
           <Form.Item label="Avatar">
             <Form.Item
               name="avatar"
@@ -90,6 +94,7 @@ export const UserForm = ({ formProps }: Props) => {
                   background: 'none',
                 }}
               >
+                <Space direction="vertical" size={2}>
                   <Avatar
                     style={{
                       width: '100%',
@@ -109,10 +114,12 @@ export const UserForm = ({ formProps }: Props) => {
                     Add user picture
                   </Text>
                   <Text style={{ fontSize: '12px' }}>must be 480x480 px</Text>
+                </Space>
               </Upload.Dragger>
             </Form.Item>
           </Form.Item>
-        <div>
+        </Col>
+        <Col xs={24} lg={16}>
           <Form.Item
             label="E-mail"
             name="email"
@@ -138,7 +145,7 @@ export const UserForm = ({ formProps }: Props) => {
               },
             ]}
           >
-            <MultiSelect options={roleOptions} />
+            <Select mode="multiple" options={roleOptions} />
           </Form.Item>
 
           <Form.Item label="First Name" name="firstName">
@@ -157,10 +164,12 @@ export const UserForm = ({ formProps }: Props) => {
             label="Registered With Google"
             name="isRegisteredWithGoogle"
           >
-            <Radio.Group>
-              <Radio value={1} label="yes" />
-              <Radio value={0} label="no" />
-            </Radio.Group>
+            <Radio.Group
+              options={[
+                { label: 'yes', value: true },
+                { label: 'no', value: false },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item label="Google Id" name="googleId">
@@ -171,10 +180,12 @@ export const UserForm = ({ formProps }: Props) => {
             label="Registered With Facebook"
             name="isRegisteredWithFacebook"
           >
-            <Radio.Group>
-              <Radio value={1} label="yes" />
-              <Radio value={0} label="no" />
-            </Radio.Group>
+            <Radio.Group
+              options={[
+                { label: 'yes', value: true },
+                { label: 'no', value: false },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item label="Facebook Id" name="facebookId">
@@ -204,8 +215,8 @@ export const UserForm = ({ formProps }: Props) => {
           >
             <DatePicker />
           </Form.Item>
-        </div>
-      </SimpleGrid>
+        </Col>
+      </Row>
     </Form>
   );
 };

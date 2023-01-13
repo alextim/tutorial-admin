@@ -45,20 +45,23 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
 
   register: async (params: SignupDto) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/profile/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/profile/signup`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(params),
+          credentials: 'include',
         },
-        body: JSON.stringify(params),
-        credentials: 'include',
-      });
+      );
 
       await validateResponse(res);
 
       notification.success({
         message: 'Sign Up',
-        description: `Verification token sent to "${params.email}". Check your email to complete registration`
+        description: `Verification token sent to "${params.email}". Check your email to complete registration`,
       });
 
       return Promise.resolve();
@@ -97,7 +100,9 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
   },
 
   forgotPassword: async ({ email }) => {
-    const url = `${import.meta.env.VITE_API_URL}/profile/send_password_reset_token`;
+    const url = `${
+      import.meta.env.VITE_API_URL
+    }/profile/send_password_reset_token`;
     try {
       const res = await fetch(url, {
         method: 'POST',

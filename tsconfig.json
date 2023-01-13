@@ -1,5 +1,5 @@
 {
-  "include": ["src", "vite.config.ts"],
+  "include": ["src"],
   "compilerOptions": {
 
     "module": "ESNext",
@@ -23,6 +23,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "useUnknownInCatchVariables": true
-  }
+    "useUnknownInCatchVariables": true,
+
+    "useDefineForClassFields": true,
+    "allowJs": false,
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

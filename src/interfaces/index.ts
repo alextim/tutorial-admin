@@ -1,56 +1,11 @@
-export interface IUser {
-  id: number;
+export * from './user';
 
-  email: string;
-  roles: Role[];
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
+export { Role } from './role.enum';
+export { WaitUntil } from './wait-until.enum';
 
-  isRegisteredWithGoogle?: boolean;
-  googleId?: string;
+export type { UploadFile } from './UploadFile';
 
-  isRegisteredWithFacebook?: boolean;
-  facebookId?: string;
-
-  verificationCodeSentAt?: Date;
-  verifiedAt?: Date;
-
-  avatar: UploadFile;
-
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export enum Role {
-  USER = 'user',
-  ADMIN = 'admin',
-}
-
-export interface UploadFile {
-  name: string;
-  url: string;
-  size: number;
-  status: 'error' | 'success' | 'done' | 'uploading' | 'removed';
-  percent: number;
-  type: string;
-  uid: string;
-}
-
-export interface SetPasswordDto {
-  password: string;
-}
-
-export interface ChangePasswordDto extends SetPasswordDto {
-  currentPassword: string;
-}
-
-export type SigninDto = {
-  email: string;
-  password: string;
-};
-
-export type SignupDto = {
-  email: string;
-  password: string;
-};
+export type { IProxy } from './IProxy';
+export type { ICustomer } from './ICustomer';
+export type { IQuery } from './IQuery';
+export type { ISelector } from './ISelector';

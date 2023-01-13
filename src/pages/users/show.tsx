@@ -3,59 +3,81 @@ import {
   DateField,
   Divider,
   Show,
+  Typography,
+  Space,
   EmailField,
+  Row,
+  Col,
   Card,
   Avatar,
+  Icons,
+  Grid,
   TagField,
-  Title, Text, SimpleGrid
-} from '@pankod/refine-mantine';
-import { IconBrandFacebook, IconBrandGoogle, IconPhone, IconMail } from '@tabler/icons';
+} from '@pankod/refine-antd';
 
 import { IUser } from '../../interfaces';
 
+const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
+
 export const UserShow: React.FC<IResourceComponentsProps> = () => {
+  const { xl } = useBreakpoint();
   const { queryResult } = useShow<IUser>();
   const { data, isLoading } = queryResult;
   const record = data?.data;
 
   return (
     <Show isLoading={isLoading}>
-      <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <Card style={{ height: '100%' }}>
-              <Avatar size={120} src={record?.avatar?.url} />
-              <Title order={3}>
+      <Row gutter={20}>
+        <Col xs={24} lg={8}>
+          <Card bordered={false} style={{ height: '100%' }}>
+            <Space
+              direction="vertical"
+              style={{ width: '100%', height: '100%' }}
+            >
+              <Avatar size={120} src={record?.avatar?.url}></Avatar>
+              <Typography.Title level={3}>
                 {record?.firstName} {record?.lastName}
-              </Title>
-
-              <Text>
-                <IconMail /> <EmailField value={record?.email} />
-              </Text>
+              </Typography.Title>
+            </Space>
+            <Space
+              direction="vertical"
+              style={{
+                width: '100%',
+                textAlign: xl ? 'unset' : 'center',
+              }}
+            >
+              <Typography.Text>
+                <Icons.MailOutlined /> <EmailField value={record?.email} />
+              </Typography.Text>
 
               {record?.phone && (
-                <Text>
-                  <IconPhone /> {record?.phone}
-                </Text>
+                <Typography.Text>
+                  <Icons.PhoneOutlined /> {record?.phone}
+                </Typography.Text>
               )}
 
               {record?.googleId && (
-                <Text>
-                  <IconBrandGoogle /> {record?.googleId}
-                </Text>
+                <Typography.Text>
+                  <Icons.GoogleOutlined /> {record?.googleId}
+                </Typography.Text>
               )}
 
               {record?.facebookId && (
-                <Text>
-                  <IconBrandFacebook /> {record?.facebookId}
-                </Text>
+                <Typography.Text>
+                  <Icons.FacebookOutlined /> {record?.facebookId}
+                </Typography.Text>
               )}
+            </Space>
           </Card>
-        <div>
-          <Title order={5}>Id</Title>
+        </Col>
+        <Col xs={24} lg={16}>
+          <Title level={5}>Id</Title>
           <Text>{record?.id}</Text>
 
           <Divider />
 
-          <Title order={5}>Roles</Title>
+          <Title level={5}>Roles</Title>
           <Text>
             {record?.roles.map((role) => (
               <TagField key={role} value={role} />
@@ -64,21 +86,21 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
           {record?.isRegisteredWithGoogle && (
             <>
-              <Title order={5}>Registered With Google</Title>
+              <Title level={5}>Registered With Google</Title>
               <Text>yes</Text>
             </>
           )}
 
           {record?.isRegisteredWithFacebook && (
             <>
-              <Title order={5}>Registered With Facebook</Title>
+              <Title level={5}>Registered With Facebook</Title>
               <Text>yes</Text>
             </>
           )}
 
           {record?.verificationCodeSentAt && (
             <>
-              <Title order={5}>Verification Sent At</Title>
+              <Title level={5}>Verification Sent At</Title>
               <Text>
                 <DateField
                   value={record?.verificationCodeSentAt}
@@ -90,7 +112,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
           {record?.verifiedAt && (
             <>
-              <Title order={5}>Verified At</Title>
+              <Title level={5}>Verified At</Title>
               <Text>
                 <DateField value={record?.verifiedAt} format="LLL" />
               </Text>
@@ -99,17 +121,17 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
           <Divider />
 
-          <Title order={5}>Created At</Title>
+          <Title level={5}>Created At</Title>
           <Text>
             <DateField value={record?.createdAt} format="LLL" />
           </Text>
 
-          <Title order={5}>Updated At</Title>
+          <Title level={5}>Updated At</Title>
           <Text>
             <DateField value={record?.updatedAt} format="LLL" />
           </Text>
-        </div>
-      </SimpleGrid>
+        </Col>
+      </Row>
     </Show>
   );
 };
