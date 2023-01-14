@@ -1,5 +1,6 @@
 import type { GetOneResponse, QueryObserverResult } from '@pankod/refine-core';
 import {
+  Checkbox,
   Form,
   FormProps,
   Input,
@@ -10,6 +11,7 @@ import {
 
 import { IProxy, IQuery } from '../../interfaces';
 import { waitUntilOptions } from './waitUntilOptions';
+import { useState } from 'react';
 
 type Props = {
   formProps: FormProps<Record<string, any>>;
@@ -17,6 +19,7 @@ type Props = {
 };
 
 export const QueryForm = ({ formProps, queryResult }: Props) => {
+  const [disabled, setDisabled] = useState<boolean>(!formProps.initialValues?.isList);
   const required = [{ required: true }];
 
   const { selectProps: proxySelectProps } = useSelect<IProxy>({
@@ -31,6 +34,7 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
     ],
   });
 
+  console.log(formProps.initialValues)
   return (
     <Form
       {...formProps}
@@ -53,6 +57,14 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
         <Input />
       </Form.Item>
 
+      <Form.Item label="Is List" name="isList" valuePropName="checked">
+        <Checkbox onChange={(e: any) => { setDisabled(!e.target.checked);  }} />
+      </Form.Item>
+
+      <Form.Item label="Items count" name="itemCount">
+        <InputNumber min={0} disabled={disabled} />
+      </Form.Item>
+
       <Form.Item
         label="Request Interval"
         name="requestInterval"
@@ -61,7 +73,7 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
         <InputNumber min={0} />
       </Form.Item>
 
-      <Form.Item label="Page Load Delay<" name="pageLoadDelay" rules={required}>
+      <Form.Item label="Page Load Delay" name="pageLoadDelay" rules={required}>
         <InputNumber min={0} />
       </Form.Item>
 

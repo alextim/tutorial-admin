@@ -28,7 +28,7 @@ specifiers:
   eslint-plugin-react: ^7.32.0
   eslint-plugin-react-hooks: ^4.6.0
   google-auth-library: ^8.7.0
-  prettier: ^2.8.2
+  prettier: ^2.8.3
   react: ^18.2.0
   react-dom: ^18.2.0
   typescript: ^4.9.4
@@ -62,11 +62,11 @@ devDependencies:
   eslint-config-prettier: 8.6.0_eslint@8.31.0
   eslint-import-resolver-typescript: 3.5.3_hnftvkj7qg3s6bbigj4pr6djxy
   eslint-plugin-import: 2.27.4_2ac3tknkazjoq5fxmuugu665ny
-  eslint-plugin-prettier: 4.2.1_iu5s7nk6dw7o3tajefwfiqfmge
+  eslint-plugin-prettier: 4.2.1_do5yx3dogbskqc4h5x5ilvlwyy
   eslint-plugin-react: 7.32.0_eslint@8.31.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.31.0
   google-auth-library: 8.7.0
-  prettier: 2.8.2
+  prettier: 2.8.3
   typescript: 4.9.4
   vite: 4.0.4_@types+node@18.11.18
 
@@ -1812,7 +1812,7 @@ packages:
       ora: 5.4.1
       pluralize: 8.0.0
       preferred-pm: 3.0.3
-      prettier: 2.8.2
+      prettier: 2.8.3
       semver-diff: 3.1.1
       temp: 0.9.4
       tslib: 2.4.1
@@ -3467,7 +3467,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_iu5s7nk6dw7o3tajefwfiqfmge:
+  /eslint-plugin-prettier/4.2.1_do5yx3dogbskqc4h5x5ilvlwyy:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -3480,7 +3480,7 @@ packages:
     dependencies:
       eslint: 8.31.0
       eslint-config-prettier: 8.6.0_eslint@8.31.0
-      prettier: 2.8.2
+      prettier: 2.8.3
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -5607,8 +5607,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier/2.8.2:
-    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true

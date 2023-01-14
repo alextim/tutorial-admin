@@ -5,6 +5,8 @@ import {
   TextField,
   useModal,
   Icons,
+  UrlField,
+  BooleanField,
 } from '@pankod/refine-antd';
 import { useShow } from '@pankod/refine-core';
 
@@ -60,7 +62,11 @@ export const QueryList = () => {
         defaultSortOrder={getDefaultSortOrder('name', sorter)}
       />
 
-      <Table.Column dataIndex="startUrl" title="Start Url" />
+        <Table.Column dataIndex="startUrl" title="Start Url" render={(value) => <UrlField value={value} />} />
+
+      <Table.Column dataIndex="isList" title="Is List?" render={(value) => value ? 'yes' : ''} />
+      <Table.Column dataIndex="itemCount" title="Items count" />
+
       <Table.Column dataIndex="requestInterval" title="Request Interval" />
       <Table.Column dataIndex="pageLoadDelay" title="Page Load Delay" />
       <Table.Column dataIndex="timeout" title="Timeout" />

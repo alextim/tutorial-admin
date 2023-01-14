@@ -17,6 +17,7 @@ export const ProxyList = () => {
     <CrudList resource="proxies" tableProps={tableProps} sorter={sorter}>
       <Table.Column
         key="name"
+        dataIndex="name"
         title="Name"
         sorter
         defaultSortOrder={getDefaultSortOrder('name', sorter)}

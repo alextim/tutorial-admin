@@ -7,6 +7,10 @@ export interface IQuery extends IEntityBase {
 
   startUrl: string;
 
+  isList?: boolean;
+
+  itemCount?: number;
+
   requestInterval: number;
 
   pageLoadDelay: number;
