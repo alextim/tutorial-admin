@@ -69,6 +69,10 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         form={form}
         onFinish={(values) => register(values)}
         requiredMark={false}
+        initialValues={{
+          email: 'test@a.aa',
+          password: 'Abc123!!',
+        }}
         {...formProps}
       >
         <Form.Item

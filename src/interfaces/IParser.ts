@@ -34,7 +34,7 @@ export interface IParser {
 
   removeNewlines?: boolean;
 
-   selectorId: number;
+  selectorId: number;
 
   // selector: Selector;
 }

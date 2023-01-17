@@ -1,4 +1,10 @@
-import { BooleanField, DateField, Divider, Typography, UrlField } from '@pankod/refine-antd';
+import {
+  BooleanField,
+  DateField,
+  Divider,
+  Typography,
+  UrlField,
+} from '@pankod/refine-antd';
 
 import { IQuery } from '../../../interfaces';
 
@@ -14,10 +20,14 @@ export const General = ({ record }: { record: IQuery | undefined }) => (
     <Text>{record?.name}</Text>
 
     <Title level={5}>Start Url</Title>
-    <Text><UrlField value={record?.startUrl} /></Text>
+    <Text>
+      <UrlField value={record?.startUrl} />
+    </Text>
 
     <Title level={5}>Is List?</Title>
-    <Text><BooleanField value={record?.isList}/></Text>
+    <Text>
+      <BooleanField value={record?.isList} />
+    </Text>
 
     <Title level={5}>Items count</Title>
     <Text>{record?.itemCount}</Text>

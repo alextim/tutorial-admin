@@ -19,7 +19,7 @@ import {
 } from '@pankod/refine-antd';
 import { IUser } from '../../interfaces';
 import { LogoutOutlined } from '@ant-design/icons';
-import { ThemeSwitch } from './ThemeSwitch';
+import { ThemeSwitch } from '../theme/ThemeSwitch';
 const { Header: AntdHeader } = AntdLayout;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
@@ -78,34 +78,42 @@ export const Header: React.FC<Props> = (props) => {
       >
         <Col xs={0} sm={12}></Col>
         <Col>
-          <Space size="middle" align="center"  style={{
-        verticalAlign: 'middle',
-      }}>
-          <Dropdown
-            menu={{ items }}
-            trigger={['click']}
-            align={{ offset: [0, 25] }}
+          <Space
+            size="middle"
+            align="center"
+            style={{
+              verticalAlign: 'middle',
+            }}
           >
-            <a onClick={(e) => e.preventDefault()}>
-              <Space size="middle" align="center">
-                <Text
-                  ellipsis
-                  strong
-                  style={{
-                    display: 'flex',
-                  }}
-                >
-                  {fullName}
-                </Text>
-                <Avatar size="large" src={avatar?.url} alt={fullName} />
-                <Icons.DownOutlined />
-              </Space>
-            </a>
+            <Dropdown
+              menu={{ items }}
+              trigger={['click']}
+              align={{ offset: [0, 25] }}
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                <Space size="middle" align="center">
+                  <Text
+                    ellipsis
+                    strong
+                    style={{
+                      display: 'flex',
+                    }}
+                  >
+                    {fullName}
+                  </Text>
+                  <Avatar size="large" src={avatar?.url} alt={fullName} />
+                  <Icons.DownOutlined />
+                </Space>
+              </a>
             </Dropdown>
-            <Space size="middle" align="center" style={{verticalAlign: 'center'}}>
+            <Space
+              size="middle"
+              align="center"
+              style={{ verticalAlign: 'center' }}
+            >
               <ThemeSwitch {...props} />
-              </Space>
             </Space>
+          </Space>
         </Col>
       </Row>
     </AntdHeader>

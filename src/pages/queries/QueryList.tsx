@@ -6,9 +6,8 @@ import {
   useModal,
   Icons,
   UrlField,
-  BooleanField,
 } from '@pankod/refine-antd';
-import { useShow } from '@pankod/refine-core';
+import { useNavigation } from '@pankod/refine-core';
 
 import { IQuery } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
@@ -17,6 +16,7 @@ import React from 'react';
 
 export const QueryList = () => {
   const [currentRecord, setCurrentRecord] = React.useState<IQuery>();
+  const { push } = useNavigation();
   const { tableProps, sorter } = useTable<IQuery>({
     initialSorter: [
       {
@@ -26,11 +26,6 @@ export const QueryList = () => {
     ],
   });
   const { modalProps, show: showModal } = useModal();
-
-  const { queryResult, setShowId } = useShow<IQuery>();
-
-  const { data: showQueryResult } = queryResult;
-  const record = showQueryResult?.data;
 
   const extraMenuItems = (record: any) => [
     {
@@ -44,41 +39,73 @@ export const QueryList = () => {
           }}
         />
       ),
-        onClick: (info: any) => {
-          info.domEvent.stopPropagation();
-          setCurrentRecord(record);
+      onClick: (info: any) => {
+        info.domEvent.stopPropagation();
+        setCurrentRecord(record);
         showModal();
+      },
+    },
+    {
+      key: 6,
+      label: 'Show Selectors',
+      icon: (
+        <Icons.SelectOutlined
+          style={{
+            color: 'blue',
+            fontSize: 17,
+          }}
+        />
+      ),
+      onClick: (info: any) => {
+        info.domEvent.stopPropagation();
+        setCurrentRecord(record);
+        push(`/queries/${record.id}/selectors`);
       },
     },
   ];
 
   return (
     <>
-    <CrudList resource="queries" tableProps={tableProps} sorter={sorter} menuConfig={{ itemsFn: extraMenuItems }}>
-      <Table.Column
-        dataIndex="name"
-        title="Name"
-        sorter
-        defaultSortOrder={getDefaultSortOrder('name', sorter)}
-      />
+      <CrudList
+        resource="queries"
+        tableProps={tableProps}
+        sorter={sorter}
+        menuConfig={{ itemsFn: extraMenuItems }}
+      >
+        <Table.Column
+          dataIndex="name"
+          title="Name"
+          sorter
+          defaultSortOrder={getDefaultSortOrder('name', sorter)}
+        />
 
-        <Table.Column dataIndex="startUrl" title="Start Url" render={(value) => <UrlField value={value} />} />
+        <Table.Column
+          dataIndex="startUrl"
+          title="Start Url"
+          render={(value) => <UrlField value={value} />}
+        />
 
-      <Table.Column dataIndex="isList" title="Is List?" render={(value) => value ? 'yes' : ''} />
-      <Table.Column dataIndex="itemCount" title="Items count" />
+        <Table.Column
+          dataIndex="isList"
+          title="Is List?"
+          render={(value) => (value ? 'yes' : '')}
+        />
+        <Table.Column dataIndex="itemCount" title="Items count" />
 
-      <Table.Column dataIndex="requestInterval" title="Request Interval" />
-      <Table.Column dataIndex="pageLoadDelay" title="Page Load Delay" />
-      <Table.Column dataIndex="timeout" title="Timeout" />
-      <Table.Column dataIndex="waitUntil" title="Wait Until" />
+        <Table.Column dataIndex="requestInterval" title="Request Interval" />
+        <Table.Column dataIndex="pageLoadDelay" title="Page Load Delay" />
+        <Table.Column dataIndex="timeout" title="Timeout" />
+        <Table.Column dataIndex="waitUntil" title="Wait Until" />
 
-      <Table.Column
-        dataIndex="proxy"
-        title="Proxy"
-        render={(value) => <TextField value={value?.name} />}
-      />
-    </CrudList>
-      {currentRecord && <QuerySelectors modalProps={modalProps} record={currentRecord} />}
+        <Table.Column
+          dataIndex="proxy"
+          title="Proxy"
+          render={(value) => <TextField value={value?.name} />}
+        />
+      </CrudList>
+      {currentRecord && (
+        <QuerySelectors modalProps={modalProps} record={currentRecord} />
+      )}
     </>
   );
 };

@@ -10,9 +10,9 @@ export interface ISelector extends IEntityBase {
 
   multiply?: boolean;
 
-  regex?: string;
-
   // parsers?: Parser[];
 
   queryId: number;
+
+  parentId?: number;
 }

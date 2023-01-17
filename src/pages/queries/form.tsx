@@ -19,7 +19,9 @@ type Props = {
 };
 
 export const QueryForm = ({ formProps, queryResult }: Props) => {
-  const [disabled, setDisabled] = useState<boolean>(!formProps.initialValues?.isList);
+  const [disabled, setDisabled] = useState<boolean>(
+    !formProps.initialValues?.isList,
+  );
   const required = [{ required: true }];
 
   const { selectProps: proxySelectProps } = useSelect<IProxy>({
@@ -34,7 +36,7 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
     ],
   });
 
-  console.log(formProps.initialValues)
+  console.log(formProps.initialValues);
   return (
     <Form
       {...formProps}
@@ -58,7 +60,11 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
       </Form.Item>
 
       <Form.Item label="Is List" name="isList" valuePropName="checked">
-        <Checkbox onChange={(e: any) => { setDisabled(!e.target.checked);  }} />
+        <Checkbox
+          onChange={(e) => {
+            setDisabled(!e.target.checked);
+          }}
+        />
       </Form.Item>
 
       <Form.Item label="Items count" name="itemCount">

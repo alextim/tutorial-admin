@@ -9,10 +9,12 @@ import {
   Layout,
   ConfigProvider,
   theme,
+  Sider as DefaultSider,
 } from '@pankod/refine-antd';
 import nestjsxCrudDataProvider from '@pankod/refine-nestjsx-crud';
 import routerProvider from '@pankod/refine-react-router-v6';
 import '@pankod/refine-antd/dist/reset.css';
+import 'react-nestable/dist/styles/index.css';
 
 import { authProvider } from './authProvider';
 
@@ -21,7 +23,7 @@ import { AuthPage } from './pages/auth';
 
 import { Title } from './components/title';
 import { Header } from './components/header';
-// import { Sider } from './components/sider';
+import { Sider } from './components/sider';
 
 import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
 import {
@@ -32,7 +34,13 @@ import {
 } from './pages/customers';
 import { ProxyList, ProxyCreate, ProxyEdit, ProxyShow } from './pages/proxies';
 import { QueryList, QueryCreate, QueryEdit, QueryShow } from './pages/queries';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { CustomSider } from './components/custom-sider';
+import { QuerySelectors } from './pages/queries/querySelectors';
+import { ShowSelectors } from './pages/queries/show-selectors';
+import { getTheme, Theme } from './components/theme';
+
+
 
 const axiosInstance = axios.create();
 
@@ -60,7 +68,8 @@ axiosInstance.interceptors.response.use(
 );
 
 function App() {
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('dark');
+  const [currentTheme, setCurrentTheme] = useState<Theme>('dark');
+  useEffect(() => { setCurrentTheme(getTheme()); }, []);
   return (
     <ConfigProvider
       theme={{
@@ -89,6 +98,11 @@ function App() {
             {
               path: '/update-password',
               element: <AuthPage type="updatePassword" />,
+            },
+            {
+              path: "/queries/:id/selectors",
+              element: <ShowSelectors />,
+              layout: true,
             },
           ],
         }}
@@ -141,6 +155,7 @@ function App() {
           <Header theme={currentTheme} setTheme={setCurrentTheme} />
         )}
         Layout={Layout}
+        Sider={CustomSider}
         ReadyPage={ReadyPage}
         catchAll={<ErrorComponent />}
         options={{
