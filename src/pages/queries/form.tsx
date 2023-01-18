@@ -11,7 +11,7 @@ import {
 
 import { IProxy, IQuery } from '../../interfaces';
 import { waitUntilOptions } from './waitUntilOptions';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 type Props = {
   formProps: FormProps<Record<string, any>>;
@@ -91,7 +91,7 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
         <Select options={waitUntilOptions} />
       </Form.Item>
 
-      <Form.Item label="Proxy" name={['proxy', 'id']} rules={required}>
+      <Form.Item label="Proxy" name={['proxy', 'id']}>
         <Select {...proxySelectProps} />
       </Form.Item>
     </Form>

@@ -9,8 +9,6 @@ import { Selectors } from './show/Selectors';
 import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';
 
-
-
 type RendererArgs = {
   collapseIcon: React.ReactNode;
   depth: number;
@@ -25,22 +23,22 @@ type Props = {
 };
 
 const itemStyles: React.CSSProperties = {
-  position: "relative",
-  padding: "10px 15px",
-  fontSize: "20px",
-  border: "1px solid #f9fafa",
-  background: "#f9fafa",
-  cursor: "pointer"
+  position: 'relative',
+  padding: '10px 15px',
+  fontSize: '20px',
+  border: '1px solid #f9fafa',
+  background: '#f9fafa',
+  cursor: 'pointer',
 };
 
 const handlerStyles: React.CSSProperties = {
-  position: "absolute",
+  position: 'absolute',
   top: 0,
   left: 0,
-  width: "10px",
-  height: "100%",
-  background: "steelblue",
-  cursor: "pointer"
+  width: '10px',
+  height: '100%',
+  background: 'steelblue',
+  cursor: 'pointer',
 };
 export const QuerySelectors: React.FC<Props> = ({ record, modalProps }) => {
   // const [gData, setgData] = useState<DataNode[]>([]);
@@ -80,10 +78,13 @@ export const QuerySelectors: React.FC<Props> = ({ record, modalProps }) => {
     '',
   );
 
-
   // const { name, selector, type, multiply } = item;
 
-  const renderItem = ({ collapseIcon, handler, item: { id, key, name, selector } }: RendererArgs) => (
+  const renderItem = ({
+    collapseIcon,
+    handler,
+    item: { id, key, name, selector },
+  }: RendererArgs) => (
     <div style={itemStyles}>
       {handler}
       {collapseIcon}
@@ -97,17 +98,17 @@ export const QuerySelectors: React.FC<Props> = ({ record, modalProps }) => {
   );
 
   return (
-      <Modal
-        {...modalProps}
-        width={1000}
-        footer={null}
-        bodyStyle={{ minHeight: '650px' }}
-      >
+    <Modal
+      {...modalProps}
+      width={1000}
+      footer={null}
+      bodyStyle={{ minHeight: '650px' }}
+    >
       <Nestable
         items={treeItems}
         renderItem={renderItem}
-        handler={<span style={handlerStyles}/>}
+        handler={<span style={handlerStyles} />}
       />
-      </Modal>
+    </Modal>
   );
 };

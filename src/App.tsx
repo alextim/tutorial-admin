@@ -40,8 +40,6 @@ import { QuerySelectors } from './pages/queries/querySelectors';
 import { ShowSelectors } from './pages/queries/show-selectors';
 import { getTheme, Theme } from './components/theme';
 
-
-
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
@@ -69,7 +67,9 @@ axiosInstance.interceptors.response.use(
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState<Theme>('dark');
-  useEffect(() => { setCurrentTheme(getTheme()); }, []);
+  useEffect(() => {
+    setCurrentTheme(getTheme());
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -100,7 +100,7 @@ function App() {
               element: <AuthPage type="updatePassword" />,
             },
             {
-              path: "/queries/:id/selectors",
+              path: '/queries/:id/selectors',
               element: <ShowSelectors />,
               layout: true,
             },

@@ -17,7 +17,7 @@ export const ThemeSwitch: React.FC<Props> = ({ theme, setTheme }) => {
       onClick={() => {
         const newTheme = isLight ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
+        localStorage.setItem('theme', newTheme);
       }}
       icon={isLight ? <IconMoonStars /> : <IconSun />}
     />
