@@ -3,7 +3,6 @@ import {
   useTable,
   getDefaultSortOrder,
   TextField,
-  useModal,
   Icons,
   UrlField,
 } from '@pankod/refine-antd';
@@ -11,11 +10,8 @@ import { useNavigation } from '@pankod/refine-core';
 
 import { IQuery } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
-import { QuerySelectors } from './querySelectors';
-import React from 'react';
 
 export const QueryList = () => {
-  const [currentRecord, setCurrentRecord] = React.useState<IQuery>();
   const { push } = useNavigation();
   const { tableProps, sorter } = useTable<IQuery>({
     initialSorter: [
@@ -25,29 +21,10 @@ export const QueryList = () => {
       },
     ],
   });
-  const { modalProps, show: showModal } = useModal();
-
   const extraMenuItems = (record: any) => [
     {
-      key: 5,
-      label: 'Edit Selectors',
-      icon: (
-        <Icons.SelectOutlined
-          style={{
-            color: 'blue',
-            fontSize: 17,
-          }}
-        />
-      ),
-      onClick: (info: any) => {
-        info.domEvent.stopPropagation();
-        setCurrentRecord(record);
-        showModal();
-      },
-    },
-    {
       key: 6,
-      label: 'Show Selectors',
+      label: 'Selectors',
       icon: (
         <Icons.SelectOutlined
           style={{
@@ -58,14 +35,12 @@ export const QueryList = () => {
       ),
       onClick: (info: any) => {
         info.domEvent.stopPropagation();
-        setCurrentRecord(record);
         push(`/queries/${record.id}/selectors`);
       },
     },
   ];
 
   return (
-    <>
       <CrudList
         resource="queries"
         tableProps={tableProps}
@@ -103,9 +78,5 @@ export const QueryList = () => {
           render={(value) => <TextField value={value?.name} />}
         />
       </CrudList>
-      {currentRecord && (
-        <QuerySelectors modalProps={modalProps} record={currentRecord} />
-      )}
-    </>
   );
 };

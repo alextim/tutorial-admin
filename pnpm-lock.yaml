@@ -5,7 +5,7 @@ specifiers:
   '@babel/preset-env': ^7.20.2
   '@pankod/refine-antd': ^4.7.1
   '@pankod/refine-cli': ^1.17.0
-  '@pankod/refine-core': ^3.95.1
+  '@pankod/refine-core': ^3.95.3
   '@pankod/refine-nestjsx-crud': ^3.35.0
   '@pankod/refine-react-router-v6': ^3.38.0
   '@pankod/refine-react-table': ^4.9.1
@@ -41,12 +41,12 @@ specifiers:
   vite: ^4.0.4
 
 dependencies:
-  '@pankod/refine-antd': 4.7.1_wh7zbpticicudo4cqfju5y74nm
-  '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
-  '@pankod/refine-nestjsx-crud': 3.35.0_@pankod+refine-core@3.95.1
-  '@pankod/refine-react-router-v6': 3.38.0_ujceoesbyrnu42nqlqwqqt4t44
-  '@pankod/refine-react-table': 4.9.1_crdefg2jmdqrb5ozorqfiddwri
-  '@pankod/refine-simple-rest': 3.37.4_@pankod+refine-core@3.95.1
+  '@pankod/refine-antd': 4.7.1_ycapopqu72ll776x67bi572dqu
+  '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
+  '@pankod/refine-nestjsx-crud': 3.35.0_@pankod+refine-core@3.95.3
+  '@pankod/refine-react-router-v6': 3.38.0_lb54piss4z6y7vvqwj6hopzdyi
+  '@pankod/refine-react-table': 4.9.1_nohpsxt7z57tffjt7fb7kc346m
+  '@pankod/refine-simple-rest': 3.37.4_@pankod+refine-core@3.95.3
   '@tabler/icons': 1.119.0_biqbaboplfbrettd7655fr4n2y
   axios: 1.2.3
   dayjs: 1.11.7
@@ -1764,7 +1764,7 @@ packages:
       fastq: 1.14.0
     dev: true
 
-  /@pankod/refine-antd/4.7.1_wh7zbpticicudo4cqfju5y74nm:
+  /@pankod/refine-antd/4.7.1_ycapopqu72ll776x67bi572dqu:
     resolution: {integrity: sha512-SDJNdrZaUmKCtGOFHH1JH2c4NPSvbI+OlYGGMSgx6g5DeWq0FBf9cIjH6B16tvRq+qhJlBDjJIBZoSrmEVSj6w==}
     peerDependencies:
       '@pankod/refine-core': ^3.23.2
@@ -1776,8 +1776,8 @@ packages:
     dependencies:
       '@ant-design/icons': 4.8.0_biqbaboplfbrettd7655fr4n2y
       '@ant-design/pro-layout': 7.4.0_frcm4cf67vqlgoa2fefiuffmcm
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
-      '@pankod/refine-ui-types': 0.14.2_crdefg2jmdqrb5ozorqfiddwri
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-ui-types': 0.14.2_nohpsxt7z57tffjt7fb7kc346m
       '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
@@ -1838,8 +1838,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@pankod/refine-core/3.95.1_fxtgt6bjwd6p4cwoordejim2zi:
-    resolution: {integrity: sha512-Cxsa2g7DcoQuaWD8JC443Ub2CjZz8O9Cl8TVofjghK96hfO0tubRXSxna1MO8PV9oNY6w6Rwe8RKl8abkkSxTg==}
+  /@pankod/refine-core/3.95.3_fxtgt6bjwd6p4cwoordejim2zi:
+    resolution: {integrity: sha512-rMgD4FQ6V4RoMK83/C8aroSof4f4VvbyVncm63ybuhHQS4YH1TCYg8hbKWVIAfDE9A3qqRAGO07SKHIaRur5Ww==}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       '@types/react-dom': ^17.0.0 || ^18.0.0
@@ -1864,21 +1864,21 @@ packages:
       - react-native
     dev: false
 
-  /@pankod/refine-nestjsx-crud/3.35.0_@pankod+refine-core@3.95.1:
+  /@pankod/refine-nestjsx-crud/3.35.0_@pankod+refine-core@3.95.3:
     resolution: {integrity: sha512-hamCKud/a6UPyTFYknojDN8opicmS9OKjUTyqRXP5xQBDdt3YhTupSli7W+VR1drbpSusBVcp49d69FHsSLr2g==}
     engines: {node: '>=10'}
     peerDependencies:
       '@pankod/refine-core': ^3.23.2
     dependencies:
       '@nestjsx/crud-request': 5.0.0-alpha.3
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
       axios: 0.26.1
       query-string: 7.1.3
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@pankod/refine-react-router-v6/3.38.0_ujceoesbyrnu42nqlqwqqt4t44:
+  /@pankod/refine-react-router-v6/3.38.0_lb54piss4z6y7vvqwj6hopzdyi:
     resolution: {integrity: sha512-xYx1zVBW6UnGYiMO18ak0qnsSFEJvcJXMrxxwCZsu6Oum9sAM66HcI4KAsrEN8bIg29jiXIKKDx85nwSKsMc9Q==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -1888,7 +1888,7 @@ packages:
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
     dependencies:
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
       '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
       react: 18.2.0
@@ -1896,7 +1896,7 @@ packages:
       react-router-dom: 6.3.0_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@pankod/refine-react-table/4.9.1_crdefg2jmdqrb5ozorqfiddwri:
+  /@pankod/refine-react-table/4.9.1_nohpsxt7z57tffjt7fb7kc346m:
     resolution: {integrity: sha512-WvWhRkBzdcURrztEV4tIS00nQEynCnInyAAnTWBFFlJJKEw5DNkoewNWxYbg5HEnKG4LDvtkkg1qizBMkosqXg==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -1904,33 +1904,33 @@ packages:
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
     dependencies:
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
       '@tanstack/react-table': 8.7.6_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@pankod/refine-simple-rest/3.37.4_@pankod+refine-core@3.95.1:
+  /@pankod/refine-simple-rest/3.37.4_@pankod+refine-core@3.95.3:
     resolution: {integrity: sha512-Ypo/JTQawQ3VIYaANOgSyeLbPwV3urNiChj9uTLiFvhEAcxszX/KRBtGYQOZSTXd/wCP/LYle0kKCQzo2C31tQ==}
     engines: {node: '>=10'}
     peerDependencies:
       '@pankod/refine-core': ^3.23.2
     dependencies:
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
       axios: 0.26.1
       query-string: 7.1.3
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@pankod/refine-ui-types/0.14.2_crdefg2jmdqrb5ozorqfiddwri:
+  /@pankod/refine-ui-types/0.14.2_nohpsxt7z57tffjt7fb7kc346m:
     resolution: {integrity: sha512-e8Hr629rejp2x4eB++02aINCHNyGUptJidcHzHtYTT2n5TOfcmtRUs/apmsROmBGfGoc9r6rgCr5A7gEDUs3uQ==}
     peerDependencies:
       '@pankod/refine-core': ^3.36.0
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
     dependencies:
-      '@pankod/refine-core': 3.95.1_fxtgt6bjwd6p4cwoordejim2zi
+      '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
       dayjs: 1.11.7
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0

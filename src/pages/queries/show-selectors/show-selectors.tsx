@@ -6,6 +6,7 @@ import {
   useNavigation,
   useRefineContext,
   useBreadcrumb,
+  useInvalidate,
 } from '@pankod/refine-core';
 import {
   Show,
@@ -24,28 +25,32 @@ import {
 import { useParams } from '@pankod/refine-react-router-v6';
 
 import { IQuery, ISelector } from '../../../interfaces';
-import { SelectorsTree } from './SelectorsTree';
-import { useState } from 'react';
-import { CreateSelectorModal } from './CreateSelectorModal';
+import { SelectorsTree, TreeNode } from './SelectorsTree';
+import { useRef, useState } from 'react';
+import { CreateSelectorModal } from './edit-create-selector';
+import Nestable from 'react-nestable';
 
 const { Title, Text } = Typography;
 
 export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
+  const ref = useRef<Nestable>(null);
+  // const invalidate = useInvalidate();
+  const { goBack, list } = useNavigation();
+
   const { id } = useParams<'id'>();
   const queryId = id ? +id : 0;
-  const { goBack, list } = useNavigation();
+  const parentResource = `queries/${queryId}`;
+  const resource = `${parentResource}/selectors`;
 
   const {
     formProps,
     modalProps,
     show: showCreateSelectorModal,
-  } = useModalForm({
+    } = useModalForm({
     action: 'create',
-    resource: `queries/${queryId}/selectors`,
+    resource,
     redirect: false,
   });
-
-  console.log('queryId=', queryId);
 
   /*
   if (!id) {
@@ -54,16 +59,13 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
   */
   const { data, isLoading, isError } = useOne<IQuery>({
     resource: 'queries',
-    id: queryId || 0,
+    id: queryId,
     queryOptions: {
       enabled: !!queryId,
     },
   });
 
   const record = data?.data;
-
-  const parentResource = `queries/${queryId}`;
-  const resource = `${parentResource}/selectors`;
 
   const { data: selectorsData, isLoading: selectorsIsLoading } =
     useMany<ISelector>({
@@ -74,13 +76,8 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
       },
     });
 
-  const mutationResult = useUpdate<IQuery>();
+  const { mutate, isLoading: mutateIsLoading } = useUpdate<ISelector>();
 
-  const { mutate, isLoading: mutateIsLoading } = mutationResult;
-
-  const handleUpdate = (item: IQuery, status: string) => {
-    mutate({ resource, id: item.id, values: { ...item, status } });
-  };
 
   const buttonDisabled = isLoading || selectorsIsLoading || mutateIsLoading;
   /**
@@ -89,6 +86,21 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
       }}
 
  */
+
+  const updateTree = (nodes: TreeNode[], parentId: number | undefined) => {
+    for (const { id, children } of nodes) {
+      console.log(parentId, id)
+      mutate({
+        resource: 'selectors',
+        id,
+        values: { parentId },
+      });
+      if (children) {
+        updateTree(children, id);
+      }
+    }
+  };
+
   return (
     <>
       <CreateSelectorModal
@@ -122,7 +134,13 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
             <SaveButton
               type="primary"
               disabled={buttonDisabled}
-              onClick={() => record && handleUpdate(record, 'published')}
+              onClick={() => {
+                updateTree((ref.current?.state as any).items as TreeNode[], undefined);
+                // invalidate({
+                //   resource,
+                //   invalidates: ["all"],
+                // });
+              }}
             />
           </Space>
         }
@@ -144,6 +162,8 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
           }}
         />
         <SelectorsTree
+          ref={ref}
+          queryId={queryId}
           resource={resource}
           selectors={selectorsData?.data || []}
         />
@@ -151,3 +171,4 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
     </>
   );
 };
+

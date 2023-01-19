@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import {
   Space,
   CreateButton,
   DeleteButton,
   EditButton,
+  useModalForm,
+  Button,
+  Icons,
 } from '@pankod/refine-antd';
 import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';
 import rfdc from 'rfdc';
 
 import type { ISelector } from '../../../interfaces';
+import { EditSelectorModal } from './edit-create-selector';
+import { BaseKey, HttpError } from '@pankod/refine-core';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -22,6 +27,7 @@ type RendererArgs = {
 type Props = {
   selectors: ISelector[];
   resource: string;
+  queryId: number;
 };
 
 const itemStyles: React.CSSProperties = {
@@ -43,22 +49,17 @@ const handlerStyles: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-type TreeNode = ISelector & {
-  key: string;
+export type TreeNode = ISelector & {
   children?: TreeNode[];
 };
 
 const buildTree = (
   sels: ISelector[],
-  parentKey: string,
   all: ISelector[],
 ): TreeNode[] =>
   sels.map((sel, i) => {
-    const key = parentKey ? `${parentKey}-${i}` : i.toString(10);
-
     const node: TreeNode = {
       ...sel,
-      key,
     };
 
     const children = all.filter(({ parentId }) => parentId === sel.id);
@@ -67,7 +68,7 @@ const buildTree = (
       return node;
     }
 
-    node.children = buildTree(children, key, all);
+    node.children = buildTree(children, all);
     return node;
   });
 
@@ -100,8 +101,8 @@ const deleteNode = (node: TreeNode, all: TreeNode[]) => {
   }
 };
 
-export const SelectorsTree: React.FC<Props> = ({ resource, selectors }) => {
-  console.log('resource', resource);
+export const SelectorsTree = forwardRef((props: Props, ref) => {
+  const { queryId, resource, selectors } = props;
   /*
   const [treeItems, setTreeItems] = useState<TreeNode[]>(buildTree(
     selectors.filter(({ parentId }) => !parentId),
@@ -120,44 +121,59 @@ export const SelectorsTree: React.FC<Props> = ({ resource, selectors }) => {
 
   // const { name, selector, type, multiply } = item;
 
+  const { modalProps, formProps, show: showEditSelectorModal } = useModalForm<ISelector, HttpError, ISelector>({
+    action: 'edit',
+    resource,
+    redirect: false,
+     warnWhenUnsavedChanges: true,
+
+  });
+
   const renderItem = ({
     collapseIcon,
     handler,
-    item: { id, key, name, selector },
+    item: { id, name, selector },
   }: RendererArgs) => (
     <div style={itemStyles}>
       {handler}
       {collapseIcon}
       <Space>
         <div>{id}</div>
-        <div>{key}</div>
         <div>{name}</div>
         <div>{selector}</div>
-        <CreateButton resource={resource} />
-        <EditButton recordItemId={id} resource={resource} />
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            showEditSelectorModal(id);
+          }}
+            >
+                Edit
+            </Button>
         <DeleteButton
           recordItemId={id}
           resourceNameOrRouteName={resource}
-          onSuccess={() => {
-            //const data = rfdc()(treeItems);
-            // setTreeItems(data);
-          }}
         />
       </Space>
     </div>
   );
 
   return (
-    <Space direction="vertical">
-      <Nestable
-        items={buildTree(
-          selectors.filter(({ parentId }) => !parentId),
-          '',
-          selectors,
-        )}
-        renderItem={renderItem}
-        handler={<span style={handlerStyles} />}
-      />
-    </Space>
+    <>
+      <EditSelectorModal queryId={queryId}  formProps={formProps} modalProps={modalProps} />
+      <Space direction="vertical">
+        <Nestable
+          ref={ref}
+          items={buildTree(
+            selectors.filter(({ parentId }) => !parentId),
+            selectors,
+          )}
+          renderItem={renderItem}
+          handler={<span style={handlerStyles} />}
+          onChange={(arg) => {
+            console.log(arg)
+          }}
+        />
+      </Space>
+    </>
   );
-};
+});
