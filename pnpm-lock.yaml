@@ -6,7 +6,7 @@ specifiers:
   '@pankod/refine-antd': ^4.7.1
   '@pankod/refine-cli': ^1.17.0
   '@pankod/refine-core': ^3.95.3
-  '@pankod/refine-nestjsx-crud': ^3.35.0
+  '@pankod/refine-nestjsx-crud': ^3.37.0
   '@pankod/refine-react-router-v6': ^3.38.0
   '@pankod/refine-react-table': ^4.9.1
   '@pankod/refine-simple-rest': ^3.37.4
@@ -43,7 +43,7 @@ specifiers:
 dependencies:
   '@pankod/refine-antd': 4.7.1_ycapopqu72ll776x67bi572dqu
   '@pankod/refine-core': 3.95.3_fxtgt6bjwd6p4cwoordejim2zi
-  '@pankod/refine-nestjsx-crud': 3.35.0_@pankod+refine-core@3.95.3
+  '@pankod/refine-nestjsx-crud': 3.37.0_@pankod+refine-core@3.95.3
   '@pankod/refine-react-router-v6': 3.38.0_lb54piss4z6y7vvqwj6hopzdyi
   '@pankod/refine-react-table': 4.9.1_nohpsxt7z57tffjt7fb7kc346m
   '@pankod/refine-simple-rest': 3.37.4_@pankod+refine-core@3.95.3
@@ -1864,8 +1864,8 @@ packages:
       - react-native
     dev: false
 
-  /@pankod/refine-nestjsx-crud/3.35.0_@pankod+refine-core@3.95.3:
-    resolution: {integrity: sha512-hamCKud/a6UPyTFYknojDN8opicmS9OKjUTyqRXP5xQBDdt3YhTupSli7W+VR1drbpSusBVcp49d69FHsSLr2g==}
+  /@pankod/refine-nestjsx-crud/3.37.0_@pankod+refine-core@3.95.3:
+    resolution: {integrity: sha512-ulmNJgyMQiErXv1RFTAB8ORJMXYIivMk7Q2pzcl6w+X5z0v0qp/PWlkkDaaHM+spNCpSYEUU0HiNuUNSDFqJJw==}
     engines: {node: '>=10'}
     peerDependencies:
       '@pankod/refine-core': ^3.23.2

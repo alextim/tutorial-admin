@@ -14,5 +14,5 @@ export interface ISelector extends IEntityBase {
 
   queryId: number;
 
-  parentId?: number;
+  parentId: number | null;
 }

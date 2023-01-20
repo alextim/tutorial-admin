@@ -1,12 +1,14 @@
+import { useRef } from 'react';
+import Nestable from 'react-nestable';
 import {
   IResourceComponentsProps,
   useOne,
   useMany,
-  useUpdate,
   useNavigation,
-  useRefineContext,
   useBreadcrumb,
   useInvalidate,
+  useCustomMutation,
+  useApiUrl,
 } from '@pankod/refine-core';
 import {
   Show,
@@ -18,7 +20,6 @@ import {
   Breadcrumb,
   ListButton,
   RefreshButton,
-  SaveButton,
   useModalForm,
   CreateButton,
 } from '@pankod/refine-antd';
@@ -26,37 +27,30 @@ import { useParams } from '@pankod/refine-react-router-v6';
 
 import { IQuery, ISelector } from '../../../interfaces';
 import { SelectorsTree, TreeNode } from './SelectorsTree';
-import { useRef, useState } from 'react';
 import { CreateSelectorModal } from './edit-create-selector';
-import Nestable from 'react-nestable';
 
 const { Title, Text } = Typography;
 
 export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
   const ref = useRef<Nestable>(null);
-  // const invalidate = useInvalidate();
   const { goBack, list } = useNavigation();
 
   const { id } = useParams<'id'>();
   const queryId = id ? +id : 0;
   const parentResource = `queries/${queryId}`;
   const resource = `${parentResource}/selectors`;
+  const invalidate = useInvalidate();
 
   const {
     formProps,
     modalProps,
     show: showCreateSelectorModal,
-    } = useModalForm({
+  } = useModalForm({
     action: 'create',
     resource,
     redirect: false,
   });
 
-  /*
-  if (!id) {
-    return <NotFound />;
-  }
-  */
   const { data, isLoading, isError } = useOne<IQuery>({
     resource: 'queries',
     id: queryId,
@@ -76,8 +70,8 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
       },
     });
 
-  const { mutate, isLoading: mutateIsLoading } = useUpdate<ISelector>();
-
+  const apiUrl = useApiUrl();
+  const { mutate, isLoading: mutateIsLoading } = useCustomMutation();
 
   const buttonDisabled = isLoading || selectorsIsLoading || mutateIsLoading;
   /**
@@ -87,16 +81,13 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
 
  */
 
-  const updateTree = (nodes: TreeNode[], parentId: number | undefined) => {
+  const items: [number, number | null][] = [];
+
+  const populateItems = (nodes: TreeNode[], parentId: number | null) => {
     for (const { id, children } of nodes) {
-      console.log(parentId, id)
-      mutate({
-        resource: 'selectors',
-        id,
-        values: { parentId },
-      });
+      items.push([id, parentId]);
       if (children) {
-        updateTree(children, id);
+        populateItems(children, id);
       }
     }
   };
@@ -131,15 +122,27 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
             key="action-buttons"
             style={{ float: 'right', marginRight: 24 }}
           >
-            <SaveButton
+            <Button
               type="primary"
-              disabled={buttonDisabled}
-              onClick={() => {
-                updateTree((ref.current?.state as any).items as TreeNode[], undefined);
-                // invalidate({
-                //   resource,
-                //   invalidates: ["all"],
-                // });
+              onClick={(e) => {
+                e.preventDefault();
+                items.length = 0;
+                populateItems(
+                  (ref.current?.state as any).items as TreeNode[],
+                  null,
+                );
+                console.log(items);
+                mutate({
+                  url: `${apiUrl}/${resource}/updateTree`,
+                  method: 'post',
+                  values: {
+                    items,
+                  },
+                });
+                invalidate({
+                  resource,
+                  invalidates: ['list', 'many'],
+                });
               }}
             />
           </Space>
@@ -171,4 +174,3 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
     </>
   );
 };
-

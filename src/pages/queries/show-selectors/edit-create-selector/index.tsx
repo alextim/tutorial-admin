@@ -25,7 +25,7 @@ export const EditSelectorModal: React.FC<Props> = ({
 }) => {
   return (
     <Modal {...modalProps} title="Edit selector">
-        <SelectorForm queryId={queryId} formProps={formProps} />
+      <SelectorForm queryId={queryId} formProps={formProps} />
     </Modal>
   );
 };

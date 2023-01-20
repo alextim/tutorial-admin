@@ -51,11 +51,19 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
         );
       }}
     >
-      <Form.Item label="Name" name="name" rules={[{ required: true }, { max: 20 }]}>
+      <Form.Item
+        label="Name"
+        name="name"
+        rules={[{ required: true }, { max: 20 }]}
+      >
         <Input />
       </Form.Item>
 
-      <Form.Item label="Start Url" name="startUrl" rules={[{ required: true }, { max: 200 }]}>
+      <Form.Item
+        label="Start Url"
+        name="startUrl"
+        rules={[{ required: true }, { max: 200 }]}
+      >
         <Input />
       </Form.Item>
 

@@ -53,10 +53,7 @@ export type TreeNode = ISelector & {
   children?: TreeNode[];
 };
 
-const buildTree = (
-  sels: ISelector[],
-  all: ISelector[],
-): TreeNode[] =>
+const buildTree = (sels: ISelector[], all: ISelector[]): TreeNode[] =>
   sels.map((sel, i) => {
     const node: TreeNode = {
       ...sel,
@@ -121,12 +118,15 @@ export const SelectorsTree = forwardRef((props: Props, ref) => {
 
   // const { name, selector, type, multiply } = item;
 
-  const { modalProps, formProps, show: showEditSelectorModal } = useModalForm<ISelector, HttpError, ISelector>({
+  const {
+    modalProps,
+    formProps,
+    show: showEditSelectorModal,
+  } = useModalForm<ISelector, HttpError, ISelector>({
     action: 'edit',
     resource,
     redirect: false,
-     warnWhenUnsavedChanges: true,
-
+    warnWhenUnsavedChanges: true,
   });
 
   const renderItem = ({
@@ -146,20 +146,21 @@ export const SelectorsTree = forwardRef((props: Props, ref) => {
             e.preventDefault();
             showEditSelectorModal(id);
           }}
-            >
-                Edit
-            </Button>
-        <DeleteButton
-          recordItemId={id}
-          resourceNameOrRouteName={resource}
-        />
+        >
+          Edit
+        </Button>
+        <DeleteButton recordItemId={id} resourceNameOrRouteName={resource} />
       </Space>
     </div>
   );
 
   return (
     <>
-      <EditSelectorModal queryId={queryId}  formProps={formProps} modalProps={modalProps} />
+      <EditSelectorModal
+        queryId={queryId}
+        formProps={formProps}
+        modalProps={modalProps}
+      />
       <Space direction="vertical">
         <Nestable
           ref={ref}
@@ -170,7 +171,7 @@ export const SelectorsTree = forwardRef((props: Props, ref) => {
           renderItem={renderItem}
           handler={<span style={handlerStyles} />}
           onChange={(arg) => {
-            console.log(arg)
+            console.log(arg);
           }}
         />
       </Space>

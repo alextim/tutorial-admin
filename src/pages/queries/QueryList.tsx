@@ -41,42 +41,42 @@ export const QueryList = () => {
   ];
 
   return (
-      <CrudList
-        resource="queries"
-        tableProps={tableProps}
-        sorter={sorter}
-        menuConfig={{ itemsFn: extraMenuItems }}
-      >
-        <Table.Column
-          dataIndex="name"
-          title="Name"
-          sorter
-          defaultSortOrder={getDefaultSortOrder('name', sorter)}
-        />
+    <CrudList
+      resource="queries"
+      tableProps={tableProps}
+      sorter={sorter}
+      menuConfig={{ itemsFn: extraMenuItems }}
+    >
+      <Table.Column
+        dataIndex="name"
+        title="Name"
+        sorter
+        defaultSortOrder={getDefaultSortOrder('name', sorter)}
+      />
 
-        <Table.Column
-          dataIndex="startUrl"
-          title="Start Url"
-          render={(value) => <UrlField value={value} />}
-        />
+      <Table.Column
+        dataIndex="startUrl"
+        title="Start Url"
+        render={(value) => <UrlField value={value} />}
+      />
 
-        <Table.Column
-          dataIndex="isList"
-          title="Is List?"
-          render={(value) => (value ? 'yes' : '')}
-        />
-        <Table.Column dataIndex="itemCount" title="Items count" />
+      <Table.Column
+        dataIndex="isList"
+        title="Is List?"
+        render={(value) => (value ? 'yes' : '')}
+      />
+      <Table.Column dataIndex="itemCount" title="Items count" />
 
-        <Table.Column dataIndex="requestInterval" title="Request Interval" />
-        <Table.Column dataIndex="pageLoadDelay" title="Page Load Delay" />
-        <Table.Column dataIndex="timeout" title="Timeout" />
-        <Table.Column dataIndex="waitUntil" title="Wait Until" />
+      <Table.Column dataIndex="requestInterval" title="Request Interval" />
+      <Table.Column dataIndex="pageLoadDelay" title="Page Load Delay" />
+      <Table.Column dataIndex="timeout" title="Timeout" />
+      <Table.Column dataIndex="waitUntil" title="Wait Until" />
 
-        <Table.Column
-          dataIndex="proxy"
-          title="Proxy"
-          render={(value) => <TextField value={value?.name} />}
-        />
-      </CrudList>
+      <Table.Column
+        dataIndex="proxy"
+        title="Proxy"
+        render={(value) => <TextField value={value?.name} />}
+      />
+    </CrudList>
   );
 };
