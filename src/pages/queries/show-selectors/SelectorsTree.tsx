@@ -1,20 +1,23 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import React, { forwardRef, useState } from 'react';
 import {
-  Space,
-  CreateButton,
   DeleteButton,
-  EditButton,
   useModalForm,
   Button,
-  Icons,
+  Modal,
+  CreateButton,
 } from '@pankod/refine-antd';
+import { HttpError } from '@pankod/refine-core';
+
 import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';
-import rfdc from 'rfdc';
 
 import type { ISelector } from '../../../interfaces';
-import { EditSelectorModal } from './edit-create-selector';
-import { BaseKey, HttpError } from '@pankod/refine-core';
+import { SelectorForm } from './form';
+import { buildTree } from './buildTree';
+import { ParserList } from './parsers';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -37,6 +40,7 @@ const itemStyles: React.CSSProperties = {
   border: '1px solid #f9fafa',
   background: '#f9fafa',
   cursor: 'pointer',
+  width: '100%',
 };
 
 const handlerStyles: React.CSSProperties = {
@@ -49,132 +53,98 @@ const handlerStyles: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-export type TreeNode = ISelector & {
-  children?: TreeNode[];
-};
+export const SelectorsTree = forwardRef(
+  ({ queryId, resource, selectors }: Props, ref) => {
+    const {
+      modalProps: editModalProps,
+      formProps: editFormProps,
+      show: showEditSelectorModal,
+    } = useModalForm<ISelector, HttpError, ISelector>({
+      action: 'edit',
+      resource,
+      redirect: false,
+      warnWhenUnsavedChanges: true,
+    });
 
-const buildTree = (sels: ISelector[], all: ISelector[]): TreeNode[] =>
-  sels.map((sel, i) => {
-    const node: TreeNode = {
-      ...sel,
-    };
+    const {
+      modalProps: createModalProps,
+      formProps: createFormProps,
+      show: showCreateSelectorModal,
+    } = useModalForm({
+      action: 'create',
+      resource,
+      redirect: false,
+    });
 
-    const children = all.filter(({ parentId }) => parentId === sel.id);
+    const renderItem = ({
+      collapseIcon,
+      handler,
+      item: { id, name, selector },
+    }: RendererArgs) => (
+      <div style={itemStyles}>
+        {handler}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {collapseIcon}
+          <div style={{}}>{id}</div>
+          <div style={{}}> {name}</div>
+          <div style={{}}>{selector}</div>
+          <div style={{ marginLeft: 'auto' }}>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                showEditSelectorModal(id);
+              }}
+            >
+              Edit
+            </Button>
+            <DeleteButton
+              recordItemId={id}
+              resourceNameOrRouteName={resource}
+              hideText
+            />
+          </div>
+        </div>
+      </div>
+    );
 
-    if (children.length === 0) {
-      return node;
-    }
+    return (
+      <>
+        <Modal {...createModalProps} title="Create selector">
+          <SelectorForm queryId={queryId} formProps={createFormProps} />
+        </Modal>
+        <Modal {...editModalProps} title="Edit selector">
+          <SelectorForm queryId={queryId} formProps={editFormProps} />
+        </Modal>
+        <div>
+          <CreateButton
+            onClick={(e) => {
+              e.preventDefault();
+              showCreateSelectorModal();
+            }}
+          />
+        </div>
+        <div>
+          <DndProvider backend={HTML5Backend}>
+            <Nestable
+              ref={ref}
+              items={buildTree(
+                selectors.filter(({ parentId }) => !parentId),
+                selectors,
+              )}
+              renderItem={renderItem}
+              handler={<span style={handlerStyles} />}
+              onChange={(arg) => {
+                console.log(arg);
+              }}
+            />
+            <div>
+              <ParserList />
+              <ParserList />
+             </div>
+          </DndProvider>
+        </div>
 
-    node.children = buildTree(children, all);
-    return node;
-  });
-
-const findParent = (
-  search: TreeNode,
-  nodes: TreeNode[] | undefined,
-  parent: TreeNode | undefined,
-) => {
-  if (!nodes) {
-    return undefined;
-  }
-  if (nodes.find(({ id }) => search.id === id)) {
-    return parent;
-  }
-  for (const n of nodes) {
-    const found = findParent(search, n.children, n);
-    if (found) {
-      return n;
-    }
-  }
-  return undefined;
-};
-
-const deleteNode = (node: TreeNode, all: TreeNode[]) => {
-  const parent = findParent(node, all, undefined);
-  delete node.children;
-  if (parent?.children) {
-    const index = parent.children.findIndex(({ id }) => id === node.id);
-    parent.children.splice(index, 1);
-  }
-};
-
-export const SelectorsTree = forwardRef((props: Props, ref) => {
-  const { queryId, resource, selectors } = props;
-  /*
-  const [treeItems, setTreeItems] = useState<TreeNode[]>(buildTree(
-    selectors.filter(({ parentId }) => !parentId),
-    '', selectors
-  ))
-  const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
-
-  useEffect(() => {
-    const data = buildTree(
-      selectors.filter(({ parentId }) => !parentId),
-      '', selectors);
-    setTreeItems(data);
-
-  }, [selectors])
-  */
-
-  // const { name, selector, type, multiply } = item;
-
-  const {
-    modalProps,
-    formProps,
-    show: showEditSelectorModal,
-  } = useModalForm<ISelector, HttpError, ISelector>({
-    action: 'edit',
-    resource,
-    redirect: false,
-    warnWhenUnsavedChanges: true,
-  });
-
-  const renderItem = ({
-    collapseIcon,
-    handler,
-    item: { id, name, selector },
-  }: RendererArgs) => (
-    <div style={itemStyles}>
-      {handler}
-      {collapseIcon}
-      <Space>
-        <div>{id}</div>
-        <div>{name}</div>
-        <div>{selector}</div>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            showEditSelectorModal(id);
-          }}
-        >
-          Edit
-        </Button>
-        <DeleteButton recordItemId={id} resourceNameOrRouteName={resource} />
-      </Space>
-    </div>
-  );
-
-  return (
-    <>
-      <EditSelectorModal
-        queryId={queryId}
-        formProps={formProps}
-        modalProps={modalProps}
-      />
-      <Space direction="vertical">
-        <Nestable
-          ref={ref}
-          items={buildTree(
-            selectors.filter(({ parentId }) => !parentId),
-            selectors,
-          )}
-          renderItem={renderItem}
-          handler={<span style={handlerStyles} />}
-          onChange={(arg) => {
-            console.log(arg);
-          }}
-        />
-      </Space>
-    </>
-  );
-});
+      </>
+    );
+  },
+);

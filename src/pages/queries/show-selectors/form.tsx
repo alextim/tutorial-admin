@@ -10,7 +10,7 @@ import {
   Checkbox,
   Select,
 } from '@pankod/refine-antd';
-import { selectorTypeOptions } from '../selectorTypeOptions';
+import { selectorTypeOptions } from './selectorTypeOptions';
 
 type Props = {
   formProps: FormProps;
