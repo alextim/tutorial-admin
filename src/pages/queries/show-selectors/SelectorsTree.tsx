@@ -1,11 +1,10 @@
+import React, { forwardRef } from 'react';
+
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import React, { forwardRef, useState } from 'react';
 import {
-  DeleteButton,
   useModalForm,
-  Button,
   Modal,
   CreateButton,
 } from '@pankod/refine-antd';
@@ -15,9 +14,10 @@ import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';
 
 import type { ISelector } from '../../../interfaces';
+
 import { SelectorForm } from './form';
 import { buildTree } from './buildTree';
-import { ParserList } from './parsers';
+import { SelectorItem } from './SelectorItem';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -31,16 +31,6 @@ type Props = {
   selectors: ISelector[];
   resource: string;
   queryId: number;
-};
-
-const itemStyles: React.CSSProperties = {
-  position: 'relative',
-  padding: '10px 15px',
-  fontSize: '20px',
-  border: '1px solid #f9fafa',
-  background: '#f9fafa',
-  cursor: 'pointer',
-  width: '100%',
 };
 
 const handlerStyles: React.CSSProperties = {
@@ -76,36 +66,12 @@ export const SelectorsTree = forwardRef(
       redirect: false,
     });
 
+
     const renderItem = ({
       collapseIcon,
       handler,
       item: { id, name, selector },
-    }: RendererArgs) => (
-      <div style={itemStyles}>
-        {handler}
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          {collapseIcon}
-          <div style={{}}>{id}</div>
-          <div style={{}}> {name}</div>
-          <div style={{}}>{selector}</div>
-          <div style={{ marginLeft: 'auto' }}>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                showEditSelectorModal(id);
-              }}
-            >
-              Edit
-            </Button>
-            <DeleteButton
-              recordItemId={id}
-              resourceNameOrRouteName={resource}
-              hideText
-            />
-          </div>
-        </div>
-      </div>
-    );
+    }: RendererArgs) => <SelectorItem id={id} name={name} selector={selector} resource={resource} onEdit={showEditSelectorModal} collapseIcon={collapseIcon} handler={handler} />
 
     return (
       <>
@@ -137,10 +103,6 @@ export const SelectorsTree = forwardRef(
                 console.log(arg);
               }}
             />
-            <div>
-              <ParserList />
-              <ParserList />
-             </div>
           </DndProvider>
         </div>
 

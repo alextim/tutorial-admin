@@ -1,10 +1,11 @@
+import { useRef } from 'react';
 import type { Identifier } from 'dnd-core';
 import type { XYCoord } from 'react-dnd';
-import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-import { ItemTypes } from './ItemTypes';
 import { ParserType } from '../../../../interfaces/parser-type.enum';
+import { parserColor, parserTitle } from './parser-constants';
+import { DragItemTypes } from './DragItemTypes';
 
 const styleWrapper: React.CSSProperties = {
   position: 'relative',
@@ -44,7 +45,7 @@ export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemov
     void,
     { handlerId: Identifier | null }
   >({
-    accept: ItemTypes.CARD,
+    accept: DragItemTypes.CARD,
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -101,7 +102,7 @@ export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemov
   });
 
   const [{ isDragging }, drag] = useDrag({
-    type: ItemTypes.CARD,
+    type: DragItemTypes.CARD,
     item: () => ({ id, index }),
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
@@ -111,22 +112,10 @@ export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemov
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
-  const [text, backgroundColor] = getAttr(type);
-
   return (
-    <div ref={ref} style={{ ...styleWrapper, opacity, backgroundColor }} data-handler-id={handlerId}>
-      {text}
+    <div ref={ref} style={{ ...styleWrapper, opacity, backgroundColor: parserColor[type] }} data-handler-id={handlerId}>
+      {parserTitle[type]}
       <button style={styleRemoveBtn} onClick={() => onRemove(id)}>x</button>
     </div>
   );
 };
-
-function getAttr(type: ParserType) {
-  switch (type) {
-    case ParserType.AddText: return ['Add Text', 'green'];
-    case ParserType.ReplaceText: return ['Replace Text', 'red'];
-    case ParserType.RemoveWhitespaces: return ['Remove Whitespaces', 'pink'];
-    case ParserType.StripHTML: return ['Strip HTML', 'yellow'];
-    default: throw new Error(`Unknown parser type ${type}`);
-  }
-}
