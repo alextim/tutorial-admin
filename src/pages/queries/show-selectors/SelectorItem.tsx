@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
-import { Button, DeleteButton, Dropdown, MenuProps } from '@pankod/refine-antd';
+import { useCallback, useState, useEffect } from 'react';
+import { Button, DeleteButton, Dropdown, MenuProps, Modal, useModalForm } from '@pankod/refine-antd';
 import update from 'immutability-helper';
 
 import { ParserType } from '../../../interfaces/parser-type.enum';
 
 import { ParserList } from './parsers';
 import { parserTitle } from './parsers/parser-constants';
-import { Item } from './parsers/ParserList';
+import { IParser } from '../../../interfaces/IParser';
+import { HttpError, useApiUrl } from '@pankod/refine-core';
+import { ParserForm } from './parser-form';
 
 const itemStyle: React.CSSProperties = {
   position: 'relative',
@@ -23,7 +25,9 @@ const fieldStyle: React.CSSProperties = {
 };
 
 type Props = {
-  id: number;
+  selectorId: number;
+  queryId: number;
+
   name: string;
   selector: string;
   onEdit: (id: number) => void;
@@ -35,7 +39,8 @@ type Props = {
 };
 
 export const SelectorItem: React.FC<Props> = ({
-  id,
+  queryId,
+  selectorId,
   name,
   selector,
   onEdit,
@@ -43,37 +48,85 @@ export const SelectorItem: React.FC<Props> = ({
   collapseIcon,
   handler,
 }) => {
-  const [parsers, setParsers] = useState<Item[]>([
-    {
-      id: 1,
-      type: ParserType.AddText,
-    },
-    {
-      id: 2,
-      type: ParserType.RemoveWhitespaces,
-    },
-    {
-      id: 3,
-      type: ParserType.ReplaceText,
-    },
-    {
-      id: 4,
-      type: ParserType.StripHTML,
-    },
-  ]);
+  const [parsers, setParsers] = useState<IParser[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const apiUrl = useApiUrl();
+  const url = `${apiUrl}/${resource}/${selectorId}/parsers`;
+
+  const {
+      modalProps: editParserModalProps,
+      formProps: editParserFormProps,
+      show: showEditParserModal,
+    } = useModalForm<IParser, HttpError, IParser>({
+      action: 'edit',
+      resource: `${resource}/${selectorId}/parsers`,
+      redirect: false,
+      warnWhenUnsavedChanges: true,
+    });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsError(false);
+      setIsLoading(true);
+
+      try {
+        const res = await fetch(url, {
+          credentials: 'include',
+        });
+        if (!res.ok) {
+          let message: string;
+          if (res.status === 0) {
+            message = 'Server unavailable';
+          } else {
+            const body = await res.json();
+            message = body?.message || res.statusText;
+          }
+          throw new Error(message);
+        }
+        const data = await res.json();
+        setParsers(data);
+      } catch (err) {
+        setIsError(true);
+        console.error(err);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [selectorId]);
 
   const parserTypeMenu: MenuProps = {
     items: Object.entries(parserTitle).map(([key, label]) => ({
       key,
       label,
-      onClick: (info: any) => {
+      onClick: async (info: any) => {
         info.domEvent.stopPropagation();
-        const nextId =
-          parsers.reduce((prev, { id }) => (id > prev ? id : prev), 0) + 1;
-        setParsers((prevItems) => [
-          ...prevItems,
-          { id: nextId, type: key as ParserType },
-        ]);
+        try {
+          const res = await fetch(url, {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({ parserType: key, selectorId }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!res.ok) {
+            let message: string;
+            if (res.status === 0) {
+              message = 'Server unavailable';
+            } else {
+              const body = await res.json();
+              message = body?.message || res.statusText;
+            }
+            throw new Error(message);
+          }
+          const data = await res.json();
+          setParsers((prevItems) => [...prevItems, data]);
+        } catch (err) {
+          console.error(err);
+        }
       },
     })),
   };
@@ -84,7 +137,7 @@ export const SelectorItem: React.FC<Props> = ({
         update(prevItems, {
           $splice: [
             [dragIndex, 1],
-            [hoverIndex, 0, prevItems[dragIndex] as Item],
+            [hoverIndex, 0, prevItems[dragIndex] as IParser],
           ],
         }),
       );
@@ -106,17 +159,22 @@ export const SelectorItem: React.FC<Props> = ({
   }, []);
 
   return (
+    <>
+      <Modal {...editParserModalProps} title="Edit parser">
+        <ParserForm formProps={editParserFormProps} />
+      </Modal>
     <div style={itemStyle}>
       {handler}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {collapseIcon}
-        <div style={fieldStyle}>{id}</div>
+        <div style={fieldStyle}>{selectorId}</div>
         <div style={fieldStyle}>{name}</div>
         <div style={fieldStyle}>{selector}</div>
         <ParserList
           items={parsers}
           onMove={moveParserItem}
           onDelete={removeParserItem}
+          onEdit={showEditParserModal}
         />
         <div
           style={{ display: 'flex', flexWrap: 'nowrap', marginLeft: 'auto' }}
@@ -127,18 +185,19 @@ export const SelectorItem: React.FC<Props> = ({
           <Button
             onClick={(e) => {
               e.preventDefault();
-              onEdit(id);
+              onEdit(selectorId);
             }}
           >
             Edit
           </Button>
           <DeleteButton
-            recordItemId={id}
+            recordItemId={selectorId}
             resourceNameOrRouteName={resource}
             hideText
           />
         </div>
       </div>
-    </div>
+      </div>
+      </>
   );
 };

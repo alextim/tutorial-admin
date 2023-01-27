@@ -1,6 +1,7 @@
+import { IEntityBase } from './IEntityBase';
 import { ParserType } from './parser-type.enum';
 
-export interface IParser {
+export interface IParser extends IEntityBase {
   parserType: ParserType;
 
   /**

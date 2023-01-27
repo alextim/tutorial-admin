@@ -1,70 +1,81 @@
-import type { FormProps } from '@pankod/refine-antd';
-import { Form, Input, Checkbox } from '@pankod/refine-antd';
+import { Divider, FormProps } from '@pankod/refine-antd';
+import { Form, Input, Checkbox, Typography } from '@pankod/refine-antd';
+
+import { ParserType } from '../../../interfaces/parser-type.enum';
+import { parserColor, parserTitle } from './parsers/parser-constants';
 
 type Props = {
   formProps: FormProps;
-  queryId: number;
 };
 
-export const ParserForm = ({ queryId, formProps }: Props) => {
+const { Text, Title } = Typography;
+
+export const ParserForm = ({ formProps }: Props) => {
+  const parserType = formProps.initialValues?.parserType as ParserType;
   return (
     <Form
       {...formProps}
       layout="vertical"
-      onFinish={(values) =>
-        formProps.onFinish &&
-        formProps.onFinish({
-          ...values,
-          queryId,
-        })
-      }
     >
-      <Form.Item label="isRegex" name="isRegex" valuePropName="checked">
-        <Checkbox />
-      </Form.Item>
-      <Form.Item label="pattern" name="pattern" rules={[{ max: 64 }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item label="replacement" name="replacement" rules={[{ max: 64 }]}>
-        <Input />
-      </Form.Item>
+      {parserType && (<>
+        <Divider />
+        <Title level={5}>Type</Title>
+        <Text style={{ color: parserColor[parserType] }}>{parserTitle[parserType]}</Text>
+        <Divider />
+      </>)}
+      {parserType === ParserType.ReplaceText && (<>
+        <Form.Item label="Pattern" name="pattern" rules={[{ max: 64 }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Replacement" name="replacement" rules={[{ max: 64 }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Use Regex" name="isRegex" valuePropName="checked">
+          <Checkbox />
+        </Form.Item>
+      </>)}
 
-      <Form.Item label="append" name="append" rules={[{ max: 64 }]}>
+            {parserType === ParserType.AddText && (<>
+      <Form.Item label="Text to append" name="append" rules={[{ max: 64 }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="prepend" name="prepend" rules={[{ max: 64 }]}>
+      <Form.Item label="Text to prepend" name="prepend" rules={[{ max: 64 }]}>
         <Input />
       </Form.Item>
+              </>)}
 
-      <Form.Item
-        label="stripHtmlTags"
+
+      {parserType === ParserType.StripHTML && (<>    <Form.Item
+        label="Strip HTML tags"
         name="stripHtmlTags"
         valuePropName="checked"
       >
         <Checkbox />
       </Form.Item>
-      <Form.Item
-        label="decodeHtmlEntities"
-        name="decodeHtmlEntities"
-        valuePropName="checked"
-      >
-        <Checkbox />
-      </Form.Item>
+        <Form.Item
+          label="Decode HTML entities"
+          name="decodeHtmlEntities"
+          valuePropName="checked"
+        >
+          <Checkbox />
+        </Form.Item>
+      </>)}
 
-      <Form.Item
-        label="removeWhitespaces"
+      {parserType === ParserType.RemoveWhitespaces && (<>      <Form.Item
+        label="Remove whitespaces"
         name="removeWhitespaces"
         valuePropName="checked"
       >
         <Checkbox />
       </Form.Item>
-      <Form.Item
-        label="removeNewlines"
-        name="removeNewlines"
-        valuePropName="checked"
-      >
-        <Checkbox />
-      </Form.Item>
+        <Form.Item
+          label="Remove newlines"
+          name="removeNewlines"
+          valuePropName="checked"
+        >
+          <Checkbox />
+        </Form.Item>
+      </>)}
     </Form>
   );
 };

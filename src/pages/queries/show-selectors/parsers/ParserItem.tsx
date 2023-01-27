@@ -30,6 +30,7 @@ interface Props {
   index: number;
   moveItem: (dragIndex: number, hoverIndex: number) => void;
   onRemove: (id: number) => void;
+  onEdit: (id: number) => void;
 }
 
 interface DragItem {
@@ -44,6 +45,7 @@ export const ParserItem: React.FC<Props> = ({
   index,
   moveItem,
   onRemove,
+  onEdit,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
@@ -123,6 +125,9 @@ export const ParserItem: React.FC<Props> = ({
       ref={ref}
       style={{ ...styleWrapper, opacity, backgroundColor: parserColor[type] }}
       data-handler-id={handlerId}
+      onClick={(e) => {
+        onEdit(id);
+      }}
     >
       {parserTitle[type]}
       <button style={styleRemoveBtn} onClick={() => onRemove(id)}>

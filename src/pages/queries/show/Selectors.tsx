@@ -1,9 +1,9 @@
 import { Typography } from '@pankod/refine-antd';
-import { useList, useMany } from '@pankod/refine-core';
+import { useMany } from '@pankod/refine-core';
 
 import { IQuery, ISelector } from '../../../interfaces';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 export const Selectors = ({ record }: { record: IQuery | undefined }) => {
   if (!record) {
     return null;

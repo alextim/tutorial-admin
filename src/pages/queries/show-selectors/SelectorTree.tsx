@@ -15,6 +15,7 @@ import { SelectorForm } from './selector-form';
 import { buildTree } from './buildTree';
 import { SelectorItem } from './SelectorItem';
 import { IParser } from '../../../interfaces/IParser';
+import { ParserForm } from './parser-form';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -63,24 +64,14 @@ export const SelectorTree = forwardRef(
       redirect: false,
     });
 
-    const {
-      modalProps: editParserModalProps,
-      formProps: editParserFormProps,
-      show: showEditParserModal,
-    } = useModalForm<IParser, HttpError, IParser>({
-      action: 'edit',
-      resource: `${resource}/parsers`,
-      redirect: false,
-      warnWhenUnsavedChanges: true,
-    });
-
     const renderItem = ({
       collapseIcon,
       handler,
       item: { id, name, selector },
     }: RendererArgs) => (
       <SelectorItem
-        id={id}
+        queryId={queryId}
+        selectorId={id}
         name={name}
         selector={selector}
         resource={resource}
@@ -97,9 +88,6 @@ export const SelectorTree = forwardRef(
         </Modal>
         <Modal {...editModalProps} title="Edit selector">
           <SelectorForm queryId={queryId} formProps={editFormProps} />
-        </Modal>
-        <Modal {...editParserModalProps} title="Edit parser">
-          <ParserForm queryId={queryId} formProps={editParserFormProps} />
         </Modal>
         <div>
           <CreateButton

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
+import { IParser } from '../../../../interfaces/IParser';
 
-import { ParserType } from '../../../../interfaces/parser-type.enum';
 import { ParserItem } from './ParserItem';
 
 const containerStyle: React.CSSProperties = {
@@ -8,30 +8,35 @@ const containerStyle: React.CSSProperties = {
   flexWrap: 'wrap',
 };
 
-export interface Item {
-  id: number;
-  type: ParserType;
-}
-
 type Props = {
-  items: Item[];
+  items: IParser[];
   onMove: (dragIndex: number, hoverIndex: number) => void;
   onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 };
-export const ParserList: React.FC<Props> = ({ items, onMove, onDelete }) => {
+export const ParserList: React.FC<Props> = ({
+  items,
+  onMove,
+  onDelete,
+  onEdit,
+}) => {
   {
-    const renderItem = useCallback(({ id, type }: Item, index: number) => {
-      return (
-        <ParserItem
-          key={id}
-          index={index}
-          id={id}
-          type={type}
-          moveItem={onMove}
-          onRemove={onDelete}
-        />
-      );
-    }, []);
+    const renderItem = useCallback(
+      ({ id, parserType }: IParser, index: number) => {
+        return (
+          <ParserItem
+            key={id}
+            index={index}
+            id={id}
+            type={parserType}
+            moveItem={onMove}
+            onRemove={onDelete}
+            onEdit={onEdit}
+          />
+        );
+      },
+      [],
+    );
 
     return (
       <div style={containerStyle}>
