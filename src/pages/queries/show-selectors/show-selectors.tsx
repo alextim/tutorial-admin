@@ -23,7 +23,7 @@ import {
 import { useParams } from '@pankod/refine-react-router-v6';
 
 import type { IQuery, ISelector } from '../../../interfaces';
-import { SelectorsTree } from './SelectorsTree';
+import { SelectorTree } from './SelectorTree';
 import type { TreeNode } from './buildTree';
 
 const { Title, Text } = Typography;
@@ -137,7 +137,7 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
         <UrlField value={record?.startUrl} />
       </Text>
 
-      <SelectorsTree
+      <SelectorTree
         ref={ref}
         queryId={queryId}
         resource={resource}

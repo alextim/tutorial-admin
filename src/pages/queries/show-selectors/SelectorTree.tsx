@@ -3,11 +3,7 @@ import React, { forwardRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import {
-  useModalForm,
-  Modal,
-  CreateButton,
-} from '@pankod/refine-antd';
+import { useModalForm, Modal, CreateButton } from '@pankod/refine-antd';
 import { HttpError } from '@pankod/refine-core';
 
 import Nestable from 'react-nestable';
@@ -15,9 +11,10 @@ import type { Item } from 'react-nestable';
 
 import type { ISelector } from '../../../interfaces';
 
-import { SelectorForm } from './form';
+import { SelectorForm } from './selector-form';
 import { buildTree } from './buildTree';
 import { SelectorItem } from './SelectorItem';
+import { IParser } from '../../../interfaces/IParser';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -43,7 +40,7 @@ const handlerStyles: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-export const SelectorsTree = forwardRef(
+export const SelectorTree = forwardRef(
   ({ queryId, resource, selectors }: Props, ref) => {
     const {
       modalProps: editModalProps,
@@ -66,12 +63,32 @@ export const SelectorsTree = forwardRef(
       redirect: false,
     });
 
+    const {
+      modalProps: editParserModalProps,
+      formProps: editParserFormProps,
+      show: showEditParserModal,
+    } = useModalForm<IParser, HttpError, IParser>({
+      action: 'edit',
+      resource: `${resource}/parsers`,
+      redirect: false,
+      warnWhenUnsavedChanges: true,
+    });
 
     const renderItem = ({
       collapseIcon,
       handler,
       item: { id, name, selector },
-    }: RendererArgs) => <SelectorItem id={id} name={name} selector={selector} resource={resource} onEdit={showEditSelectorModal} collapseIcon={collapseIcon} handler={handler} />
+    }: RendererArgs) => (
+      <SelectorItem
+        id={id}
+        name={name}
+        selector={selector}
+        resource={resource}
+        onEdit={showEditSelectorModal}
+        collapseIcon={collapseIcon}
+        handler={handler}
+      />
+    );
 
     return (
       <>
@@ -80,6 +97,9 @@ export const SelectorsTree = forwardRef(
         </Modal>
         <Modal {...editModalProps} title="Edit selector">
           <SelectorForm queryId={queryId} formProps={editFormProps} />
+        </Modal>
+        <Modal {...editParserModalProps} title="Edit parser">
+          <ParserForm queryId={queryId} formProps={editParserFormProps} />
         </Modal>
         <div>
           <CreateButton
@@ -105,7 +125,6 @@ export const SelectorsTree = forwardRef(
             />
           </DndProvider>
         </div>
-
       </>
     );
   },

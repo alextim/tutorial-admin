@@ -11,7 +11,7 @@ const styleWrapper: React.CSSProperties = {
   position: 'relative',
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
-  marginRight: '.5rem',
+  margin: '0 .5rem .5rem 0',
   cursor: 'move',
 };
 
@@ -38,7 +38,13 @@ interface DragItem {
   type: ParserType;
 }
 
-export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemove }) => {
+export const ParserItem: React.FC<Props> = ({
+  id,
+  type,
+  index,
+  moveItem,
+  onRemove,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -66,26 +72,26 @@ export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemov
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
-      // Get vertical middle
+      // Get horizontal middle
       const hoverMiddleX =
         (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
 
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
 
-      // Get pixels to the top
+      // Get pixels to the left
       const hoverClientX = (clientOffset as XYCoord).x - hoverBoundingRect.left;
 
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
+      // Only perform the move when the mouse has crossed half of the items length
+      // When dragging left, only move when the cursor is below 50%
+      // When dragging right, only move when the cursor is above 50%
 
-      // Dragging downwards
+      // Dragging left
       if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
         return;
       }
 
-      // Dragging upwards
+      // Dragging right
       if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
         return;
       }
@@ -113,9 +119,15 @@ export const ParserItem: React.FC<Props> = ({ id, type, index, moveItem, onRemov
   drag(drop(ref));
 
   return (
-    <div ref={ref} style={{ ...styleWrapper, opacity, backgroundColor: parserColor[type] }} data-handler-id={handlerId}>
+    <div
+      ref={ref}
+      style={{ ...styleWrapper, opacity, backgroundColor: parserColor[type] }}
+      data-handler-id={handlerId}
+    >
       {parserTitle[type]}
-      <button style={styleRemoveBtn} onClick={() => onRemove(id)}>x</button>
+      <button style={styleRemoveBtn} onClick={() => onRemove(id)}>
+        x
+      </button>
     </div>
   );
 };

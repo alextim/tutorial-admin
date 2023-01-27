@@ -4,34 +4,28 @@ export interface IParser {
   parserType: ParserType;
 
   /**
-   * RegexMatch
-   */
-  regex?: string;
-  matchGroup?: string;
-  multiply?: boolean;
-  separator?: boolean;
-
-  /**
-   * replace
+   * replaceText
    */
   isRegex?: boolean;
   pattern?: string;
   replacement?: string;
 
+  /**
+   * addText
+   */
   append?: string;
   prepend?: string;
 
   /**
-   * Strip HTML
+   * stripHTML
    */
   stripHtmlTags?: boolean;
   decodeHtmlEntities?: boolean;
 
   /**
-   * RemoveWhitespaces
+   * removeWhitespaces
    */
   removeWhitespaces?: boolean;
-
   removeNewlines?: boolean;
 
   selectorId: number;

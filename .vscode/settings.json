@@ -3,5 +3,11 @@
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.formatOnSave": true,
   "prettier.documentSelectors": ["*.{tsx,ts}", "*.{jsx,js}"],
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/dist": true,
+        "**/tmp": true
+    },
 }

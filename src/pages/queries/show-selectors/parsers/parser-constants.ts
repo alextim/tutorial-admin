@@ -1,4 +1,4 @@
-import { ParserType } from "../../../../interfaces/parser-type.enum";
+import { ParserType } from '../../../../interfaces/parser-type.enum';
 
 export const parserTitle = {
   [ParserType.ReplaceText]: 'Replace Text',
@@ -6,7 +6,6 @@ export const parserTitle = {
   [ParserType.AddText]: 'Add Text',
   [ParserType.StripHTML]: 'Strip HTML',
 };
-
 
 export const parserColor = {
   [ParserType.ReplaceText]: 'red',
