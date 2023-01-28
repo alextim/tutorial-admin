@@ -1,14 +1,23 @@
 import { useCallback, useState, useEffect } from 'react';
-import { Button, DeleteButton, Dropdown, MenuProps, Modal, useModalForm } from '@pankod/refine-antd';
+import {
+  Button,
+  DeleteButton,
+  Dropdown,
+  Icons,
+  MenuProps,
+  Modal,
+  notification,
+  useModalForm,
+} from '@pankod/refine-antd';
+import { HttpError, useApiUrl } from '@pankod/refine-core';
 import update from 'immutability-helper';
 
 import { ParserType } from '../../../interfaces/parser-type.enum';
+import { IParser } from '../../../interfaces/IParser';
 
 import { ParserList } from './parsers';
 import { parserTitle } from './parsers/parser-constants';
-import { IParser } from '../../../interfaces/IParser';
-import { HttpError, useApiUrl } from '@pankod/refine-core';
-import { ParserForm } from './parser-form';
+import { validateResponse } from '../../../utility/validateResponse';
 
 const itemStyle: React.CSSProperties = {
   position: 'relative',
@@ -36,10 +45,11 @@ type Props = {
 
   collapseIcon: React.ReactNode;
   handler: React.ReactNode;
+
+  onParserEdit: (id: number) => void;
 };
 
 export const SelectorItem: React.FC<Props> = ({
-  queryId,
   selectorId,
   name,
   selector,
@@ -47,23 +57,12 @@ export const SelectorItem: React.FC<Props> = ({
   resource,
   collapseIcon,
   handler,
+  onParserEdit,
 }) => {
   const [parsers, setParsers] = useState<IParser[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const apiUrl = useApiUrl();
-  const url = `${apiUrl}/${resource}/${selectorId}/parsers`;
-
-  const {
-      modalProps: editParserModalProps,
-      formProps: editParserFormProps,
-      show: showEditParserModal,
-    } = useModalForm<IParser, HttpError, IParser>({
-      action: 'edit',
-      resource: `${resource}/${selectorId}/parsers`,
-      redirect: false,
-      warnWhenUnsavedChanges: true,
-    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,19 +70,11 @@ export const SelectorItem: React.FC<Props> = ({
       setIsLoading(true);
 
       try {
-        const res = await fetch(url, {
+        const res = await fetch(`${apiUrl}/parsers?selectorId=${selectorId}`, {
           credentials: 'include',
         });
-        if (!res.ok) {
-          let message: string;
-          if (res.status === 0) {
-            message = 'Server unavailable';
-          } else {
-            const body = await res.json();
-            message = body?.message || res.statusText;
-          }
-          throw new Error(message);
-        }
+        await validateResponse(res);
+
         const data = await res.json();
         setParsers(data);
       } catch (err) {
@@ -97,6 +88,40 @@ export const SelectorItem: React.FC<Props> = ({
     fetchData();
   }, [selectorId]);
 
+  useEffect(() => {
+    const reorderParsers = async () => {
+      if (!parsers.length) {
+        return;
+      }
+      setIsError(false);
+      setIsLoading(true);
+
+      const items = parsers.map(({ id }, sortOrder) => [id, sortOrder]);
+
+      try {
+        const res = await fetch(`${apiUrl}/parsers/reorder`, {
+          credentials: 'include',
+          method: 'POST',
+          body: JSON.stringify({ items }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        await validateResponse(res);
+      } catch (err) {
+        notification.error({
+          message: 'Error',
+          description: (err as Error).toString(),
+        });
+        console.error(err);
+      }
+
+      setIsLoading(false);
+    };
+
+    reorderParsers();
+  }, [parsers]);
+
   const parserTypeMenu: MenuProps = {
     items: Object.entries(parserTitle).map(([key, label]) => ({
       key,
@@ -104,7 +129,7 @@ export const SelectorItem: React.FC<Props> = ({
       onClick: async (info: any) => {
         info.domEvent.stopPropagation();
         try {
-          const res = await fetch(url, {
+          const res = await fetch(`${apiUrl}/parsers`, {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({ parserType: key, selectorId }),
@@ -112,57 +137,60 @@ export const SelectorItem: React.FC<Props> = ({
               'Content-Type': 'application/json',
             },
           });
-          if (!res.ok) {
-            let message: string;
-            if (res.status === 0) {
-              message = 'Server unavailable';
-            } else {
-              const body = await res.json();
-              message = body?.message || res.statusText;
-            }
-            throw new Error(message);
-          }
+          await validateResponse(res);
+
           const data = await res.json();
           setParsers((prevItems) => [...prevItems, data]);
         } catch (err) {
+          notification.error({
+            message: 'Error',
+            description: (err as Error).toString(),
+          });
           console.error(err);
         }
       },
     })),
   };
 
-  const moveParserItem = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      setParsers((prevItems) =>
-        update(prevItems, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, prevItems[dragIndex] as IParser],
-          ],
-        }),
-      );
-    },
-    [],
-  );
+  const moveParserItem = (dragIndex: number, hoverIndex: number) => {
+    setParsers((prevItems) =>
+      update(prevItems, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevItems[dragIndex] as IParser],
+        ],
+      }),
+    );
+  };
 
-  const removeParserItem = useCallback((id: number) => {
-    setParsers((prevItems) => {
-      const index = prevItems.findIndex((item) => item.id === id);
-      if (index === -1) {
-        console.error(`item id=${id} not found`);
-        return prevItems;
-      }
-      const modified = [...prevItems];
-      modified.splice(index, 1);
-      return modified;
-    });
+  const removeParserItem = useCallback(async (id: number) => {
+    try {
+      const res = await fetch(`${apiUrl}/parsers/${id}`, {
+        credentials: 'include',
+        method: 'DELETE',
+      });
+      await validateResponse(res);
+
+      setParsers((prevItems) => {
+        const index = prevItems.findIndex((item) => item.id === id);
+        if (index === -1) {
+          console.error(`item id=${id} not found`);
+          return prevItems;
+        }
+        const modified = [...prevItems];
+        modified.splice(index, 1);
+        return modified;
+      });
+    } catch (err) {
+      notification.error({
+        message: 'Error',
+        description: (err as Error).toString(),
+      });
+      console.error(err);
+    }
   }, []);
 
   return (
-    <>
-      <Modal {...editParserModalProps} title="Edit parser">
-        <ParserForm formProps={editParserFormProps} />
-      </Modal>
     <div style={itemStyle}>
       {handler}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -172,24 +200,23 @@ export const SelectorItem: React.FC<Props> = ({
         <div style={fieldStyle}>{selector}</div>
         <ParserList
           items={parsers}
-          onMove={moveParserItem}
-          onDelete={removeParserItem}
-          onEdit={showEditParserModal}
+          moveItem={moveParserItem}
+          onRemove={removeParserItem}
+          onEdit={onParserEdit}
         />
         <div
           style={{ display: 'flex', flexWrap: 'nowrap', marginLeft: 'auto' }}
         >
           <Dropdown menu={parserTypeMenu} trigger={['click']}>
-            <Button>+ parser</Button>
+            <Button icon={<Icons.PlusCircleOutlined />}>parser</Button>
           </Dropdown>
           <Button
+            icon={<Icons.EditOutlined />}
             onClick={(e) => {
               e.preventDefault();
               onEdit(selectorId);
             }}
-          >
-            Edit
-          </Button>
+          />
           <DeleteButton
             recordItemId={selectorId}
             resourceNameOrRouteName={resource}
@@ -197,7 +224,6 @@ export const SelectorItem: React.FC<Props> = ({
           />
         </div>
       </div>
-      </div>
-      </>
+    </div>
   );
 };

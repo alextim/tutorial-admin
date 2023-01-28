@@ -10,14 +10,15 @@ const containerStyle: React.CSSProperties = {
 
 type Props = {
   items: IParser[];
-  onMove: (dragIndex: number, hoverIndex: number) => void;
-  onDelete: (id: number) => void;
+  moveItem: (dragIndex: number, hoverIndex: number) => void;
+  onRemove: (id: number) => Promise<void>;
   onEdit: (id: number) => void;
 };
+
 export const ParserList: React.FC<Props> = ({
   items,
-  onMove,
-  onDelete,
+  moveItem,
+  onRemove,
   onEdit,
 }) => {
   {
@@ -29,8 +30,8 @@ export const ParserList: React.FC<Props> = ({
             index={index}
             id={id}
             type={parserType}
-            moveItem={onMove}
-            onRemove={onDelete}
+            moveItem={moveItem}
+            onRemove={onRemove}
             onEdit={onEdit}
           />
         );

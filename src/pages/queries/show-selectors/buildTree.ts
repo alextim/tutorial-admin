@@ -5,7 +5,7 @@ export type TreeNode = ISelector & {
 };
 
 export const buildTree = (sels: ISelector[], all: ISelector[]): TreeNode[] =>
-  sels.map((sel, i) => {
+  sels.map((sel) => {
     const node: TreeNode = {
       ...sel,
     };

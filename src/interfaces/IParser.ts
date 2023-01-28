@@ -3,6 +3,7 @@ import { ParserType } from './parser-type.enum';
 
 export interface IParser extends IEntityBase {
   parserType: ParserType;
+  sortOrder?: number;
 
   /**
    * replaceText

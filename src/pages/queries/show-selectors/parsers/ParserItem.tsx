@@ -18,9 +18,9 @@ const styleWrapper: React.CSSProperties = {
 const styleRemoveBtn: React.CSSProperties = {
   position: 'absolute',
   border: 0,
-  top: '0.25rem',
-  right: '0.25.rem',
-  padding: '0.25',
+  top: '.25rem',
+  right: '.25rem',
+  padding: '.25rem',
   cursor: 'pointer',
 };
 
@@ -29,7 +29,7 @@ interface Props {
   type: ParserType;
   index: number;
   moveItem: (dragIndex: number, hoverIndex: number) => void;
-  onRemove: (id: number) => void;
+  onRemove: (id: number) => Promise<void>;
   onEdit: (id: number) => void;
 }
 
@@ -130,7 +130,13 @@ export const ParserItem: React.FC<Props> = ({
       }}
     >
       {parserTitle[type]}
-      <button style={styleRemoveBtn} onClick={() => onRemove(id)}>
+      <button
+        style={styleRemoveBtn}
+        onClick={async (e) => {
+          e.stopPropagation();
+          await onRemove(id);
+        }}
+      >
         x
       </button>
     </div>

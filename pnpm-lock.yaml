@@ -18,7 +18,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.49.0
   '@typescript-eslint/parser': ^5.49.0
   '@vitejs/plugin-react-swc': ^3.0.1
-  axios: ^1.2.5
+  axios: ^1.2.6
   dayjs: ^1.11.7
   dnd-core: ^16.0.1
   eslint: ^8.32.0
@@ -51,7 +51,7 @@ dependencies:
   '@pankod/refine-react-table': 4.9.1_fj3rbkhwgsny3zuzxkpyd5umoa
   '@pankod/refine-simple-rest': 3.37.4_@pankod+refine-core@3.99.2
   '@tabler/icons': 2.1.2
-  axios: 1.2.5
+  axios: 1.2.6
   dayjs: 1.11.7
   dnd-core: 16.0.1
   immutability-helper: 3.1.1
@@ -2677,8 +2677,8 @@ packages:
       - debug
     dev: false
 
-  /axios/1.2.5:
-    resolution: {integrity: sha512-9pU/8mmjSSOb4CXVsvGIevN+MlO/t9OWtKadTaLuN85Gge3HGorUckgp8A/2FH4V4hJ7JuQ3LIeI7KAV9ITZrQ==}
+  /axios/1.2.6:
+    resolution: {integrity: sha512-rC/7F08XxZwjMV4iuWv+JpD3E0Ksqg9nac4IIg6RwNuF0JTeWoCo/mBNG54+tNhhI11G3/VDRbdDQTs9hGp4pQ==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0

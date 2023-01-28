@@ -10,12 +10,12 @@ import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';
 
 import type { ISelector } from '../../../interfaces';
+import { IParser } from '../../../interfaces/IParser';
 
 import { SelectorForm } from './selector-form';
+import { ParserForm } from './parser-form';
 import { buildTree } from './buildTree';
 import { SelectorItem } from './SelectorItem';
-import { IParser } from '../../../interfaces/IParser';
-import { ParserForm } from './parser-form';
 
 type RendererArgs = {
   collapseIcon: React.ReactNode;
@@ -64,6 +64,17 @@ export const SelectorTree = forwardRef(
       redirect: false,
     });
 
+    const {
+      modalProps: editParserModalProps,
+      formProps: editParserFormProps,
+      show: showEditParserModal,
+    } = useModalForm<IParser, HttpError, IParser>({
+      action: 'edit',
+      resource: 'parsers',
+      redirect: false,
+      warnWhenUnsavedChanges: true,
+    });
+
     const renderItem = ({
       collapseIcon,
       handler,
@@ -78,6 +89,7 @@ export const SelectorTree = forwardRef(
         onEdit={showEditSelectorModal}
         collapseIcon={collapseIcon}
         handler={handler}
+        onParserEdit={showEditParserModal}
       />
     );
 
@@ -88,6 +100,9 @@ export const SelectorTree = forwardRef(
         </Modal>
         <Modal {...editModalProps} title="Edit selector">
           <SelectorForm queryId={queryId} formProps={editFormProps} />
+        </Modal>
+        <Modal {...editParserModalProps} title="Edit parser">
+          <ParserForm formProps={editParserFormProps} />
         </Modal>
         <div>
           <CreateButton
