@@ -22,7 +22,6 @@ export const CustomerForm = ({ formProps }: Props) => {
           },
           ...rest,
         };
-        console.log(dto);
         return formProps.onFinish && formProps.onFinish(dto);
       }}
     >

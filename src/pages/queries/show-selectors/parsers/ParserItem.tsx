@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import type { Identifier } from 'dnd-core';
 import type { XYCoord } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
+import { Button, Icons } from '@pankod/refine-antd';
 
 import { ParserType } from '../../../../interfaces/parser-type.enum';
 import { parserColor, parserTitle } from './parser-constants';
@@ -18,10 +19,14 @@ const styleWrapper: React.CSSProperties = {
 const styleRemoveBtn: React.CSSProperties = {
   position: 'absolute',
   border: 0,
-  top: '.25rem',
-  right: '.25rem',
-  padding: '.25rem',
+  top: '2px',
+  right: '2px',
+  padding: '1px 0',
   cursor: 'pointer',
+  fontSize: '60%',
+  height: '1rem',
+  width: '1rem',
+  background: 'transparent',
 };
 
 interface Props {
@@ -29,7 +34,7 @@ interface Props {
   type: ParserType;
   index: number;
   moveItem: (dragIndex: number, hoverIndex: number) => void;
-  onRemove: (id: number) => Promise<void>;
+  onRemove: (id: number) => void;
   onEdit: (id: number) => void;
 }
 
@@ -125,20 +130,19 @@ export const ParserItem: React.FC<Props> = ({
       ref={ref}
       style={{ ...styleWrapper, opacity, backgroundColor: parserColor[type] }}
       data-handler-id={handlerId}
-      onClick={(e) => {
+      onClick={() => {
         onEdit(id);
       }}
     >
       {parserTitle[type]}
-      <button
+      <Button
+        icon={<Icons.CrownOutlined />}
         style={styleRemoveBtn}
-        onClick={async (e) => {
+        onClick={(e) => {
           e.stopPropagation();
-          await onRemove(id);
+          onRemove(id);
         }}
-      >
-        x
-      </button>
+      />
     </div>
   );
 };

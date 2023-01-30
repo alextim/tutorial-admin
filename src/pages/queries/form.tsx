@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import type { GetOneResponse, QueryObserverResult } from '@pankod/refine-core';
+import type { FormProps } from '@pankod/refine-antd';
 import {
   Checkbox,
   Form,
-  FormProps,
   Input,
   InputNumber,
   Select,
@@ -11,7 +12,6 @@ import {
 
 import { IProxy, IQuery } from '../../interfaces';
 import { waitUntilOptions } from './waitUntilOptions';
-import React, { useState } from 'react';
 
 type Props = {
   formProps: FormProps<Record<string, any>>;

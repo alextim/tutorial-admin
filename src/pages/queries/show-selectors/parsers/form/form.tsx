@@ -1,29 +1,14 @@
-import { Divider, FormProps } from '@pankod/refine-antd';
-import { Form, Input, Checkbox, Typography } from '@pankod/refine-antd';
+import { Form, Input, Checkbox } from '@pankod/refine-antd';
 
-import { ParserType } from '../../../interfaces/parser-type.enum';
-import { parserColor, parserTitle } from './parsers/parser-constants';
+import { ParserType } from '../../../../../interfaces/parser-type.enum';
 
 type Props = {
-  formProps: FormProps;
+  parserType: ParserType;
 };
 
-const { Text, Title } = Typography;
-
-export const ParserForm = ({ formProps }: Props) => {
-  const parserType = formProps.initialValues?.parserType as ParserType;
+export const ParserForm = ({ parserType }: Props) => {
   return (
-    <Form {...formProps} layout="vertical">
-      {parserType && (
-        <>
-          <Divider />
-          <Title level={5}>Type</Title>
-          <Text style={{ color: parserColor[parserType] }}>
-            {parserTitle[parserType]}
-          </Text>
-          <Divider />
-        </>
-      )}
+    <>
       {parserType === ParserType.ReplaceText && (
         <>
           <Form.Item label="Pattern" name="pattern" rules={[{ max: 64 }]}>
@@ -96,6 +81,6 @@ export const ParserForm = ({ formProps }: Props) => {
           </Form.Item>
         </>
       )}
-    </Form>
+    </>
   );
 };

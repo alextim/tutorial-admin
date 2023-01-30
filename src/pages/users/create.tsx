@@ -1,5 +1,4 @@
-import { IResourceComponentsProps } from '@pankod/refine-core';
-
+import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { Create, useForm } from '@pankod/refine-antd';
 
 import { IUser } from '../../interfaces';

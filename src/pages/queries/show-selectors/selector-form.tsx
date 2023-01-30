@@ -1,5 +1,6 @@
 import type { FormProps } from '@pankod/refine-antd';
 import { Form, Input, Checkbox, Select } from '@pankod/refine-antd';
+
 import { selectorTypeOptions } from './selectorTypeOptions';
 
 type Props = {

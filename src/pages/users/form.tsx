@@ -1,11 +1,11 @@
 import { useApiUrl } from '@pankod/refine-core';
+import type { FormProps } from '@pankod/refine-antd';
 import {
   Form,
   Input,
   Upload,
   Select,
   getValueFromEvent,
-  FormProps,
   DatePicker,
   Radio,
   Row,
