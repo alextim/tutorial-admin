@@ -17,9 +17,10 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 
 import { roleOptions } from './roleOptions';
+import { IUser } from '../../interfaces';
 
 type Props = {
-  formProps: FormProps<Record<string, any>>;
+  formProps: FormProps<IUser>;
 };
 
 const { Text } = Typography;

@@ -1,6 +1,8 @@
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { useEffect, useState } from 'react';
+
 import { HttpError, Refine } from '@pankod/refine-core';
 import {
   notificationProvider,
@@ -25,6 +27,11 @@ import { Title } from './components/title';
 import { Header } from './components/header';
 import { Sider } from './components/sider';
 
+import { CustomSider } from './components/custom-sider';
+import { QuerySelectors } from './pages/queries/querySelectors';
+import { ShowSelectors } from './pages/queries/show-selectors';
+import { getTheme, Theme } from './components/theme';
+
 import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
 import {
   CustomerCreate,
@@ -34,11 +41,8 @@ import {
 } from './pages/customers';
 import { ProxyList, ProxyCreate, ProxyEdit, ProxyShow } from './pages/proxies';
 import { QueryList, QueryCreate, QueryEdit, QueryShow } from './pages/queries';
-import { useEffect, useState } from 'react';
-import { CustomSider } from './components/custom-sider';
-import { QuerySelectors } from './pages/queries/querySelectors';
-import { ShowSelectors } from './pages/queries/show-selectors';
-import { getTheme, Theme } from './components/theme';
+import { JobList, JobCreate, JobEdit, JobShow } from './pages/jobs';
+import { ScheduleList, ScheduleCreate, ScheduleEdit, ScheduleShow } from './pages/schedules';
 
 const axiosInstance = axios.create();
 
@@ -147,6 +151,20 @@ function App() {
             create: QueryCreate,
             edit: QueryEdit,
             // show: QueryShow,
+          },
+          {
+            name: 'jobs',
+            list: JobList,
+            create: JobCreate,
+            edit: JobEdit,
+            show: JobShow,
+          },
+          {
+            name: 'schedules',
+            list: ScheduleList,
+            create: ScheduleCreate,
+            edit: ScheduleEdit,
+            show: ScheduleShow,
           },
         ]}
         notificationProvider={notificationProvider}

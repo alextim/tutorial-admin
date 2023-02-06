@@ -1,7 +1,8 @@
 import { Form, Input, FormProps } from '@pankod/refine-antd';
+import { ICustomer } from '../../interfaces';
 
 type Props = {
-  formProps: FormProps<Record<string, any>>;
+  formProps: FormProps<ICustomer>;
 };
 
 export const CustomerForm = ({ formProps }: Props) => {

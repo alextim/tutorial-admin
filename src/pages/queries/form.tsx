@@ -14,7 +14,7 @@ import { IProxy, IQuery } from '../../interfaces';
 import { waitUntilOptions } from './waitUntilOptions';
 
 type Props = {
-  formProps: FormProps<Record<string, any>>;
+  formProps: FormProps<IQuery>;
   queryResult: QueryObserverResult<GetOneResponse<IQuery>, unknown> | undefined;
 };
 
@@ -36,7 +36,6 @@ export const QueryForm = ({ formProps, queryResult }: Props) => {
     ],
   });
 
-  console.log(formProps.initialValues);
   return (
     <Form
       {...formProps}

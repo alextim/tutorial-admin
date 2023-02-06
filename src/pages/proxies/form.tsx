@@ -5,11 +5,12 @@ import {
   FormProps,
   InputNumber,
 } from '@pankod/refine-antd';
+import { IProxy } from '../../interfaces';
 
 import { countryOptions } from './countryOptions';
 
 type Props = {
-  formProps: FormProps<Record<string, any>>;
+  formProps: FormProps<IProxy>;
 };
 
 export const ProxyForm = ({ formProps }: Props) => {
