@@ -27,7 +27,7 @@ export interface ISchedule {
   dayOfWeek: string;
 */
 
-  cronEnabled?: boolean;
+  schedulerEnabled?: boolean;
 
   timezoneId?: number;
 

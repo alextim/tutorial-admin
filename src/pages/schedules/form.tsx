@@ -21,15 +21,15 @@ type Props = {
   formProps: FormProps<ISchedule>;
 };
 
-const padZero2 = (s: string) => {
-  const n = s.length;
-  if (n >= 2) {
-    return s;
-  }
-  return `${'0'.repeat(2 - n)}${s}`;
+const padZero2 = (n: number | undefined) => {
+  const s = (n || 0).toString();
+  const len = s.length;
+  return len >= 2 ? s  : `${'0'.repeat(2 - len)}${s}`;
 };
 
 export const ScheduleForm = ({ formProps }: Props) => {
+  console.log('formProps.initialValues', formProps.initialValues);
+
   if (!formProps.initialValues) {
     formProps.initialValues = {};
   }
@@ -101,7 +101,7 @@ export const ScheduleForm = ({ formProps }: Props) => {
   }
   timezoneSelectProps.options?.push({ value: 'UTC', label: 'UTC' });
 
-  if (!formProps.initialValues?.intervalType) {
+  if (!formProps.initialValues.intervalType) {
     formProps.initialValues.intervalType = IntervalType.Minute;
   }
   const [intervalOptions, setIntervalOptions] = useState<{label: number, value: number}[]>(formProps.initialValues.intervalType === IntervalType.Hour ? acceptedHoursOptions : acceptedMinutesOptions);
@@ -112,15 +112,15 @@ export const ScheduleForm = ({ formProps }: Props) => {
     setInterval(1);
   }
 
-  const [schedulerType, setSchedulerType] = useState<SchedulerType>(formProps.initialValues?.schedulerType);
-  const [minute = '*', hour = '*', dayOfMonth = '*', month = '*', dayOfWeek = '*'] = formProps.initialValues?.cron?.split(' ') || [];
+  const [schedulerType, setSchedulerType] = useState<SchedulerType>(formProps.initialValues.schedulerType || SchedulerType.Daily);
+  const [minute = '*', hour = '*', dayOfMonth = '*', month = '*', dayOfWeek = '*'] = formProps.initialValues.cron?.split(' ') || [];
 
   let dailyTimeHH: number;
   let dailyTimeMM: number;
   const dailyTime = formProps.initialValues?.dailyTime;
   if (dailyTime) {
-    dailyTimeHH = +dailyTime.substring(0, 1);
-    dailyTimeMM = +dailyTime.substring(4, 4);
+    dailyTimeHH = +dailyTime.substring(0, 2);
+    dailyTimeMM = +dailyTime.substring(3, 5);
   } else {
     dailyTimeHH = 0;
     dailyTimeMM = 0;
@@ -131,10 +131,12 @@ export const ScheduleForm = ({ formProps }: Props) => {
   const [cronEnabled, setCronEnabled] = useState<boolean>(!!formProps.initialValues?.cronEnabled);
   return (
     <Form {...formProps} layout="vertical" onFinish={({ minute, hour, dayOfMonth, month, dayOfWeek, timezoneId: timezoneIdSrc, dailyTimeHH, dailyTimeMM, ...rest }: any) => {
-        const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
-        const dailyTime = `${padZero2((dailyTimeHH || '').toString())}:${padZero2((dailyTimeMM || '').toString())}`;
-        const timezoneId = timezoneIdSrc === 'UTC' ? undefined : timezoneIdSrc;
-        return formProps.onFinish && formProps.onFinish({ cron, dailyTime, timezoneId, ...rest });
+        const cron = `${minute || '*'} ${hour || '*'} ${dayOfMonth || '*'} ${month || '*'} ${dayOfWeek || '*'}`;
+        const dailyTime = `${padZero2(dailyTimeHH)}:${padZero2(dailyTimeMM)}`;
+      const timezoneId = timezoneIdSrc === 'UTC' ? undefined : timezoneIdSrc;
+      const dto = { cron, dailyTime, timezoneId, ...rest };
+      console.log(dto)
+        return formProps.onFinish && formProps.onFinish(dto);
       }}>
       <Form.Item
         label="Request interval"
@@ -200,19 +202,12 @@ export const ScheduleForm = ({ formProps }: Props) => {
         <Select {...userSelectProps} />
       </Form.Item>
 
-      <Form.Item label="cronEnabled" name="cronEnabled">
+      <Form.Item label="Enable scheduler" name="schedulerEnabled" valuePropName="checked">
         <Switch onChange={setCronEnabled}/>
       </Form.Item>
-      {cronEnabled && (<>
-        <Form.Item label="Type" name="schedulerType" rules={[
-          {
-            required: true,
-          },
-        ]}>
-          <Select options={schedulerTypeOptions} onChange={setSchedulerType} />
-        </Form.Item>
 
-        <Form.Item label="Time zone" name="timezoneId" rules={[
+      {cronEnabled && (<>
+        <Form.Item label="Scheduler Time zone" name="timezoneId" rules={[
           {
             required: true,
           },
@@ -220,8 +215,16 @@ export const ScheduleForm = ({ formProps }: Props) => {
           <Select {...timezoneSelectProps} />
         </Form.Item>
 
+        <Form.Item label="Scheduler Type" name="schedulerType" rules={[
+          {
+            required: true,
+          },
+        ]}>
+          <Select options={schedulerTypeOptions} onChange={setSchedulerType} />
+        </Form.Item>
+
         {schedulerType === SchedulerType.Daily && (<>
-          <Form.Item label="Daily Weekdays" name="dailyWeekdays">
+          <Form.Item label="Run a job on" name="dailyWeekdays">
             <Select
               mode="multiple"
               allowClear
@@ -230,29 +233,33 @@ export const ScheduleForm = ({ formProps }: Props) => {
               options={dailyWeekdaysOptions}
             />
           </Form.Item>
-
+          <Form.Item label="At">
+          <Input.Group>
           <Form.Item
-            label="dailyTimeHH"
-            name="dailyTimeHH"
+              name="dailyTimeHH"
+              noStyle
           >
-            <InputNumber min={0} max={24} />
+            <InputNumber min={0} max={24} formatter={padZero2} />
           </Form.Item>
 
           <Form.Item
-            label="dailyTimeMM"
-            name="dailyTimeMM"
+              name="dailyTimeMM"
+              noStyle
           >
-            <InputNumber min={0} max={59} />
-          </Form.Item>
+            <InputNumber min={0} max={59} formatter={padZero2} />
+            </Form.Item>
+            </Input.Group>
+            </Form.Item>
         </>)}
 
         {schedulerType === SchedulerType.Interval && (<>
-          <Form.Item label="Interval Type" name="intervalType" >
-            <Select options={intervalTypeOptions} onChange={handleIntervalTypeChange} />
-          </Form.Item>
-
-          <Form.Item label="Interval" name="interval">
+          <Form.Item label="Run a job every" >
+          <Form.Item name="interval" style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}>
             <Select options={intervalOptions} value={interval} />
+          </Form.Item>
+          <Form.Item name="intervalType" style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}>
+            <Select options={intervalTypeOptions} onChange={handleIntervalTypeChange} />
+              </Form.Item>
           </Form.Item>
         </>)}
 
