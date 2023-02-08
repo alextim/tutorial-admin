@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@pankod/refine-antd": "^4.7.1",
-    "@pankod/refine-core": "^3.99.2",
+    "@pankod/refine-core": "^3.99.4",
     "@pankod/refine-nestjsx-crud": "^3.37.0",
     "@pankod/refine-react-router-v6": "^3.38.0",
     "@pankod/refine-react-table": "^4.9.1",
@@ -28,7 +28,7 @@
     "@babel/preset-env": "^7.20.2",
     "@pankod/refine-cli": "^1.17.0",
     "@types/google.accounts": "^0.0.6",
-    "@types/node": "^18.11.19",
+    "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
@@ -42,7 +42,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "google-auth-library": "^8.7.0",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "rimraf": "^4.1.2",
     "typescript": "^4.9.5",
     "vite": "^4.1.1"

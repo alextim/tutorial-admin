@@ -7,7 +7,9 @@ import {
   useSelect,
   Switch,
   Input,
+  TimePicker
 } from '@pankod/refine-antd';
+import dayjs from 'dayjs';
 
 import { SchedulerType, IntervalType } from '../../interfaces';
 import type { ICustomer, IProxy, IQuery, ISchedule, ITimezone, IUser } from '../../interfaces';
@@ -21,23 +23,36 @@ type Props = {
   formProps: FormProps<ISchedule>;
 };
 
-const padZero2 = (n: number | undefined) => {
-  const s = (n || 0).toString();
-  const len = s.length;
-  return len >= 2 ? s  : `${'0'.repeat(2 - len)}${s}`;
-};
+const timeFormat = 'HH:mm';
+
+const DEFAULT_SCHEDULER_ENABLED = false;
+const DEFAULT_INTERVAL = 1;
+const DEFAULT_SCHEDULER_TYPE = SchedulerType.Daily;
 
 export const ScheduleForm = ({ formProps }: Props) => {
-  console.log('formProps.initialValues', formProps.initialValues);
+  const [schedulerEnabled, setSchedulerEnabled] = useState<boolean>(formProps.initialValues?.schedulerEnabled || DEFAULT_SCHEDULER_ENABLED);
+  const [intervalOptions, setIntervalOptions] = useState<{label: number, value: number}[]>(formProps.initialValues?.intervalType === IntervalType.Hour ? acceptedHoursOptions : acceptedMinutesOptions);
+  const [interval, setInterval] = useState<number>(formProps.initialValues?.interval || DEFAULT_INTERVAL);
+  const [schedulerType, setSchedulerType] = useState<SchedulerType>(formProps.initialValues?.schedulerType || DEFAULT_SCHEDULER_TYPE);
 
   if (!formProps.initialValues) {
     formProps.initialValues = {};
   }
 
+  if (!formProps.initialValues.schedulerEnabled) {
+    formProps.initialValues.schedulerEnabled = DEFAULT_SCHEDULER_ENABLED;
+  }
+  if (!formProps.initialValues.interval) {
+    formProps.initialValues.interval = DEFAULT_INTERVAL;
+  }
+  if (!formProps.initialValues.schedulerType) {
+    formProps.initialValues.schedulerType = DEFAULT_SCHEDULER_TYPE;
+  }
+
   const { selectProps: querySelectProps } = useSelect<IQuery>({
     resource: 'queries',
     optionLabel: 'name',
-    defaultValue: formProps.initialValues?.queryId,
+    defaultValue: formProps.initialValues.queryId,
     sort: [
       {
         field: 'name',
@@ -49,7 +64,7 @@ export const ScheduleForm = ({ formProps }: Props) => {
   const { selectProps: proxySelectProps } = useSelect<IProxy>({
     resource: 'proxies',
     optionLabel: 'name',
-    defaultValue: formProps.initialValues?.proxyId,
+    defaultValue: formProps.initialValues.proxyId,
     sort: [
       {
         field: 'name',
@@ -104,37 +119,25 @@ export const ScheduleForm = ({ formProps }: Props) => {
   if (!formProps.initialValues.intervalType) {
     formProps.initialValues.intervalType = IntervalType.Minute;
   }
-  const [intervalOptions, setIntervalOptions] = useState<{label: number, value: number}[]>(formProps.initialValues.intervalType === IntervalType.Hour ? acceptedHoursOptions : acceptedMinutesOptions);
-  const [interval, setInterval] = useState<number>(formProps.initialValues?.interval || 1);
+
 
   const handleIntervalTypeChange = (value: IntervalType) => {
     setIntervalOptions(() => value === IntervalType.Hour ? acceptedHoursOptions : acceptedMinutesOptions);
-    setInterval(1);
+    setInterval(DEFAULT_INTERVAL);
   }
 
-  const [schedulerType, setSchedulerType] = useState<SchedulerType>(formProps.initialValues.schedulerType || SchedulerType.Daily);
   const [minute = '*', hour = '*', dayOfMonth = '*', month = '*', dayOfWeek = '*'] = formProps.initialValues.cron?.split(' ') || [];
 
-  let dailyTimeHH: number;
-  let dailyTimeMM: number;
-  const dailyTime = formProps.initialValues?.dailyTime;
-  if (dailyTime) {
-    dailyTimeHH = +dailyTime.substring(0, 2);
-    dailyTimeMM = +dailyTime.substring(3, 5);
-  } else {
-    dailyTimeHH = 0;
-    dailyTimeMM = 0;
-  }
+  formProps.initialValues.dailyTime = dayjs(formProps.initialValues.dailyTime || '00:00', timeFormat)
 
-  formProps.initialValues = { ...formProps.initialValues, minute, hour, dayOfMonth, month, dayOfWeek, dailyTimeHH, dailyTimeMM };
+  formProps.initialValues = { ...formProps.initialValues, minute, hour, dayOfMonth, month, dayOfWeek };
 
-  const [cronEnabled, setCronEnabled] = useState<boolean>(!!formProps.initialValues?.cronEnabled);
+
   return (
-    <Form {...formProps} layout="vertical" onFinish={({ minute, hour, dayOfMonth, month, dayOfWeek, timezoneId: timezoneIdSrc, dailyTimeHH, dailyTimeMM, ...rest }: any) => {
+    <Form {...formProps} layout="vertical" onFinish={({ minute, hour, dayOfMonth, month, dayOfWeek, dailyTime, timezoneId: timezoneIdSrc, ...rest }: any) => {
         const cron = `${minute || '*'} ${hour || '*'} ${dayOfMonth || '*'} ${month || '*'} ${dayOfWeek || '*'}`;
-        const dailyTime = `${padZero2(dailyTimeHH)}:${padZero2(dailyTimeMM)}`;
       const timezoneId = timezoneIdSrc === 'UTC' ? undefined : timezoneIdSrc;
-      const dto = { cron, dailyTime, timezoneId, ...rest };
+      const dto = { cron, timezoneId, dailyTime: dayjs(dailyTime).format(timeFormat), ...rest };
       console.log(dto)
         return formProps.onFinish && formProps.onFinish(dto);
       }}>
@@ -203,10 +206,10 @@ export const ScheduleForm = ({ formProps }: Props) => {
       </Form.Item>
 
       <Form.Item label="Enable scheduler" name="schedulerEnabled" valuePropName="checked">
-        <Switch onChange={setCronEnabled}/>
+        <Switch onChange={setSchedulerEnabled}/>
       </Form.Item>
 
-      {cronEnabled && (<>
+      {schedulerEnabled && (<>
         <Form.Item label="Scheduler Time zone" name="timezoneId" rules={[
           {
             required: true,
@@ -229,27 +232,12 @@ export const ScheduleForm = ({ formProps }: Props) => {
               mode="multiple"
               allowClear
               style={{ width: '100%' }}
-              defaultValue={formProps.initialValues?.dailyWeekdays}
               options={dailyWeekdaysOptions}
             />
           </Form.Item>
-          <Form.Item label="At">
-          <Input.Group>
-          <Form.Item
-              name="dailyTimeHH"
-              noStyle
-          >
-            <InputNumber min={0} max={24} formatter={padZero2} />
+          <Form.Item label="At" name="dailyTime">
+            <TimePicker format={timeFormat} />
           </Form.Item>
-
-          <Form.Item
-              name="dailyTimeMM"
-              noStyle
-          >
-            <InputNumber min={0} max={59} formatter={padZero2} />
-            </Form.Item>
-            </Input.Group>
-            </Form.Item>
         </>)}
 
         {schedulerType === SchedulerType.Interval && (<>

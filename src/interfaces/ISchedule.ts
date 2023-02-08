@@ -1,6 +1,7 @@
-import { SchedulerType, DailyWeekdays, IntervalType } from './schedule.types';
+import type { IEntityBase } from './IEntityBase';
+import type { SchedulerType, IntervalType } from './schedule.types';
 
-export interface ISchedule {
+export interface ISchedule extends IEntityBase {
   requestInterval: number;
 
   pageLoadDelay: number;

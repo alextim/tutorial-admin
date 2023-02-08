@@ -1,7 +1,7 @@
 import { useShow, IResourceComponentsProps } from '@pankod/refine-core';
 import { DateField, Divider, Show, Typography } from '@pankod/refine-antd';
 
-import { ISchedule } from '../../interfaces';
+import type { ISchedule } from '../../interfaces';
 
 const { Title, Text } = Typography;
 
@@ -25,9 +25,6 @@ export const ScheduleShow: React.FC<IResourceComponentsProps> = () => {
 
       <Title level={5}>Timeout</Title>
       <Text>{record?.timeout}</Text>
-
-      <Title level={5}>Status</Title>
-      <Text>{record?.status}</Text>
 
       <Title level={5}>Query</Title>
       <Text>{record?.query?.name}</Text>

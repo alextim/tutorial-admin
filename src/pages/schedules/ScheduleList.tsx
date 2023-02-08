@@ -24,13 +24,6 @@ export const ScheduleList = () => {
       <Table.Column dataIndex="pageLoadDelay" title="Page load delay" />
       <Table.Column dataIndex="timeout" title="Timeout" />
       <Table.Column
-        key="status"
-        dataIndex="status"
-        title="Status"
-        sorter
-        defaultSortOrder={getDefaultSortOrder('status', sorter)}
-      />
-      <Table.Column
         dataIndex="query"
         title="Query"
         render={(value) => <TextField value={value?.name} />}

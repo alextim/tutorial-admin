@@ -1,5 +1,5 @@
-import { IEntityBase } from './IEntityBase';
-import { SelectorType } from './selector-type.enum';
+import type { IEntityBase } from './IEntityBase';
+import type { SelectorType } from './selector-type.enum';
 
 export interface ISelector extends IEntityBase {
   name: string;
