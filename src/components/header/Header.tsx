@@ -17,9 +17,11 @@ import {
   Icons,
   MenuProps,
 } from '@pankod/refine-antd';
-import { IUser } from '../../interfaces';
 import { LogoutOutlined } from '@ant-design/icons';
+
+import type { IUser } from '../../interfaces';
 import { ThemeSwitch } from '../theme/ThemeSwitch';
+
 const { Header: AntdHeader } = AntdLayout;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;

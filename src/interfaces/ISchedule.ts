@@ -3,35 +3,16 @@ import type { SchedulerType, IntervalType } from './schedule.types';
 
 export interface ISchedule extends IEntityBase {
   requestInterval: number;
-
   pageLoadDelay: number;
-
   timeout: number;
 
+  userId: number;
   queryId: number;
-
+  customerId: number;
   proxyId?: number;
 
-  customerId: number;
-
-  userId: number;
-/*
-
-  minute: string;
-
-  hour: string;
-
-  dayOfMonth: string;
-
-  month: string;
-
-  dayOfWeek: string;
-*/
-
   schedulerEnabled?: boolean;
-
   timezoneId?: number;
-
   schedulerType?: SchedulerType;
 
   /**
@@ -51,4 +32,3 @@ export interface ISchedule extends IEntityBase {
    */
   cron?: string;
 }
-

@@ -1,11 +1,15 @@
-import { IResourceComponentsProps } from '@pankod/refine-core';
+import type { HttpError, IResourceComponentsProps } from '@pankod/refine-core';
 import { Edit, useForm } from '@pankod/refine-antd';
 
 import { ISchedule } from '../../interfaces';
 import { ScheduleForm } from './form';
 
 export const ScheduleEdit: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps } = useForm<ISchedule>({
+  const { formProps, saveButtonProps } = useForm<
+    ISchedule,
+    HttpError,
+    ISchedule
+  >({
     warnWhenUnsavedChanges: true,
   });
 

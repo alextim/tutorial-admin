@@ -42,7 +42,12 @@ import {
 import { ProxyList, ProxyCreate, ProxyEdit, ProxyShow } from './pages/proxies';
 import { QueryList, QueryCreate, QueryEdit, QueryShow } from './pages/queries';
 import { JobList, JobCreate, JobEdit, JobShow } from './pages/jobs';
-import { ScheduleList, ScheduleCreate, ScheduleEdit, ScheduleShow } from './pages/schedules';
+import {
+  ScheduleList,
+  ScheduleCreate,
+  ScheduleEdit,
+  ScheduleShow,
+} from './pages/schedules';
 
 const axiosInstance = axios.create();
 

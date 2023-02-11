@@ -10,7 +10,6 @@ specifiers:
   '@pankod/refine-react-router-v6': ^3.38.0
   '@pankod/refine-react-table': ^4.9.1
   '@pankod/refine-simple-rest': ^3.37.4
-  '@tabler/icons': ^2.2.0
   '@types/google.accounts': ^0.0.6
   '@types/node': ^18.13.0
   '@types/react': ^18.0.27
@@ -50,7 +49,6 @@ dependencies:
   '@pankod/refine-react-router-v6': 3.38.0_zmwtul5m3lpniptvy2q3te543u
   '@pankod/refine-react-table': 4.9.1_qmgtyfg5mrptqivpw7ytoshgqy
   '@pankod/refine-simple-rest': 3.37.4_@pankod+refine-core@3.99.4
-  '@tabler/icons': 2.2.0
   axios: 1.3.2
   dayjs: 1.11.7
   dnd-core: 16.0.1
@@ -2114,10 +2112,6 @@ packages:
       '@swc/core-win32-ia32-msvc': 1.3.32
       '@swc/core-win32-x64-msvc': 1.3.32
     dev: true
-
-  /@tabler/icons/2.2.0:
-    resolution: {integrity: sha512-s2mm+7JqmLObKdU89Dtiy+USmUpOlACsoXZZPykjAJZC4pK3wMYxLsclJxViWLeLTb6Bc0oga92V7R+9nrj1ZQ==}
-    dev: false
 
   /@tanstack/match-sorter-utils/8.7.2:
     resolution: {integrity: sha512-bptNeoexeDB947fWoCPwUchPSx5FA9gwzU0bkXz0du5pT8Ud2+1ob+xOgHj6EF3VN0kdXtLhwjPyhY7/dJglkg==}

@@ -14,22 +14,22 @@ type Props = {
 };
 
 export const JobForm = ({ formProps }: Props) => {
-  const { selectProps: querySelectProps } = useSelect<IQuery>({
-    resource: 'queries',
-    optionLabel: 'name',
-    defaultValue: formProps.initialValues?.queryId,
+  const { selectProps: userSelectProps } = useSelect<IUser>({
+    resource: 'users',
+    optionLabel: 'email',
+    defaultValue: formProps.initialValues?.userId,
     sort: [
       {
-        field: 'name',
+        field: 'email',
         order: 'asc',
       },
     ],
   });
 
-  const { selectProps: proxySelectProps } = useSelect<IProxy>({
-    resource: 'proxies',
+  const { selectProps: querySelectProps } = useSelect<IQuery>({
+    resource: 'queries',
     optionLabel: 'name',
-    defaultValue: formProps.initialValues?.proxyId,
+    defaultValue: formProps.initialValues?.queryId,
     sort: [
       {
         field: 'name',
@@ -50,23 +50,63 @@ export const JobForm = ({ formProps }: Props) => {
     ],
   });
 
-  const { selectProps: userSelectProps } = useSelect<IUser>({
-    resource: 'users',
-    optionLabel: 'email',
-    defaultValue: formProps.initialValues?.userId,
+  const { selectProps: proxySelectProps } = useSelect<IProxy>({
+    resource: 'proxies',
+    optionLabel: 'name',
+    defaultValue: formProps.initialValues?.proxyId,
     sort: [
       {
-        field: 'email',
+        field: 'name',
         order: 'asc',
       },
     ],
   });
 
   return (
-    <Form {...formProps} layout="vertical"       onFinish={(values) => {
-        console.log(values)
+    <Form
+      {...formProps}
+      layout="vertical"
+      onFinish={(values) => {
+        console.log(values);
         return formProps.onFinish && formProps.onFinish(values);
-      }}>
+      }}
+    >
+      <Form.Item
+        label="User"
+        name="userId"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Select {...userSelectProps} />
+      </Form.Item>
+
+      <Form.Item
+        label="Query"
+        name="queryId"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Select {...querySelectProps} />
+      </Form.Item>
+
+      <Form.Item
+        label="Customer"
+        name="customerId"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Select {...customerSelectProps} />
+      </Form.Item>
+
       <Form.Item
         label="Request interval"
         name="requestInterval"
@@ -103,40 +143,23 @@ export const JobForm = ({ formProps }: Props) => {
         <InputNumber min={0} />
       </Form.Item>
 
-      <Form.Item label="Status" name="status" rules={[
+      <Form.Item
+        label="Status"
+        name="status"
+        rules={[
           {
             required: true,
           },
-        ]}>
-        <Select defaultValue={formProps.initialValues?.status} options={jobStatusOptions} />
-      </Form.Item>
-
-      <Form.Item label="Query" name="queryId" rules={[
-          {
-            required: true,
-          },
-        ]}>
-        <Select {...querySelectProps} />
+        ]}
+      >
+        <Select
+          defaultValue={formProps.initialValues?.status}
+          options={jobStatusOptions}
+        />
       </Form.Item>
 
       <Form.Item label="Proxy" name="proxyId">
         <Select {...proxySelectProps} />
-      </Form.Item>
-
-      <Form.Item label="Customer" name="customerId" rules={[
-          {
-            required: true,
-          },
-        ]}>
-        <Select {...customerSelectProps} />
-      </Form.Item>
-
-      <Form.Item label="User" name="userId" rules={[
-          {
-            required: true,
-          },
-        ]}>
-        <Select {...userSelectProps} />
       </Form.Item>
     </Form>
   );
