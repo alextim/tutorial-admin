@@ -6,10 +6,11 @@ import {
   useImperativeHandle,
 } from 'react';
 import update from 'immutability-helper';
-import { HttpError, useApiUrl, useDelete } from '@pankod/refine-core';
+import type { HttpError } from '@pankod/refine-core';
+import { useApiUrl, useDelete } from '@pankod/refine-core';
 import { Modal, notification, useModalForm } from '@pankod/refine-antd';
 
-import { IParser } from '../../../../interfaces/IParser';
+import type { IParser } from '../../../../interfaces/IParser';
 import { validateResponse } from '../../../../utility/validateResponse';
 
 import { ParserItem } from './ParserItem';

@@ -1,12 +1,7 @@
-import {
-  Form,
-  Input,
-  Select,
-  FormProps,
-  InputNumber,
-} from '@pankod/refine-antd';
-import type { IProxy } from '../../interfaces';
+import type { FormProps } from '@pankod/refine-antd';
+import { Form, Input, Select, InputNumber } from '@pankod/refine-antd';
 
+import type { IProxy } from '../../interfaces';
 import { countryOptions } from './countryOptions';
 
 type Props = {

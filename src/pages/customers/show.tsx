@@ -1,4 +1,5 @@
-import { useShow, IResourceComponentsProps } from '@pankod/refine-core';
+import type { IResourceComponentsProps } from '@pankod/refine-core';
+import { useShow } from '@pankod/refine-core';
 import { DateField, Divider, Show, Typography } from '@pankod/refine-antd';
 
 import type { ICustomer } from '../../interfaces';

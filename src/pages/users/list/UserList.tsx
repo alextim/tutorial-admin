@@ -15,7 +15,8 @@ import {
   Select,
 } from '@pankod/refine-antd';
 
-import { IUser, Role } from '../../../interfaces';
+import type { IUser } from '../../../interfaces';
+import { Role } from '../../../interfaces';
 import { CrudList } from '../../../components/CrudeList';
 import { roleOptions } from '../roleOptions';
 

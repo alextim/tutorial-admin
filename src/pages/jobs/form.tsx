@@ -1,10 +1,5 @@
-import {
-  Form,
-  Select,
-  FormProps,
-  InputNumber,
-  useSelect,
-} from '@pankod/refine-antd';
+import type { FormProps } from '@pankod/refine-antd';
+import { Form, Select, InputNumber, useSelect } from '@pankod/refine-antd';
 
 import type { ICustomer, IJob, IProxy, IQuery, IUser } from '../../interfaces';
 import { jobStatusOptions } from './jobStatusOptions';

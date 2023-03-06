@@ -1,4 +1,4 @@
-import { ISelector } from '../../../interfaces';
+import type { ISelector } from '../../../interfaces';
 
 export type TreeNode = ISelector & {
   children?: TreeNode[];

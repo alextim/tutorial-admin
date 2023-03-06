@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useMany } from '@pankod/refine-core';
 import { Button, DeleteButton, Icons } from '@pankod/refine-antd';
 
-import { IParser } from '../../../interfaces/IParser';
+import type { IParser } from '../../../interfaces/IParser';
 import { ParserList } from './parsers';
 
 const itemStyle: React.CSSProperties = {

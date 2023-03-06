@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Form, Select, Divider, FormProps } from '@pankod/refine-antd';
+import type { FormProps } from '@pankod/refine-antd';
+import { Form, Select, Divider } from '@pankod/refine-antd';
 
 import { ParserType } from '../../../../../interfaces/parser-type.enum';
 import { parserTitle } from '../parser-constants';

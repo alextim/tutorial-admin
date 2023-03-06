@@ -1,4 +1,5 @@
-import { Form, Input, FormProps, Row, Col } from '@pankod/refine-antd';
+import type { FormProps } from '@pankod/refine-antd';
+import { Form, Input, Row, Col } from '@pankod/refine-antd';
 
 import type { ICustomer } from '../../interfaces';
 import { AUTH_COOKIE_LENGTH } from '../../interfaces/ICustomer';

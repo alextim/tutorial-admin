@@ -9,11 +9,9 @@ import {
   Form,
   Input,
   Button,
-  LayoutProps,
-  CardProps,
-  FormProps,
   Divider,
-} from 'antd';
+} from '@pankod/refine-antd';
+import type { LayoutProps, CardProps, FormProps } from '@pankod/refine-antd';
 import {
   useTranslate,
   useRouterContext,

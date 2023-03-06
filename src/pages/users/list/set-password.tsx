@@ -1,15 +1,14 @@
+import type { ModalProps, FormProps } from '@pankod/refine-antd';
 import {
   Typography,
   Modal,
   Divider,
-  ModalProps,
   Form,
   Input,
   Space,
-  FormProps,
 } from '@pankod/refine-antd';
 
-import { SetPasswordDto, IUser } from '../../../interfaces';
+import type { SetPasswordDto, IUser } from '../../../interfaces';
 import { passwordValidator } from './password-validator';
 
 type Props = {

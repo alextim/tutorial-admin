@@ -1,4 +1,5 @@
-import { Form, Typography, Divider, FormProps } from '@pankod/refine-antd';
+import type { FormProps } from '@pankod/refine-antd';
+import { Form, Typography, Divider } from '@pankod/refine-antd';
 
 import { ParserType } from '../../../../../interfaces/parser-type.enum';
 import { parserColor, parserTitle } from '../parser-constants';

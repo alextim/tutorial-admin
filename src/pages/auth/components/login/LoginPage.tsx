@@ -1,5 +1,9 @@
-import type { LoginPageProps, LoginFormTypes } from '@pankod/refine-core';
-import { useRouterContext } from '@pankod/refine-core';
+import type {
+  LoginPageProps,
+  LoginFormTypes,
+  LayoutProps,
+} from '@pankod/refine-core';
+import type { FormProps, CardProps } from '@pankod/refine-antd';
 import {
   Row,
   Col,
@@ -9,12 +13,9 @@ import {
   Form,
   Input,
   Button,
-  CardProps,
-  LayoutProps,
   Divider,
-  FormProps,
-} from 'antd';
-import { useLogin, useTranslate } from '@pankod/refine-core';
+} from '@pankod/refine-antd';
+import { useLogin, useTranslate, useRouterContext } from '@pankod/refine-core';
 
 import { layoutStyles, containerStyles, titleStyles } from '../styles';
 import { GoogleButton } from '../GoogleButton';
