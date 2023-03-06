@@ -62,15 +62,10 @@ jobs:
       - name: Build Packages
         run: pnpm run build
 
-      - name: Build Packages
-        run: ls
-
-      - name: Pushes build
-        uses: dmnemec/copy_file_to_another_repo_action@main
+      - name: Deploy to Netlify
         env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source_file: './dist'
-          destination_repo: 'alextim/tutorial-admin-dist'
-          user_email: 'buildmnt@gmail.com'
-          user_name: 'alextim'
+          NETLIFY_AUTH_TOKEN: ${{ env.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
+        run: |
+          pnpm i -g netlify-cli
+          netlify deploy --prod --dir=dist --telemetry-disable
