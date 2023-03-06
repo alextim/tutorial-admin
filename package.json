@@ -11,7 +11,8 @@
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "clean:all": "rimraf ./**/dist ./**/.pnpm-debug.log ./**/.turbo ./**/coverage ./**/pnpm-lock.yaml ./**/node_modules"
+    "clean:all": "rimraf ./**/dist ./**/.pnpm-debug.log ./**/.turbo ./**/coverage ./**/pnpm-lock.yaml ./**/node_modules",
+    "deploy": "netlify deploy --prod --dir=dist --telemetry-disable"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
