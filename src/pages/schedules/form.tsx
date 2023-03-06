@@ -159,6 +159,7 @@ export const ScheduleForm = ({ formProps }: Props) => {
     resource: 'proxies',
     optionLabel: 'name',
     defaultValue: formProps.initialValues.proxyId,
+
     sort: [
       {
         field: 'name',
@@ -170,7 +171,7 @@ export const ScheduleForm = ({ formProps }: Props) => {
   const { selectProps: timezoneSelectProps } = useSelect<ITimezone>({
     resource: 'timezones',
     optionLabel: 'code',
-    defaultValue: formProps.initialValues?.timezoneId || 'UTC',
+    defaultValue: formProps.initialValues?.timezoneId, // || 'UTC',
     sort: [
       {
         field: 'code',
@@ -180,11 +181,6 @@ export const ScheduleForm = ({ formProps }: Props) => {
     filters: [],
     pagination: { pageSize: 1000 },
   });
-
-  if (!timezoneSelectProps.options) {
-    timezoneSelectProps.options = [];
-  }
-  timezoneSelectProps.options?.push({ value: 'UTC', label: 'UTC' });
 
   if (!formProps.initialValues.intervalType) {
     formProps.initialValues.intervalType = IntervalType.Minute;
@@ -234,21 +230,25 @@ export const ScheduleForm = ({ formProps }: Props) => {
         month,
         dayOfWeek,
         dailyTime,
-        timezoneId: timezoneIdSrc,
+        timezoneId,
         ...rest
-      }: any) => {
+      }: ISchedule & {
+        minute?: string;
+        hour?: string;
+        dayOfMonth?: string;
+        month?: string;
+        dayOfWeek?: string;
+      }) => {
         const cron = `${minute || '*'} ${hour || '*'} ${dayOfMonth || '*'} ${
           month || '*'
         } ${dayOfWeek || '*'}`;
-        const timezoneId = timezoneIdSrc === 'UTC' ? undefined : timezoneIdSrc;
-        const dto = {
+        const dto: ISchedule = {
           cron,
-          timezoneId,
           dailyTime: dayjs(dailyTime).format(timeFormat),
+          timezoneId: timezoneId ? timezoneId : null,
           ...rest,
         };
-        console.log(dto);
-        return formProps.onFinish && formProps.onFinish(dto);
+        return formProps.onFinish?.(dto);
       }}
     >
       <Row gutter={[16, 16]}>
@@ -331,7 +331,16 @@ export const ScheduleForm = ({ formProps }: Props) => {
             <InputNumber min={0} />
           </Form.Item>
           <Form.Item {...formItemLayout2} label="Proxy" name="proxyId">
-            <Select {...proxySelectProps} />
+            <Select>
+              <Option key="noproxy" value={null}>
+                No Proxy
+              </Option>
+              {proxySelectProps.options?.map(({ value, label }) => (
+                <Option key={value} value={value}>
+                  {label}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
         </Col>
       </Row>
@@ -348,13 +357,17 @@ export const ScheduleForm = ({ formProps }: Props) => {
         {...formItemLayoutCombo}
         label="Scheduler Time zone"
         name="timezoneId"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
       >
-        <Select {...timezoneSelectProps} />
+        <Select>
+          <Option key="UTC" value={null}>
+            UTC
+          </Option>
+          {timezoneSelectProps.options?.map(({ value, label }) => (
+            <Option key={value} value={value}>
+              {label}
+            </Option>
+          ))}
+        </Select>
       </Form.Item>
 
       <Form.Item

@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
-import { IEntityBase } from './IEntityBase';
-import { JobStatus } from './job-status.enum';
+import type { IEntityBase } from './IEntityBase';
+import type { JobStatus } from './job-status.enum';
 
 export interface IJob extends IEntityBase {
   requestInterval: number;

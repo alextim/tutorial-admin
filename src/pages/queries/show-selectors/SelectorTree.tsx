@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useModalForm, Modal, CreateButton } from '@pankod/refine-antd';
-import { HttpError } from '@pankod/refine-core';
+import type { HttpError } from '@pankod/refine-core';
 
 import Nestable from 'react-nestable';
 import type { Item } from 'react-nestable';

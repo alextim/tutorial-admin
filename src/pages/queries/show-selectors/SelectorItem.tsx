@@ -58,48 +58,46 @@ export const SelectorItem: React.FC<Props> = ({
   }
 
   return (
-    <>
-      <div style={itemStyle}>
-        {handler}
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          {collapseIcon}
-          <div style={fieldStyle}>{selectorId}</div>
-          <div style={fieldStyle}>{name}</div>
-          <div style={fieldStyle}>{selector}</div>
-          <ParserList
-            ref={ref}
-            selectorId={selectorId}
-            items={data?.data || []}
-          />
-          <div
-            style={{ display: 'flex', flexWrap: 'nowrap', marginLeft: 'auto' }}
+    <div style={itemStyle}>
+      {handler}
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {collapseIcon}
+        <div style={fieldStyle}>{selectorId}</div>
+        <div style={fieldStyle}>{name}</div>
+        <div style={fieldStyle}>{selector}</div>
+        <ParserList
+          ref={ref}
+          selectorId={selectorId}
+          items={data?.data || []}
+        />
+        <div
+          style={{ display: 'flex', flexWrap: 'nowrap', marginLeft: 'auto' }}
+        >
+          <Button
+            icon={<Icons.PlusCircleOutlined />}
+            onClick={(e) => {
+              e.preventDefault();
+              if (ref.current) {
+                (ref.current as any).showCreateParser();
+              }
+            }}
           >
-            <Button
-              icon={<Icons.PlusCircleOutlined />}
-              onClick={(e) => {
-                e.preventDefault();
-                if (ref.current) {
-                  (ref.current as any).showCreateParser();
-                }
-              }}
-            >
-              parser
-            </Button>
-            <Button
-              icon={<Icons.EditOutlined />}
-              onClick={(e) => {
-                e.preventDefault();
-                onEdit(selectorId);
-              }}
-            />
-            <DeleteButton
-              recordItemId={selectorId}
-              resourceNameOrRouteName={resource}
-              hideText
-            />
-          </div>
+            parser
+          </Button>
+          <Button
+            icon={<Icons.EditOutlined />}
+            onClick={(e) => {
+              e.preventDefault();
+              onEdit(selectorId);
+            }}
+          />
+          <DeleteButton
+            recordItemId={selectorId}
+            resourceNameOrRouteName={resource}
+            hideText
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };

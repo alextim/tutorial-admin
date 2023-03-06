@@ -95,7 +95,7 @@ export const LoginPage = ({
           rules={[{ required: true }]}
           style={{ marginBottom: '12px' }}
         >
-          <Input type="password" placeholder="●●●●●●●●" size="large" />
+          <Input.Password placeholder="●●●●●●●●" size="large" />
         </Form.Item>
 
         <div

@@ -1,5 +1,7 @@
-import { Form, Input, FormProps } from '@pankod/refine-antd';
-import { ICustomer } from '../../interfaces';
+import { Form, Input, FormProps, Row, Col } from '@pankod/refine-antd';
+
+import type { ICustomer } from '../../interfaces';
+import { AUTH_COOKIE_LENGTH } from '../../interfaces/ICustomer';
 
 type Props = {
   formProps: FormProps<ICustomer>;
@@ -26,15 +28,35 @@ export const CustomerForm = ({ formProps }: Props) => {
         return formProps.onFinish && formProps.onFinish(dto);
       }}
     >
-      <Form.Item label="First Name" name="firstName">
-        <Input />
-      </Form.Item>
+      <Row gutter={20}>
+        <Col xs={24} lg={12}>
+          <Form.Item label="First Name" name="firstName">
+            <Input />
+          </Form.Item>
+        </Col>
 
-      <Form.Item label="Last Name" name="lastName">
-        <Input />
-      </Form.Item>
+        <Col xs={24} lg={12}>
+          <Form.Item label="Last Name" name="lastName">
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item label="Authentication Cookie" name="authCookie">
+      <Form.Item
+        label="Authentication Cookie"
+        name="authCookie"
+        rules={[
+          {
+            required: true,
+          },
+          {
+            min: AUTH_COOKIE_LENGTH,
+          },
+          {
+            max: AUTH_COOKIE_LENGTH,
+          },
+        ]}
+      >
         <Input />
       </Form.Item>
     </Form>

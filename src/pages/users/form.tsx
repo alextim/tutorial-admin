@@ -17,7 +17,7 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 
 import { roleOptions } from './roleOptions';
-import { IUser } from '../../interfaces';
+import type { IUser } from '../../interfaces';
 
 type Props = {
   formProps: FormProps<IUser>;
@@ -149,49 +149,67 @@ export const UserForm = ({ formProps }: Props) => {
             <Select mode="multiple" options={roleOptions} />
           </Form.Item>
 
-          <Form.Item label="First Name" name="firstName">
-            <Input />
-          </Form.Item>
+          <Row gutter={20}>
+            <Col xs={24} lg={12}>
+              <Form.Item label="First Name" name="firstName">
+                <Input />
+              </Form.Item>
+            </Col>
 
-          <Form.Item label="Last Name" name="lastName">
-            <Input />
-          </Form.Item>
+            <Col xs={24} lg={12}>
+              <Form.Item label="Last Name" name="lastName">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item label="Phone" name="phone">
             <Input type="tel" />
           </Form.Item>
 
-          <Form.Item
-            label="Registered With Google"
-            name="isRegisteredWithGoogle"
-          >
-            <Radio.Group
-              options={[
-                { label: 'yes', value: true },
-                { label: 'no', value: false },
-              ]}
-            />
-          </Form.Item>
+          <Row gutter={20}>
+            <Col xs={24} lg={4}>
+              {' '}
+              <Form.Item
+                label="Registered with Google"
+                name="isRegisteredWithGoogle"
+              >
+                <Radio.Group
+                  options={[
+                    { label: 'yes', value: true },
+                    { label: 'no', value: false },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} lg={20}>
+              <Form.Item label="Google Id" name="googleId">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item label="Google Id" name="googleId">
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Registered With Facebook"
-            name="isRegisteredWithFacebook"
-          >
-            <Radio.Group
-              options={[
-                { label: 'yes', value: true },
-                { label: 'no', value: false },
-              ]}
-            />
-          </Form.Item>
-
-          <Form.Item label="Facebook Id" name="facebookId">
-            <Input />
-          </Form.Item>
+          <Row gutter={20}>
+            <Col xs={24} lg={4}>
+              {' '}
+              <Form.Item
+                label="Registered with Facebook"
+                name="isRegisteredWithFacebook"
+              >
+                <Radio.Group
+                  options={[
+                    { label: 'yes', value: true },
+                    { label: 'no', value: false },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} lg={20}>
+              <Form.Item label="Facebook Id" name="facebookId">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item
             label="Verification Sent At"

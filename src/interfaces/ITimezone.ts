@@ -1,4 +1,4 @@
-import { IEntityBase } from './IEntityBase';
+import type { IEntityBase } from './IEntityBase';
 
 export interface ITimezone extends IEntityBase {
   code: string;

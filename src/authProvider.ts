@@ -147,7 +147,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => ({
       return Promise.resolve();
     });
 
-    return Promise.resolve();
+    return Promise.resolve('/login');
   },
 
   checkError: () => Promise.resolve(),

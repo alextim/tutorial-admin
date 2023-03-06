@@ -12,7 +12,7 @@ export interface ISchedule extends IEntityBase {
   proxyId?: number;
 
   schedulerEnabled?: boolean;
-  timezoneId?: number;
+  timezoneId: number | null;
   schedulerType?: SchedulerType;
 
   /**

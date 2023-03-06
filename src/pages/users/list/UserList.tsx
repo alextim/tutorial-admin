@@ -36,7 +36,7 @@ export const UserList = () => {
     redirect: false,
   });
 
-  const { tableProps, sorter } = useTable<IUser>({
+  const { tableProps, sorter, filters } = useTable<IUser>({
     initialSorter: [
       {
         field: 'id',
