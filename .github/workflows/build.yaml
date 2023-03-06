@@ -72,6 +72,5 @@ jobs:
         with:
           source_file: './dist'
           destination_repo: 'alextim/tutorial-admin-dist'
-          destination_folder: 'dist'
           user_email: 'buildmnt@gmail.com'
           user_name: 'alextim'
