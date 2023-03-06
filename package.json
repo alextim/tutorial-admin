@@ -14,6 +14,7 @@
     "clean:all": "rimraf ./**/dist ./**/.pnpm-debug.log ./**/.turbo ./**/coverage ./**/pnpm-lock.yaml ./**/node_modules"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@pankod/refine-antd": "^4.7.3",
     "@pankod/refine-core": "^3.99.6",
     "@pankod/refine-nestjsx-crud": "^3.37.0",
