@@ -50,7 +50,7 @@
     "vite": "^4.1.4"
   },
   "scripts": {
-    "prebuild": "npm i -g typescript && npm i -g cross-env",
+    "prebuild": "npm i -g typescript && npm i -g cross-env && npm i -g react-scripts",
     "dev": "vite",
     "start": "echo start",
     "build:vite": "tsc && vite build",
