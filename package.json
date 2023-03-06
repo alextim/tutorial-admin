@@ -47,6 +47,7 @@
     "vite": "^4.1.4"
   },
   "scripts": {
+    "prebuild": "npm i -g tsc",
     "dev": "vite",
     "start": "echo start",
     "build": "tsc && vite build",
