@@ -6,10 +6,15 @@ import {
   UrlField,
 } from '@pankod/refine-antd';
 
-import { IQuery } from '../../../interfaces';
+import type { IQuery } from '../../../interfaces';
 
 const { Title, Text } = Typography;
-export const General = ({ record }: { record: IQuery | undefined }) => (
+
+type Props = {
+  record: IQuery | undefined;
+};
+
+export const General = ({ record }: Props) => (
   <>
     <Title level={5}>Id</Title>
     <Text>{record?.id}</Text>

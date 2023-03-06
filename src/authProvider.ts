@@ -1,4 +1,4 @@
-import { AuthProvider } from '@pankod/refine-core';
+import type { AuthProvider } from '@pankod/refine-core';
 import { notification } from '@pankod/refine-antd';
 import type { AxiosInstance } from 'axios';
 

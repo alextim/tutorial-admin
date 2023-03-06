@@ -9,7 +9,7 @@ import {
 } from '@pankod/refine-antd';
 import type { FormProps } from '@pankod/refine-antd';
 
-import { ICustomer, IQuery, IUser } from '../../interfaces';
+import type { ICustomer, IQuery, IUser } from '../../interfaces';
 
 export const Filter: React.FC<{ formProps: FormProps }> = (props) => {
   const { selectProps: userSelectProps } = useSelect<IUser>({

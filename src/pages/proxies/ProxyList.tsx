@@ -1,6 +1,6 @@
 import { Table, useTable, getDefaultSortOrder } from '@pankod/refine-antd';
 
-import { IProxy } from '../../interfaces';
+import type { IProxy } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
 
 export const ProxyList = () => {

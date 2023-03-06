@@ -1,7 +1,7 @@
 import { useShow, IResourceComponentsProps } from '@pankod/refine-core';
 import { DateField, Divider, Show, Typography } from '@pankod/refine-antd';
 
-import { IJob } from '../../interfaces';
+import type { IJob } from '../../interfaces';
 
 const { Title, Text } = Typography;
 
@@ -30,16 +30,16 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
       <Text>{record?.status}</Text>
 
       <Title level={5}>Query</Title>
-      <Text>{record?.query?.name}</Text>
+      <Text>{(record as any)?.query?.name}</Text>
 
       <Title level={5}>Proxy</Title>
-      <Text>{record?.proxy?.name || 'No proxy'}</Text>
+      <Text>{(record as any)?.proxy?.name || 'No proxy'}</Text>
 
       <Title level={5}>Customer</Title>
-      <Text>{record?.customer?.firstName}</Text>
+      <Text>{(record as any)?.customer?.firstName}</Text>
 
       <Title level={5}>User</Title>
-      <Text>{record?.user?.email}</Text>
+      <Text>{(record as any)?.user?.email}</Text>
 
       <Divider />
 

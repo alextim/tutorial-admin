@@ -17,7 +17,7 @@ export const CustomerForm = ({ formProps }: Props) => {
         authCookie: formProps.initialValues?.linkedInProfile?.authCookie,
       }}
       onFinish={(values) => {
-        const { authCookie, ...rest } = values;
+        const { authCookie, ...rest } = values as any;
         const dto = {
           linkedInProfile: {
             id: formProps.initialValues?.linkedInProfile?.id,

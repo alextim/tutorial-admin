@@ -1,12 +1,17 @@
 import { Typography } from '@pankod/refine-antd';
 import { useMany } from '@pankod/refine-core';
 
-import { IQuery, ISelector } from '../../../interfaces';
+import type { IQuery, ISelector } from '../../../interfaces';
 
 const { Text } = Typography;
-export const Selectors = ({ record }: { record: IQuery | undefined }) => {
+
+type Props = {
+  record: IQuery | undefined;
+};
+
+export const Selectors = ({ record }: Props) => {
   if (!record) {
-    return null;
+    return <></>;
   }
   const { id } = record;
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -15,13 +20,19 @@ export const Selectors = ({ record }: { record: IQuery | undefined }) => {
     ids: [],
   });
   if (isError) {
-    return error;
+    return <>{(error as any).toString()}</>;
   }
   if (isLoading) {
-    return 'Loading...';
+    return <>Loading...</>;
   }
   if (!data?.data) {
-    return 'No data';
+    return <>No data</>;
   }
-  return data.data.map(({ name }, i) => <Text key={i}>{name}</Text>);
+  return (
+    <>
+      {data.data.map(({ name }, i) => (
+        <Text key={i}>{name}</Text>
+      ))}
+    </>
+  );
 };

@@ -1,31 +1,20 @@
 import React from 'react';
-import {
+import type {
   ForgotPasswordPageProps,
   ForgotPasswordFormTypes,
 } from '@pankod/refine-core';
-import {
-  Row,
-  Col,
-  Layout,
-  Card,
-  Typography,
-  Form,
-  Input,
-  Button,
-  LayoutProps,
-  CardProps,
-  FormProps,
-} from 'antd';
+import { Row, Col, Layout, Card, Typography, Form, Input, Button } from 'antd';
+import type { LayoutProps, CardProps, FormProps } from 'antd';
 import {
   useTranslate,
   useRouterContext,
   useForgotPassword,
 } from '@pankod/refine-core';
-
-import { layoutStyles, containerStyles, titleStyles } from '../styles';
 import { Space } from '@pankod/refine-antd';
 
-type ResetPassworProps = ForgotPasswordPageProps<
+import { layoutStyles, containerStyles, titleStyles } from '../styles';
+
+type ResetPasswordProps = ForgotPasswordPageProps<
   LayoutProps,
   CardProps,
   FormProps
@@ -38,7 +27,7 @@ const { Text, Title } = Typography;
  *
  * @see {@link https://refine.dev/docs/ui-frameworks/antd/components/antd-auth-page/#forgot-password} for more details.
  */
-export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
+export const ForgotPasswordPage: React.FC<ResetPasswordProps> = ({
   loginLink,
   wrapperProps,
   contentProps,

@@ -70,7 +70,7 @@ export const UserForm = ({ formProps }: Props) => {
           formProps.onFinish({
             ...values,
             avatarId,
-          })
+          } as any)
         );
       }}
     >

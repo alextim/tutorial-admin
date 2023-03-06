@@ -1,8 +1,5 @@
-import {
-  LoginPageProps,
-  LoginFormTypes,
-  useRouterContext,
-} from '@pankod/refine-core';
+import type { LoginPageProps, LoginFormTypes } from '@pankod/refine-core';
+import { useRouterContext } from '@pankod/refine-core';
 import {
   Row,
   Col,

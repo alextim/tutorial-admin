@@ -1,9 +1,9 @@
-import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 
-import { HttpError, Refine } from '@pankod/refine-core';
+import type { HttpError } from '@pankod/refine-core';
+import { Refine } from '@pankod/refine-core';
 import {
   notificationProvider,
   ReadyPage,
@@ -11,7 +11,7 @@ import {
   Layout,
   ConfigProvider,
   theme,
-  Sider as DefaultSider,
+  // Sider as DefaultSider,
 } from '@pankod/refine-antd';
 import nestjsxCrudDataProvider from '@pankod/refine-nestjsx-crud';
 import routerProvider from '@pankod/refine-react-router-v6';
@@ -25,10 +25,10 @@ import { AuthPage } from './pages/auth';
 
 import { Title } from './components/title';
 import { Header } from './components/header';
-import { Sider } from './components/sider';
+// import { Sider } from './components/sider';
 
 import { CustomSider } from './components/custom-sider';
-import { QuerySelectors } from './pages/queries/querySelectors';
+// import { QuerySelectors } from './pages/queries/querySelectors';
 import { ShowSelectors } from './pages/queries/show-selectors';
 import { getTheme, Theme } from './components/theme';
 
@@ -40,7 +40,12 @@ import {
   CustomerShow,
 } from './pages/customers';
 import { ProxyList, ProxyCreate, ProxyEdit, ProxyShow } from './pages/proxies';
-import { QueryList, QueryCreate, QueryEdit, QueryShow } from './pages/queries';
+import {
+  QueryList,
+  QueryCreate,
+  QueryEdit,
+  // QueryShow
+} from './pages/queries';
 import { JobList, JobCreate, JobEdit, JobShow } from './pages/jobs';
 import {
   ScheduleList,
@@ -51,7 +56,7 @@ import {
 
 const axiosInstance = axios.create();
 
-axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
+axiosInstance.interceptors.request.use((request: any) => {
   const userData = localStorage.getItem(import.meta.env.VITE_USER_KEY);
   if (userData) {
     request.withCredentials = true;
@@ -60,10 +65,10 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     return response;
   },
-  (error) => {
+  (error: any) => {
     const customError: HttpError = {
       ...error,
       message: error.response?.data?.message,
@@ -79,6 +84,9 @@ function App() {
   useEffect(() => {
     setCurrentTheme(getTheme());
   }, []);
+  if (!import.meta.env.VITE_API_URL) {
+    throw new Error('VITE_API_URL required');
+  }
   return (
     <ConfigProvider
       theme={{
@@ -91,7 +99,7 @@ function App() {
       <Refine
         dataProvider={nestjsxCrudDataProvider(
           import.meta.env.VITE_API_URL,
-          axiosInstance,
+          axiosInstance as any,
         )}
         routerProvider={{
           ...routerProvider,

@@ -10,7 +10,7 @@ import {
   useSelect,
 } from '@pankod/refine-antd';
 
-import { IProxy, IQuery } from '../../interfaces';
+import type { IProxy, IQuery } from '../../interfaces';
 import { waitUntilOptions } from './waitUntilOptions';
 
 type Props = {

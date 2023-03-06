@@ -1,7 +1,7 @@
 import type { HttpError, IResourceComponentsProps } from '@pankod/refine-core';
 import { Edit, useForm } from '@pankod/refine-antd';
 
-import { IUser } from '../../interfaces';
+import type { IUser } from '../../interfaces';
 import { UserForm } from './form';
 
 export const UserEdit: React.FC<IResourceComponentsProps> = () => {

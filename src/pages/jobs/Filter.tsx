@@ -9,7 +9,7 @@ import {
 } from '@pankod/refine-antd';
 import type { FormProps } from '@pankod/refine-antd';
 
-import { ICustomer, IQuery, IUser } from '../../interfaces';
+import type { ICustomer, IQuery, IUser } from '../../interfaces';
 import { jobStatusOptions } from './jobStatusOptions';
 
 export const Filter: React.FC<{ formProps: FormProps }> = (props) => {

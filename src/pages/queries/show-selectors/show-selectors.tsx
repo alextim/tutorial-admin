@@ -4,8 +4,8 @@ import {
   IResourceComponentsProps,
   useOne,
   useMany,
-  useNavigation,
-  useBreadcrumb,
+  // useNavigation,
+  //useBreadcrumb,
   useInvalidate,
   useCustomMutation,
   useApiUrl,
@@ -16,7 +16,7 @@ import {
   UrlField,
   Space,
   Button,
-  Breadcrumb,
+  // Breadcrumb,
   ListButton,
   RefreshButton,
 } from '@pankod/refine-antd';
@@ -30,7 +30,7 @@ const { Title, Text } = Typography;
 
 export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
   const ref = useRef<Nestable>(null);
-  const { goBack, list } = useNavigation();
+  // const { goBack, list } = useNavigation();
 
   const { id } = useParams<'id'>();
   const queryId = id ? +id : 0;
@@ -38,7 +38,7 @@ export const ShowSelectors: React.FC<IResourceComponentsProps> = () => {
   const resource = `${parentResource}/selectors`;
   const invalidate = useInvalidate();
 
-  const { data, isLoading, isError } = useOne<IQuery>({
+  const { data, isLoading } = useOne<IQuery>({
     resource: 'queries',
     id: queryId,
     queryOptions: {

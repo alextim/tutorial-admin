@@ -7,7 +7,7 @@ import {
   Col,
 } from '@pankod/refine-antd';
 
-import { IJob } from '../../interfaces';
+import type { IJob } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
 import { Filter } from './Filter';
 

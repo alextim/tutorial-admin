@@ -331,16 +331,12 @@ export const ScheduleForm = ({ formProps }: Props) => {
             <InputNumber min={0} />
           </Form.Item>
           <Form.Item {...formItemLayout2} label="Proxy" name="proxyId">
-            <Select>
-              <Option key="noproxy" value={null}>
-                No Proxy
-              </Option>
-              {proxySelectProps.options?.map(({ value, label }) => (
-                <Option key={value} value={value}>
-                  {label}
-                </Option>
-              ))}
-            </Select>
+            <Select
+              options={[
+                { value: null, label: 'No Proxy' },
+                ...(proxySelectProps.options || []),
+              ]}
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -358,16 +354,12 @@ export const ScheduleForm = ({ formProps }: Props) => {
         label="Scheduler Time zone"
         name="timezoneId"
       >
-        <Select>
-          <Option key="UTC" value={null}>
-            UTC
-          </Option>
-          {timezoneSelectProps.options?.map(({ value, label }) => (
-            <Option key={value} value={value}>
-              {label}
-            </Option>
-          ))}
-        </Select>
+        <Select
+          options={[
+            { value: null, label: 'UTC' },
+            ...(timezoneSelectProps.options || []),
+          ]}
+        />
       </Form.Item>
 
       <Form.Item

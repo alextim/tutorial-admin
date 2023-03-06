@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AntdLayout, Menu, Grid, Sider } from '@pankod/refine-antd';
 import { DashboardOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import {

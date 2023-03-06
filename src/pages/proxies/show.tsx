@@ -1,7 +1,7 @@
 import { useShow, IResourceComponentsProps } from '@pankod/refine-core';
 import { DateField, Divider, Show, Typography } from '@pankod/refine-antd';
 
-import { IProxy } from '../../interfaces';
+import type { IProxy } from '../../interfaces';
 
 const { Title, Text } = Typography;
 

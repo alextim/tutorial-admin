@@ -7,7 +7,7 @@ import {
   Col,
 } from '@pankod/refine-antd';
 
-import { ISchedule } from '../../interfaces';
+import type { ISchedule } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
 import { Filter } from './Filter';
 

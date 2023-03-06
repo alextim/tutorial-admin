@@ -39,7 +39,10 @@ const handlerStyles: React.CSSProperties = {
 };
 
 export const SelectorTree = forwardRef(
-  ({ queryId, resource, selectors }: Props, ref) => {
+  (
+    { queryId, resource, selectors }: Props,
+    ref: React.ForwardedRef<Nestable>,
+  ) => {
     const {
       modalProps: editModalProps,
       formProps: editFormProps,

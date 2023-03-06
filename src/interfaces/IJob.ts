@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs';
+
 import type { IEntityBase } from './IEntityBase';
 import type { JobStatus } from './job-status.enum';
 

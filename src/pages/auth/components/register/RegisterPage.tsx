@@ -1,5 +1,5 @@
 import React from 'react';
-import { RegisterPageProps, RegisterFormTypes } from '@pankod/refine-core';
+import type { RegisterPageProps, RegisterFormTypes } from '@pankod/refine-core';
 import {
   Row,
   Col,

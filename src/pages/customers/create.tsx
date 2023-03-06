@@ -1,8 +1,7 @@
 import type { HttpError, IResourceComponentsProps } from '@pankod/refine-core';
-
 import { Create, useForm } from '@pankod/refine-antd';
 
-import { ICustomer } from '../../interfaces';
+import type { ICustomer } from '../../interfaces';
 import { CustomerForm } from './form';
 
 export const CustomerCreate: React.FC<IResourceComponentsProps> = () => {

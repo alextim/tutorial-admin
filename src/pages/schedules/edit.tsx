@@ -1,7 +1,7 @@
 import type { HttpError, IResourceComponentsProps } from '@pankod/refine-core';
 import { Edit, useForm } from '@pankod/refine-antd';
 
-import { ISchedule } from '../../interfaces';
+import type { ISchedule } from '../../interfaces';
 import { ScheduleForm } from './form';
 
 export const ScheduleEdit: React.FC<IResourceComponentsProps> = () => {

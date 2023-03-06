@@ -2,7 +2,7 @@ import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useShow } from '@pankod/refine-core';
 import { Show, Tabs } from '@pankod/refine-antd';
 
-import { IQuery } from '../../../interfaces';
+import type { IQuery } from '../../../interfaces';
 import { General } from './General';
 import { Selectors } from './Selectors';
 

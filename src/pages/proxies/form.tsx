@@ -5,7 +5,7 @@ import {
   FormProps,
   InputNumber,
 } from '@pankod/refine-antd';
-import { IProxy } from '../../interfaces';
+import type { IProxy } from '../../interfaces';
 
 import { countryOptions } from './countryOptions';
 

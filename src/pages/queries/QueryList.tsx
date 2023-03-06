@@ -8,7 +8,7 @@ import {
 } from '@pankod/refine-antd';
 import { useNavigation } from '@pankod/refine-core';
 
-import { IQuery } from '../../interfaces';
+import type { IQuery } from '../../interfaces';
 import { CrudList } from '../../components/CrudeList';
 
 export const QueryList = () => {

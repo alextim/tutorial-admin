@@ -1,6 +1,6 @@
 import {
   useGetIdentity,
-  useIsExistAuthentication,
+  // useIsExistAuthentication,
   useLogout,
   useTranslate,
 } from '@pankod/refine-core';

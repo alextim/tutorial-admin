@@ -54,7 +54,7 @@ export const SelectorItem: React.FC<Props> = ({
     return <div>Loading...</div>;
   }
   if (isError) {
-    return <div>(error as Error).toString()</div>;
+    return <div>{(error as any).toString()}</div>;
   }
 
   return (
