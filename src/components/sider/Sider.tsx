@@ -6,19 +6,19 @@ import {
   ConfigProvider,
   Drawer,
   Button,
-} from '@pankod/refine-antd';
+} from 'antd';
 import {
   DashboardOutlined,
   LogoutOutlined,
   UnorderedListOutlined,
   BarsOutlined,
 } from '@ant-design/icons';
+import type { ITreeMenu } from '@pankod/refine-core';
 import {
   useTranslate,
   useLogout,
   useTitle,
   CanAccess,
-  ITreeMenu,
   useIsExistAuthentication,
   useRouterContext,
   useMenu,

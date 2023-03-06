@@ -1,9 +1,8 @@
 import type {
   LoginPageProps,
   LoginFormTypes,
-  LayoutProps,
 } from '@pankod/refine-core';
-import type { FormProps, CardProps } from '@pankod/refine-antd';
+import type { LayoutProps, FormProps, CardProps  } from 'antd';
 import {
   Row,
   Col,
@@ -14,7 +13,7 @@ import {
   Input,
   Button,
   Divider,
-} from '@pankod/refine-antd';
+} from 'antd';
 import { useLogin, useTranslate, useRouterContext } from '@pankod/refine-core';
 
 import { layoutStyles, containerStyles, titleStyles } from '../styles';

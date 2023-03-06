@@ -10,8 +10,8 @@ import {
   Input,
   Button,
   Divider,
-} from '@pankod/refine-antd';
-import type { LayoutProps, CardProps, FormProps } from '@pankod/refine-antd';
+} from 'antd';
+import type { LayoutProps, CardProps, FormProps } from 'antd';
 import {
   useTranslate,
   useRouterContext,
