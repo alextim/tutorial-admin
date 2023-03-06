@@ -1,8 +1,5 @@
-import type {
-  LoginPageProps,
-  LoginFormTypes,
-} from '@pankod/refine-core';
-import type { LayoutProps, FormProps, CardProps  } from 'antd';
+import type { LoginPageProps, LoginFormTypes } from '@pankod/refine-core';
+import type { LayoutProps, FormProps, CardProps } from 'antd';
 import {
   Row,
   Col,
