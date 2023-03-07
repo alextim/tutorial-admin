@@ -2,10 +2,10 @@ import { AuthPage as AntdAuthPage, AuthProps } from '@pankod/refine-antd';
 
 import { LoginPage } from './components/login/LoginPage';
 import { RegisterPage } from './components/register/RegisterPage';
+import { ForgotPasswordPage } from './components/forgot-password/forgot-password';
 
 import { authWrapperProps } from './authWrapperProps';
 import { RenderAuthContent } from './RenderAuthContent';
-import { ForgotPasswordPage } from './components/forgot-password/forgot-password';
 
 export const AuthPage: React.FC<AuthProps> = ({ type, formProps }) => {
   switch (type) {

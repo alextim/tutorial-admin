@@ -1,8 +1,6 @@
 import React from 'react';
-import type {
-  ForgotPasswordPageProps,
-  ForgotPasswordFormTypes,
-} from '@pankod/refine-core';
+import type { ForgotPasswordPageProps, ForgotPasswordFormTypes} from '@pankod/refine-core';
+import type { LayoutProps, CardProps, FormProps } from 'antd';
 import {
   Row,
   Col,
@@ -12,8 +10,7 @@ import {
   Form,
   Input,
   Button,
-} from '@pankod/refine-antd';
-import type { LayoutProps, CardProps, FormProps } from '@pankod/refine-antd';
+} from 'antd';
 import {
   useTranslate,
   useRouterContext,
