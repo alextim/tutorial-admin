@@ -61,6 +61,11 @@ jobs:
         run: pnpm install -r
 
       - name: Build Packages
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_UPLOADS_URL: ${{ secrets.VITE_UPLOADS_URL }}
+          VITE_USER_KEY: ${{ secrets.VITE_USER_KEY }}
         run: pnpm run build
 
       - name: Deploy to Netlify
