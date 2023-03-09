@@ -72,13 +72,13 @@ jobs:
         run: pnpm run build
 
       - name: ls
-        run: ls
+        run: ls dist/
 
       - name: Copy to Nest
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          src_path: dist
+          src_path: dist/**/*.*
           src_branch: main
           dst_path: /public
           dst_branch: main
