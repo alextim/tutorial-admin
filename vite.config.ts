@@ -18,6 +18,9 @@ export default ({ mode }) => {
     },
     build: {
       minify: false,
+      rollupOptions: {
+        external: ['@ant-design/pro-card'],
+      },
     },
     plugins: [react()],
   });
