@@ -72,14 +72,13 @@ jobs:
         run: pnpm run build
 
       - name: Copy to Nest
-        uses: nkoppel/push-files-to-another-repository@v1
+        uses: ./ # Uses an action in the root directory
         env:
           API_TOKEN_GITHUB: ${{ secrets.PERSONAL_TOKEN }}
         with:
           source-files: 'dist/**'
           destination-username: alextim
           destination-repository: nest-test-app
-          destination-branch: main
           destination-directory : /public
-          commit-email: 'buildmlt@gmail.com'
+          commit-email: 'buildmnt@gmail.com'
 
