@@ -1,4 +1,5 @@
-import { AuthPage as AntdAuthPage, AuthProps } from '@pankod/refine-antd';
+import type { AuthProps } from '@pankod/refine-antd';
+import { AuthPage as AntdAuthPage } from '@pankod/refine-antd';
 
 import { LoginPage } from './components/login/LoginPage';
 import { RegisterPage } from './components/register/RegisterPage';

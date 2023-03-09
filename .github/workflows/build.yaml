@@ -68,11 +68,12 @@ jobs:
           VITE_USER_KEY: ${{ secrets.VITE_USER_KEY }}
         run: pnpm run build
 
-      - name: Deploy to Netlify
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          netlify deploy --prod --dir=dist --telemetry-disable
-
+      - name: Copy to Nest
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          src_path: ./build
+          dst_path: /public
+          dst_owner: alextim
+          dst_repo_name: nest-test-app
 

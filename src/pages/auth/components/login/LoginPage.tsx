@@ -40,7 +40,7 @@ export const LoginPage = ({
 
   const CardTitle = (
     <Title level={3} style={titleStyles}>
-      {translate('pages.login.title', 'Sign in to your account')}
+      {translate('pages.login.title', 'Sign in to Your Account')}
     </Title>
   );
 
@@ -145,8 +145,42 @@ export const LoginPage = ({
           height: '100vh',
         }}
       >
-        <Col xs={22}>
+        <Col xs={24} xl={18}>
           {renderContent ? renderContent(CardContent) : CardContent}
+        </Col>
+        <Col xs={0} xl={6} style={{ position: 'relative', padding: '1rem' }}>
+          <img
+            src="/images/login-bg.png"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'none',
+              objectFit: 'cover',
+            }}
+          />
+          <blockquote
+            style={{
+              position: 'relative',
+              zIndex: 20,
+              fontSize: '1.5rem',
+              lineHeight: 1.35,
+              fontWeight: 700,
+            }}
+          >
+            Apps scary no more
+            <br />
+            Orchestration too easy
+            <br />
+            So en-“fly”-tening
+            <cite style={{ fontSize: '1.25rem', marginTop: '1.5rem' }}>
+              <span>—</span>A haiku by eric-karambit-ai
+            </cite>
+          </blockquote>
         </Col>
       </Row>
     </Layout>
