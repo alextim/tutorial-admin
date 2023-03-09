@@ -125,8 +125,11 @@ jobs:
           ls -la "$CLONE_DIRECTORY"
 
           echo
-          echo "##### Copying contents to git repo #####"
+          echo "##### Removing $CLONE_DIRECTORY/$DESTINATION_DIRECTORY #####"
           rm -rf "$CLONE_DIRECTORY/$DESTINATION_DIRECTORY"
+
+          echo
+          echo "##### Copying contents to git repo #####"
           mkdir -p "$CLONE_DIRECTORY/$DESTINATION_DIRECTORY"
           cp -rvf $SOURCE_FILES "$CLONE_DIRECTORY/$DESTINATION_DIRECTORY"
           cd "$CLONE_DIRECTORY"
