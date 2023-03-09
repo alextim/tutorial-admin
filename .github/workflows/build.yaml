@@ -61,7 +61,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install -r
+        run: pnpm install
 
       - name: Build Packages
         env:
@@ -78,7 +78,7 @@ jobs:
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          src_path: build
+          src_path: dist
           dst_path: /public
           dst_owner: alextim
           dst_repo_name: nest-test-app
