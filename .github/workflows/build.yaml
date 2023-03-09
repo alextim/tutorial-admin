@@ -72,7 +72,7 @@ jobs:
         run: pnpm run build
 
       - name: Copy to Nest
-        uses: nkoppel/push-files-to-another-repository@1.1.1
+        uses: nkoppel/push-files-to-another-repository
         env:
           API_TOKEN_GITHUB: ${{ secrets.PERSONAL_TOKEN }}
         with:
