@@ -1,6 +1,4 @@
-const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
-export const dailyWeekdaysOptions = weekdays.map((label, value) => ({
+export const dailyWeekdaysOptions = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((label, value) => ({
   label,
   value,
 }));
