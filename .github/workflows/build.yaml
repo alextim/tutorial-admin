@@ -7,6 +7,9 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - 'tsconfig.node.json'
       - 'package.json'
       - '!.github/**'
       - '!.husky/**'
@@ -68,11 +71,14 @@ jobs:
           VITE_USER_KEY: ${{ secrets.VITE_USER_KEY }}
         run: pnpm run build
 
+      - name: ls
+        run: ls
+
       - name: Copy to Nest
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          src_path: ./build
+          src_path: build
           dst_path: /public
           dst_owner: alextim
           dst_repo_name: nest-test-app

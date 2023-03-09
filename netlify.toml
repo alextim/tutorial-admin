@@ -1,7 +1,0 @@
-[build]
-  command = "pnpm run build"
-  publish = "dist"
-
-[dev]
-  # Local dev command. A.k.a npm start
-  command = "pnpm run dev"
