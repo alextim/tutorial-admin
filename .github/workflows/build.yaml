@@ -71,17 +71,15 @@ jobs:
           VITE_USER_KEY: ${{ secrets.VITE_USER_KEY }}
         run: pnpm run build
 
-      - name: ls
-        run: ls dist/
-
       - name: Copy to Nest
-        uses: andstor/copycat-action@v3
+        uses: nkoppel/push-files-to-another-repository@1.1.0
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.PERSONAL_TOKEN }}
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          src_path: dist/**
-          src_branch: main
-          dst_path: /public
-          dst_branch: main
-          dst_owner: alextim
-          dst_repo_name: nest-test-app
+          source-files: 'dist/**'
+          destination-username: alextim
+          destination-repository: nest-test-app
+          destination-branch: main
+          destination-directory : /public
+          commit-email: 'buildmlt@gmail.com'
 
