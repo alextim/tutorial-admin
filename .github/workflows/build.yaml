@@ -72,7 +72,7 @@ jobs:
         run: pnpm run build
 
       - name: Copy to Nest
-        uses: ./ # Uses an action in the root directory
+        uses: ./.github/ # Uses an action in the root directory
         env:
           API_TOKEN_GITHUB: ${{ secrets.PERSONAL_TOKEN }}
         with:
